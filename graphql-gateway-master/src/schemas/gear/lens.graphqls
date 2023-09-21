@@ -1,0 +1,51 @@
+interface LensInfo {
+  displayName: String @deprecated(reason: "Please use `rawName`")
+  """Raw string from EXIF / EXIF中原始字符串"""
+  rawName: String
+  canonicalPath: String
+}
+
+union LensOption = UnverifiedLens | Lens
+
+type UnverifiedLens implements LensInfo {
+  displayName: String @deprecated(reason: "Please use `rawName`")
+  rawName: String
+  canonicalPath: String
+}
+
+"""
+结构化镜头信息
+"""
+type Lens implements Node & LensInfo {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID String / 资源内部ID"""
+  legacyId: String
+
+  """Display name with brand / 带品牌的全名"""
+  displayName: String @complexity(value: 10)
+  """Raw string from EXIF / EXIF中原始字符串"""
+  rawName: String
+  canonicalPath: String @complexity(value: 10)
+
+  brand: GearBrand @complexity(value: 10)
+
+  features: String
+  imageUrl: String
+
+  dateHistogram: [GearHistogramDataPoint]!
+  best100Photos: [Photo]!
+  topPhotographers: [TopPhotographer]!
+  topCategories: [GearTopPhotoCategory]!
+}
+
+type LensEdge {
+  node: Lens
+  cursor: String
+}
+
+type LensConnection {
+  edges: [LensEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+}

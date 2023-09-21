@@ -1,0 +1,75 @@
+language: node_js
+node_js:
+  - "14"
+
+services:
+  - docker
+
+env:
+  global:
+    # travis shared services access key id
+    - AWS_ACCESS_KEY_ID=AKIAIQDUGPALDOTSLBZQ
+    # travis shared services AWS_SECRET_ACCESS_KEY
+    - secure: "DtW8vamsQYkPNSe5mpJ4ksD8asEsMHg/OuWJsh+PbfXfYNYkI5Ra8DrVcPdkfHdmOVdBXEPi1IiBjDla8qenQUSSnK8/yXDco3hYjehRUQ/k/FpZJO6Jta3sKAH9xuul67rBgOnlLRywpuebqP+QO7E+lh765paNAZ2Z0BmiUfQxe8yszZNU6tytrG8R2NAXHveIwtE/tTTSZZ0oy+rg4PC4ZA9HrUdFZjCCA5hzxXT4aBN+XBxZKxG/Ilm2SNLY3L5w9G6meGp83+8X9ZiZZHW5rW1ODp+TNgBQA4ZMjSKegSpOKRxD0jknh61deIGVQsOhS+RsuOnTAavHNDgl7ot6E8f9y+X3y+XbUrjZkNR/WaDB+9RNR4RMe9yhVn1a5NkD+nauo3KE4tK0KVGoVP/7LHcn5BWClFyZ86J4n68KDae4hp9SY5ItUcGY5kmBnolj05SLmjdZlU82Py6OkjyhPlSI7PDrPnoIyOgRz8plttTHCHOQLgVEjryo9Ej6ut27lxyulSKjZvZKAUzgKjnqcqb205gX1Cf53d6W47NwOGMPoUMJmNfnpNGeQD2i9bWeVMVj9ndEHzQyyDlob08JrjWqE+WbcpY2BZrRsUfHhpwUsrhaWN7i3RtNkUkAfHmUCq6WmItpb8bcQAB4jpYYLWppljezMea5gnlvCKw="
+    # GITHUB_TOKEN
+    - secure: "pwngBXcNpZt/llXL30T3xKPH6Fn6hh5/3oAawMjK3D8HjrmjrB8mO5SKmDIqFvH667IyRbXsvpLzUjpaXhlNPq3wtTAu4WWa9zK8Lv1HBlegQ2DeL3oT8mt1Ulw8PmPMHSm8GhIAmYBU7ZEFswc1ZUHHnucUA5IMvPMS1SJnr7LzCZwgiI6hb3sPoeBVYfaHr0Jnhsm4pUbpwzeV4YPRayfuwgxHFmrMiEzQDOa6Gx1lc2CnsOd/VfqEE6dLVFDECJgVWnz7lmCyDmUIwii1QnyUfUoVgp7ehVUms7+Z0sN9GQGRnbjcL/8zNRs7tV8Z+v63NutvC3OphZV8ceprhyym5tp4Kkhq8D+il2TigaEpPbiT7C+MiFHVqYfo5jkyl+TkQ1v/p0iV8SMcm0NXcCYX9lDVL3lONYRzncaTrWyCNkXUPzpKLqVjVv8Gs9Hp51c0JJFzN5hPq95JpXLTp8nDpOcBsYIknWfsGGy0KHOkze1Uy49RsRvp9Ajuudf8HTE0PQw/Vk2jW9ZFDvNJTtA84K9dpVrV+9uOMQsI8b+pnErtoEBtRg+QArC9NmVzVsDiLb6MOsot5Xml1xPcyB4EJq8kXInEJZlWIzMCIDZxmHHdN12QuwTt7vxZwmH/fzTTF8pO1+Bx+RttHBdFBXrou8xbkQ1+FCFGUfMOHsk="
+
+cache:
+  yarn: true
+  pip: true
+
+git:
+  submodules: false
+
+before_install:
+  - echo -e "machine github.com\n  login ${GITHUB_TOKEN}\n  password x-oauth-basic" > ~/.netrc
+
+install:
+  - yarn install
+  -
+
+script:
+  - yarn eslint .
+  - yarn jest
+  - yarn build_schema && git diff --exit-code
+  - yarn eslint samples/ --ext .graphql
+  # Make sure there is no schema breaking changes on tagged release
+  #
+  # Multiple lines can be made a single "virtual line" because of the way that
+  # Travis munges each line before executing it to print out the exit status.
+  # It's okay for it to be on multiple physical lines, so long as you remember:
+  # - There can't be any leading "-"s - All newlines will be removed, so use
+  # ";"s
+  - if [[ "$TRAVIS_TAG" =~ ^v?[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+      git submodule update --init --recursive &&
+        cd clients/web-client-v2 && git fetch &&
+        git reset --hard origin/master &&
+        /usr/local/bin/yarn install &&
+        /usr/local/bin/yarn relay-compiler --src ./src/  --artifactDirectory ./src/__generated__/relay --schema ../../output/schema.graphqls &&
+        cd -;
+    fi
+
+after_success:
+  # Create a tag on each master commit
+  - if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_TAG" == "" ] && [ "$TRAVIS_BRANCH" == "master" ]; then
+      curl https://static.500px.com/tools/autotag-v1.1.4 -o ./autotag -L && chmod 755 ./autotag;
+      ./autotag;
+      git push --tag;
+    fi
+  # Create a dev tag on each branch commit
+  # - if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_TAG" == "" ] && [ "$TRAVIS_BRANCH" != "master" ]; then ./autotag --branch=$TRAVIS_BRANCH -p dev -T datetime && git push --tag; fi
+
+before_deploy:
+  - pip install --upgrade --user awscli
+
+deploy:
+  provider: script
+  skip_cleanup: true
+  script: "./release.sh $TRAVIS_TAG;"
+  on:
+    tags: true
+
+notifications:
+  slack:
+    rooms:
+      - secure: "Yyqsy6qh/WvzM0iNBYQbdrjBabxaWCtxMsbtS8eipw9yTXW51yzd+MwCLns/NNyxpaWqdUiLz7Tn51I0bvURaEq2+AydYQ+M/InBUNbAmRzzYQaXH/lQNRCvzY5iZ8+uc3xt91vQ7zQ4AB4BY1NuGdhuUNOht8OsKu1NIab6Rd0="

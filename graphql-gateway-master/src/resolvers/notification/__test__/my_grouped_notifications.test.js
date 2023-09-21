@@ -1,0 +1,11 @@
+import {resolvers} from '../my_grouped_notifications';
+
+describe('resolvers', () => {
+  it('only contains Query', async () => {
+    const keys = Object.keys(resolvers);
+    expect(keys).toEqual([
+      'Query',
+      'Mutation',
+    ]);
+  });
+});

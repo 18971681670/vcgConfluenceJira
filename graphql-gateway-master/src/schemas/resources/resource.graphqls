@@ -1,0 +1,132 @@
+enum ResourceState {
+  DRAFT,
+  ACTIVE,
+  ENDED
+}
+
+enum ResourceType {
+  WORKSHOP,
+  ARTICLE,
+  LIVESTREAM,
+  VIDEO,
+  OTHER
+}
+
+enum ResourceScheduled {
+  SCHEDULED,
+  UNSCHEDULED
+}
+
+type Payment {
+  currency: String
+  price: Float
+}
+
+type Stats {
+  resourcePageViewCount: Int!
+  resourceLearnMoreClickCount: Int!
+}
+
+type WorkshopResource implements Node {
+  id: ID!
+  legacyId: String
+  title: String
+  description: String
+  payment: Payment
+  link: String
+  creator: User
+  cover: Photo
+  location: Location
+  state: ResourceState
+  startTime: String
+  timeZone: String
+  customResourceSlug: String
+  stats: Stats!
+  featureDate: String
+  images(sizes: [Int!] = [4]): [ResourceCoverResizeImage] @complexity(value: 10)
+}
+
+type OtherResource implements Node {
+  id: ID!
+  legacyId: String
+  title: String
+  description: String
+  payment: Payment
+  link: String
+  creator: User
+  cover: Photo
+  location: Location
+  state: ResourceState
+  startTime: String
+  timeZone: String
+  customResourceSlug: String
+  customResourceType: String
+  stats: Stats!
+  featureDate: String
+  images(sizes: [Int!] = [4]): [ResourceCoverResizeImage] @complexity(value: 10)
+}
+
+type VideoResource implements Node {
+  id: ID!
+  legacyId: String
+  title: String
+  description: String
+  payment: Payment
+  link: String
+  creator: User
+  cover: Photo
+  state: ResourceState
+  customResourceSlug: String
+  stats: Stats!
+  featureDate: String
+  images(sizes: [Int!] = [4]): [ResourceCoverResizeImage] @complexity(value: 10)
+}
+
+type LivestreamResource implements Node {
+  id: ID!
+  legacyId: String
+  title: String
+  description: String
+  payment: Payment
+  link: String
+  creator: User
+  cover: Photo
+  state: ResourceState
+  customResourceSlug: String
+  startTime: String
+  timeZone: String
+  stats: Stats!
+  featureDate: String
+  images(sizes: [Int!] = [4]): [ResourceCoverResizeImage] @complexity(value: 10)
+}
+
+type ArticleResource implements Node {
+  id: ID!
+  legacyId: String
+  title: String
+  description: String
+  payment: Payment
+  link: String
+  creator: User
+  cover: Photo
+  state: ResourceState
+  customResourceSlug: String
+  stats: Stats!
+  featureDate: String
+  images(sizes: [Int!] = [4]): [ResourceCoverResizeImage] @complexity(value: 10)
+}
+
+# Add types for each resource type once they're settled on to this union.
+union Resource = WorkshopResource | OtherResource | ArticleResource | LivestreamResource | VideoResource
+
+type ResourceEdge {
+  node: Resource
+  cursor: String
+}
+
+type ResourceConnection {
+  edges: [ResourceEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+}
+

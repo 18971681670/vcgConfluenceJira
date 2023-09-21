@@ -1,0 +1,11 @@
+query ContributorStatus (
+  $id: ID!
+) {
+
+  nodeByLegacyId(resourceType: "LicensingContributor", legacyId: $id) {
+    ... on LicensingContributor {
+      signed
+      signedAt
+    }
+  }
+}

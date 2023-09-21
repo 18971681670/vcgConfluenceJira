@@ -1,0 +1,139 @@
+enum GalleryPrivacy {
+  PUBLIC
+  PRIVATE
+}
+
+enum GalleryReportStatus{
+  """user not login or other reason"""
+  UNAUTHORIZED
+  """can't report, may be the gallery belong to himself"""
+  DISABLED
+  """gallery has been reported by the user"""
+  REPORTED
+  """gallery haven't been reported by the user"""
+  UNREPORTED
+}
+
+"""
+Gallery / 影集
+"""
+type Gallery implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  """Gallery name / 影集名字"""
+  name: String
+  """Privacy control / 访问控制"""
+  privacy: GalleryPrivacy
+
+  """If any NSFW photo exists / 是否包含任何成人图片"""
+  notSafeForWork: Boolean @deprecated(reason: "NSFW filtering is handled at the photo level and is not set here")
+  """If all photos are owned by creator / 是否所有照片均为影集创建者拥有"""
+  ownPhotosOnly: Boolean
+
+  """Gallery Path / 影集路径: 1) /{create.username}/galleries/{publicSlug} 2) /g/{privateToken}"""
+  canonicalPath: String @complexity(value: 10)
+
+  """Public gallery slug / 公开影集后缀"""
+  publicSlug: String
+  """Private gallery token / 私有影集后缀"""
+  privateToken: String
+
+  """Gallery creator / 影集创建者"""
+  creator: User @complexity(value: 10)
+  """Gallery cover photo / 影集头图"""
+  cover: Photo @complexity(value: 10)
+
+  coverPhotos(
+      excludeNude: Boolean,
+      first: Int = 4
+  ): [Photo]
+
+  photos(
+    first: Int = 10
+    after: String
+    before: String
+    last: Int
+    """whether to show the NSFW photo in gallery"""
+    showNude: Boolean = true
+  ) : PhotoConnectionForPhotosOnGallery @complexity(value: 10, multipliers: ["first"])
+
+  """if this gallery can be reported by a specific user"""
+  reportStatus: GalleryReportStatus
+
+  description: String
+
+  """external gallery url just shown for admin user, otherwise it will be null"""
+  externalUrl: String
+
+  """gallery button name just shown for admin user, otherwise it will be null"""
+  buttonName: String
+
+  """the date time of the gallery last published at"""
+  lastPublishedAt: String
+
+  """the number of photo added since the gallery was last published"""
+  photosAddedSinceLastPublished: Int
+
+  isLikedByMe: Boolean @complexity(value: 10)
+
+  updatedAt:String
+
+  createdAt:String
+
+  editorsChoiceFlag:Boolean
+
+  itemsCount:Int
+
+  viewStat:ViewStat
+
+  likesCount:Int @complexity(value: 10)
+
+  photosAddedToGallery:Int @complexity(value: 10)
+
+
+}
+
+type GalleryEdge {
+  node: Gallery @complexity(value: 10)
+  cursor: String
+}
+
+type GalleryConnection {
+  edges: [GalleryEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+}
+
+type RecommendGalleryConnection {
+  edges: [GalleryEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+}
+
+enum GalleryContainsPhotosStatus {
+  ALL
+  SOME
+  NONE
+}
+
+type PhotoEdgeForPhotosOnGallery {
+  node: Photo @complexity(value: 10)
+  cursor: String
+}
+
+type PhotoConnectionForPhotosOnGallery {
+  edges: [PhotoEdgeForPhotosOnGallery]
+  pageInfo: PageInfo
+  totalCount: Int
+
+  """Check if a given list of photos exist in my gallery / 查询我的影集是否包含某几张照片"""
+  containsPhotos(photoLegacyIds: [ID!]): GalleryContainsPhotosStatus @complexity(value: 10, multipliers: ["photoLegacyIds"]) @deprecated
+}
+
+type GallerysIdOfPhoto{
+  photoLegacyId:ID!
+  gallerylegacyIds:[ID!]!
+}

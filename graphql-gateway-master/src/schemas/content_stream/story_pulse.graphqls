@@ -1,0 +1,17 @@
+"""
+StoryPulse Resource
+"""
+type StoryPulse implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  """当前热度"""
+  current: Float
+  """最高热度"""
+  highest: Float
+  """达到最高热度的时间戳"""
+  highestAchievedAt: String
+}
+

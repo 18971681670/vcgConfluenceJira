@@ -1,0 +1,93 @@
+enum PortfolioStatus {
+  ONBOARDING
+  ACTIVE
+  INACTIVE
+}
+
+type PortfolioLocation {
+  city: String
+  country: String
+}
+
+type PortfolioSocialMedia {
+  twitter: String
+  instagram: String
+  facebook: String
+}
+
+type PortfolioCoverPhoto {
+  photo: Photo!
+}
+
+type PortfolioCoverAvatar {
+  avatar: UserAvatar!
+}
+
+type PortfolioCoverImage {
+  images(sizes: [Int!] = [4]): [PortfolioCoverResizeImage!]!
+}
+
+union PortfolioCover = PortfolioCoverPhoto | PortfolioCoverAvatar | PortfolioCoverImage
+
+enum PortfolioVisibility {
+  VISIBLE
+  HIDDEN
+}
+
+type PortfolioVisibilityOptions {
+  location: PortfolioVisibility!
+  pxProfile: PortfolioVisibility!
+  instagram: PortfolioVisibility!
+  facebook: PortfolioVisibility!
+  twitter: PortfolioVisibility!
+}
+
+enum PortfolioLegalType {
+  PX_PROVIDED
+  CUSTOM
+  HIDDEN
+}
+
+type PortfolioCustomLegalSettings {
+  url: String!
+}
+
+enum PortfolioBasicLegalType {
+  PX_PROVIDED
+  HIDDEN
+}
+
+type PortfolioBasicLegalSettings {
+  type: PortfolioBasicLegalType!
+}
+
+union PortfolioLegalSettings = PortfolioCustomLegalSettings | PortfolioBasicLegalSettings
+
+type Portfolio implements Node {
+  id: ID!
+  legacyId: String!
+  user: User!
+  userDisabled: Boolean!
+  status: PortfolioStatus!
+  title: String!
+  description: String!
+  deactivatedMessage: String
+  coverPhoto: PortfolioCover!
+  theme: Theme!
+  font: ThemeFont!
+  colour: ThemeColour!
+  appearance: ThemeAppearance!
+  termsOfUse: PortfolioLegalSettings!
+  privacyPolicy: PortfolioLegalSettings!
+  visibilityOptions: PortfolioVisibilityOptions!
+  createdAt: String!
+  updatedAt: String!
+  folders: [Folder]!
+  """google analytics tracking code"""
+  analyticsCode: String
+  coverImages(sizes: [Int!] = [4]): [PortfolioCoverResizeImage]
+  customDomain: CustomDomain
+  location: PortfolioLocation
+  socialMedia: PortfolioSocialMedia
+  email: String
+}

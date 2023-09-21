@@ -1,0 +1,34 @@
+query MyFollowerStatsBreakdown($id: ID!) {
+  node(id: $id) {
+    ... on UserStatsAggregation {
+      from
+      to
+      followedByUsers {
+        edges {
+          node {
+            displayName
+            avatar {
+              images {
+                url
+              }
+            }
+
+            ...followButtonState
+          }
+        }
+      }
+    }
+  }
+}
+
+fragment followButtonState on User {
+  followedByUsers {
+    isFollowedByMe
+  }
+}
+
+# variables
+# {"id": "dXJpOm5vZGU6VXNlclN0YXRzQWdncmVnYXRpb246MTMxNjE5ODktLS0yMDE5LTExLTE1VDAwOjAwOjAwWi0tLTIwMTktMTEtMTZUMDA6MDA6MDBa"}
+
+# headers
+# {"x-500px-user-id": 13161989}

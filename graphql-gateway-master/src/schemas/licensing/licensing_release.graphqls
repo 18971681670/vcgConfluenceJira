@@ -1,0 +1,99 @@
+
+type LicensingReleaseEdge {
+  node: LicensingRelease
+  cursor: String
+}
+
+type LicensingReleaseConnection {
+  edges: [LicensingReleaseEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+}
+
+
+enum ReleaseStatus{
+  DIRECT_UPLOADED
+  PENDING
+  SIGNED
+  """ 模特选择拒绝原因 not_in_photo,not_know_photographer，这种不影响用户再次修改提交图片 """
+  REJECTED
+  """模特选择拒绝原因 not_agree，这种表示图片上存在模特本人，但是不同意签约，后台会直接吧图片设置成decline"""
+  REJECTED_PHOTO
+}
+
+enum ModelReleaseInvitationStatus{
+  PENDING
+  SIGNED
+  REJECTED
+  REJECTED_PHOTO
+}
+
+enum ReleaseType{
+  MODEL
+  PROPERTY
+}
+"""
+LicensingRelease Resource
+"""
+type LicensingRelease implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  filename: String
+  downloadLink: String
+
+  type:ReleaseType!
+  status: ReleaseStatus!
+
+  modelReleaseMetadata: ModelReleaseMetadata @complexity(value: 10)
+
+}
+
+type ModelReleaseMetadata implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+    """model's firstName """
+    firstName: String
+    """model's lastName """
+    lastName: String
+  """填写表单的地址"""
+  invitationLink: String
+
+  status: ModelReleaseInvitationStatus!
+  feedbacks:[String!]!
+
+  licensingPhoto: LicensingPhoto @complexity(value: 10)
+  photo: Photo @complexity(value: 10)
+
+  dateOfBirth:String
+  gender:String
+  ethnicities:[ModelReleaseEthnicity]
+  email:String
+  countryCode:String
+  phone:String
+  streetAddress:String
+  city:String
+  province:String
+  country:String
+  zipCode:String
+  guardianFirstName:String
+  guardianLastName:String
+
+  takenCountry:String
+  takenProvince:String
+
+  takenCity:String
+  photographerFirstName:String
+  photographerLastName:String
+  shootDescription:String
+
+  takenAt:String
+
+}
+
+

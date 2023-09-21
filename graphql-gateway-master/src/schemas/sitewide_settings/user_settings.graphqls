@@ -1,0 +1,7 @@
+type UserSettings {
+  locale: String!
+  show_nude: Boolean!
+  is_contactable: Boolean!
+  analytics_code: String
+  onboarding_categories: [String!]!
+}

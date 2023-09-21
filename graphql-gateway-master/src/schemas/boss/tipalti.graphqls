@@ -1,0 +1,34 @@
+"""
+User Tipalti Iframe Url Info
+"""
+
+type TipaltiIframeUrl implements Node {
+   """Global ID / 全局 ID"""
+  id: ID!
+
+  setupUrl: String
+  invoiceHistoryUrl: String
+  paymentHistoryUrl: String
+}
+
+type TipaltiPayable implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+
+  payable: Boolean
+  reason: String
+}
+
+type IsFirstFillTipaltiForm implements Node {
+  id: ID!
+
+  isFirstFill: Boolean
+}
+
+type TipaltiSetup implements Node {
+    """Global ID / 全局 ID"""
+  id: ID!
+
+  setup: Boolean
+  reason: String
+}

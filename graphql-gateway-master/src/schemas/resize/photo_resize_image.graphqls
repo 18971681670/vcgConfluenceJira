@@ -1,0 +1,16 @@
+"""
+PhotoResizeImage / 切图后CDN图片资源
+"""
+type PhotoResizeImage implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  """图片尺寸代号"""
+  size: Int!
+  jpegUrl: String!
+  webpUrl: String!
+  url: String! @deprecated(reason: "please use jpegUrl or webpUrl")
+  format: String! @deprecated(reason: "please use jpegUrl or webpUrl to infer format")
+}

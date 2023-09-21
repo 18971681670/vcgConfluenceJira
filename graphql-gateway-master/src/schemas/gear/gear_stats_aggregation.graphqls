@@ -1,0 +1,15 @@
+type GearHistogramDataPoint {
+  key: String!
+  value: Float!
+}
+
+type TopPhotographer {
+  photo: Photo
+}
+
+type GearTopPhotoCategory {
+  category: PhotoCategory!
+  usersCount: Int!
+  photosCount: Int!
+  photos: [Photo]!
+}

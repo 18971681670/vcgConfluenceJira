@@ -1,0 +1,243 @@
+""" Photo Privacy Enum / 照片隐私枚举 """
+enum PhotoPrivacy {
+  """ 用户首页图 """
+  PROFILE
+  """ 公开图（可搜索但用户首页不可见) """
+  UNLISTED
+  """ 隐私图（不可搜索但用户首页不可见) """
+  LIMITED_ACCESS
+  """可见 包括用户首页图和公开图"""
+  VISIBLE
+  """PROFILE, UNLISTED and LIMITED_ACCESS"""
+  ALL
+}
+
+enum PhotoCategory {
+  ABSTRACT
+  AERIAL
+  ANIMALS
+  BLACK_AND_WHITE
+  BOUDOIR
+  CELEBRITIES
+  CITY_AND_ARCHITECTURE
+  COMMERCIAL
+  CONCERT
+  FAMILY
+  FASHION
+  FILM
+  FINE_ART
+  FOOD
+  JOURNALISM
+  LANDSCAPES
+  MACRO
+  NATURE
+  NIGHT
+  NUDE
+  PEOPLE
+  PERFORMING_ARTS
+  SPORT
+  STILL_LIFE
+  STREET
+  TRANSPORTATION
+  TRAVEL
+  UNDERWATER
+  URBAN_EXPLORATION
+  WEDDING
+  UNCATEGORIZED
+}
+
+"""
+Photo / 照片
+"""
+type Photo implements Node & Pulse {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  canonicalPath: String @complexity(value: 10)
+
+  name: String
+  description: String
+  category: PhotoCategory!
+  uploadedAt: String!
+
+  longitude: Float
+  latitude: Float
+  location: String
+
+  locationDetails: LocationDetails
+
+  width: Int!
+  height: Int!
+
+  takenAt: String
+  aperture: String
+  shutterSpeed: String
+  focalLength: String
+  iso: String
+  notSafeForWork: Boolean!
+  watermark: Boolean!
+  showExifData: Boolean!
+
+  privacy: PhotoPrivacy
+
+  camera: CameraInfo @complexity(value: 10) @deprecated(reason: "does not include GearBrand data, but used by mobile")
+  lens: LensInfo @complexity(value: 10) @deprecated(reason: "does not include GearBrand data, but used by mobile")
+
+  cameraGear: Camera @complexity(value: 10) @deprecated(reason: "breaks on UnverifiedCamera")
+  lensGear: Lens @complexity(value: 10) @deprecated(reason: "breaks on UnverifiedLens")
+
+  cameraOptional: CameraOption @complexity(value: 10)
+  lensOptional: LensOption @complexity(value: 10)
+
+  pulse: PhotoPulse @complexity(value: 10) @deprecated(reason: "please use `currentPulse`, `highestPulse`, and `highestPulseAchievedAt`")
+
+  """当前热度"""
+  currentPulse: Float @complexity(value: 10)
+
+  """最高热度"""
+  highestPulse: Float @complexity(value: 10)
+
+  """达到最高热度的时间戳"""
+  highestPulseAchievedAt: String @complexity(value: 10)
+
+  comments(first: Int = 10, after: String): CommentConnection @complexity(value: 10, multipliers: ["first"])
+
+  uploader: User!
+
+  # Only API call will be made, no need to use complexity multiplier
+  images(sizes: [Int!] = [4]): [PhotoResizeImage] @complexity(value: 10)
+
+  tags: [String!]! @complexity(value: 10)
+
+  likedByUsers(first: Int = 10, after: String): UserConnectionOnPhotoLikedByUsers @complexity(value: 10, multipliers: ["first"])
+  isLikedByMe: Boolean @complexity(value: 10)
+
+  inGalleries(first: Int = 10, after: String): GalleryConnection @complexity(value: 10)
+
+  licensing: LicensingPhoto @complexity(value: 10)
+
+  autoLicensing: AutoLicensingPhoto @complexity(value: 10)
+
+  """排序顺序 Editors > Popular > Upcoming > Fresh"""
+  contentStreams: [ContentStream!] @complexity(value: 10)
+
+  timesViewed: Int! @deprecated(reason: "Use `viewCount`.")
+
+  """图片浏览量"""
+  viewCount: Int!
+
+  inShortlist(questLegacyId: ID!): Boolean! @deprecated(reason: "Moved to PhotoEdge.")
+
+  quests: QuestInvolvement
+}
+
+type DiscoverCover {
+  title: String
+  cover: Photo @complexity(value: 10)
+}
+
+type PhotoEdge {
+  node: Photo @complexity(value: 10)
+  cursor: String
+
+  """当照片作为图库候选图时使用"""
+  licensingCandidateUpdatedAt: String @deprecated
+
+  # Quest Context
+  # questLegacyId can be skipped if PhotoEdge is a child of a quest.
+  inShortlist(questLegacyId: String): Boolean!
+
+  inQuest(questLegacyId: ID): Boolean!
+}
+
+type PhotoConnection {
+  edges: [PhotoEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+
+  licensingCandidatesUnViewCount(markAsViewed: Boolean = false): Int @complexity(value: 10)
+}
+
+type UserEdgeOnPhotoLikedByUsers {
+  node: User @complexity(value: 10)
+  cursor: String
+  likedAt: String
+}
+
+type UserConnectionOnPhotoLikedByUsers {
+  edges: [UserEdgeOnPhotoLikedByUsers]
+
+  pageInfo: PageInfo
+
+  totalCount: Int
+
+  isLikedByMe: Boolean @complexity(value: 10) @deprecated(reason: "Please use `Photo.isLikedByMe`")
+}
+
+type PhotoPublicInfoEdge {
+  """Global ID / 全局 ID"""
+  id: ID!
+
+  title: String!
+
+  # Only API call will be made, no need to use complexity multiplier
+  url(sizes: [Int!] = [4]): [PhotoResizeImage] @complexity(value: 10)
+
+  originUrl: String!
+
+  uploadedDate: Float!
+
+}
+
+type PhotoPublicDetailEdge {
+
+  """Global ID / 全局 ID"""
+  id: ID!
+
+  title: String!
+
+  # Only API call will be made, no need to use complexity multiplier
+  url(sizes: [Int!] = [4]): [PhotoResizeImage] @complexity(value: 10)
+
+  originUrl: String!
+
+  uploadedDate: Float!
+
+  description: String!
+
+  category: PhotoCategory!
+
+  tags: [String!]! @complexity(value: 10)
+
+  shootTime: Float!
+
+}
+
+type PhotoPublicInfoConnection {
+  edges: [PhotoPublicInfoEdge]
+  page: Int
+  size: Int
+  pages: Int
+  totalCount: Int
+}
+
+type Aggregate {
+  key: String
+  frequency: Float
+}
+
+type AggregateResponse {
+  aggregateType: String!
+  aggregates: [Aggregate]
+  photo: Photo
+}
+
+type PhotoAggregateResponse {
+  aggregateRes: AggregateResponse
+}
+
+type DownloadUrl {
+  downloadUrl: String
+}

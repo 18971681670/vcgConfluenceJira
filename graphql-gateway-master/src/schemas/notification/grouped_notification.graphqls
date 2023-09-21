@@ -1,0 +1,116 @@
+# names from https://github.com/500px/px-activity-item/blob/master/lib/px/activity_item/constants/constants.rb
+enum NotificationAction {
+  QUEST_NEW @deprecated
+
+  FOLLOW_USER
+
+  PHOTO_LIKE
+  PHOTO_COMMENT
+  PHOTO_COMMENT_MENTION
+
+  SELECTED_BY_EDITOR
+  REACHED_UPCOMING
+  REACHED_POPULAR
+
+  USER_INVITED_TO_GROUP
+  GROUP_DISCUSSION_CREATED
+  GROUP_DISCUSSION_COMMENT
+  GROUP_COMMENT_REPLY
+  GROUP_CONTENT_FLAGGED
+  GROUP_MENTION
+
+  PHOTO_ADDED_TO_GALLERY
+  GALLERY_SELECTED_BY_EDITOR
+
+  QUEST_STARTED
+  QUEST_LOSERS_SELECTED
+  QUEST_WINNERS_SELECTED
+  QUEST_7_DAY_UNLICENSED
+  PHOTO_SELECTED_FOR_SHORTLIST
+
+  LICENSING_UNDER_REVIEW
+  LICENSING_PENDING_MULTIPLE_PHOTOS
+  PHOTO_ACCEPTED_TO_LICENSING
+  LICENSING_DECLINED
+  LICENSING_MODEL_RELEASE_SIGNED
+  LICENSING_MODEL_RELEASE_REJECTED
+  LICENSING_RELEASE_REQUIRED
+  LICENSING_CHANGE_REQUIRED
+  LICENSING_SUGGEST
+  LICENSING_SUGGEST_MULTIPLE
+  LICENSING_CR_TWO_WEEKS
+  LICENSING_CR_THREE_MONTHS
+  LICENSING_CR_SIX_MONTHS
+  LICENSING_CR_REMAIN_TWO_WEEKS
+  LICENSING_CR_EXPIRING_USER
+  PURCHASED
+
+  EARNINGS_REQUESTED
+
+  PHOTOGRAPHER_FEATURED
+
+  RESOURCE_FEATURED
+
+  DOMAIN_CONNECTION_SUCCESS
+  DOMAIN_VERIFICATION_STARTED
+  DOMAIN_DNS_ERRORS_FOUND
+  DOMAIN_CONNECTION_FAILING
+  DOMAIN_CONNECTION_FAILED
+}
+
+"""
+GroupedNotification Resource
+"""
+type GroupedNotification implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  # actions: NotificationAction!
+  actions: [NotificationAction]
+
+  actors: [User] @complexity(value: 10)
+  items: [GroupedNotificationItem] @complexity(value: 10)
+
+  timestamp: String
+  read: Boolean
+}
+
+type GroupedNotificationItemPhotoComment {
+  comment: Comment @complexity(value: 10)
+  photo: Photo @complexity(value: 10)
+}
+
+type GroupedNotificationItemGalleryItem {
+  gallery: Gallery @complexity(value: 10)
+  photo: Photo @complexity(value: 10)
+}
+
+type GroupedNotificationItemPhotoQuest {
+  photo: Photo! @complexity(value: 10)
+  quest: Quest! @complexity(value: 10)
+}
+
+"""Slightly different type due to underlying request"""
+type GroupedNotificationItemQuestPhoto {
+  quest: Quest! @complexity(value: 10)
+  photo: Photo @complexity(value: 10)
+}
+
+union GroupedNotificationItem = Photo | User | Quest | Gallery | WorkshopResource | OtherResource | VideoResource | LivestreamResource | ArticleResource | GroupedNotificationItemPhotoComment | GroupedNotificationItemGalleryItem | GroupedNotificationItemPhotoQuest | GroupedNotificationItemQuestPhoto | CustomDomain
+
+type GroupedNotificationEdge {
+  # GroupedNotification is generated locally, use 0
+  node: GroupedNotification @complexity(value: 0)
+  cursor: String
+}
+
+type GroupedNotificationConnection {
+  edges: [GroupedNotificationEdge]
+  pageInfo: PageInfo
+
+  unreadCount: Int @deprecated(reason: "Please use `haveUnread`") @complexity(value: 10)
+  haveUnread: Boolean @complexity(value: 10)
+  unreadSince: String
+}

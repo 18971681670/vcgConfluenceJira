@@ -1,0 +1,102 @@
+""" Object Type Enum / 对象类型 """
+enum ObjectType {
+  """ 图片 1"""
+  PHOTO_OBJECT_TYPE
+  """ 用户 7 """
+  USER_OBJECT_TYPE
+  """ 评论 8"""
+  COMMENT_OBJECT_TYPE
+  """影集 14"""
+  GALLERY_OBJECT_TYPE
+  """大赛 16"""
+  QUEST_OBJECT_TYPE
+  """课程 """
+  WORKSHOP_OBJECT_TYPE
+  """未知 0"""
+  UNKNOWN_OBJECT_TYPE
+}
+
+enum TargetType {
+  """ 图片 1"""
+  PHOTO_OBJECT_TYPE
+  """ 用户 7 """
+  USER_OBJECT_TYPE
+  """ 评论 8"""
+  COMMENT_OBJECT_TYPE
+  """影集 14"""
+  GALLERY_OBJECT_TYPE
+  """大赛 16"""
+  QUEST_OBJECT_TYPE
+  """课程 """
+  WORKSHOP_OBJECT_TYPE
+  """未知 0"""
+  UNKNOWN_OBJECT_TYPE
+}
+
+""" Object Type Enum / 对象类型 """
+enum Action {
+  """ 关注 1"""
+  FOLLOW_ACTION
+  """ 点赞 2"""
+  LIKE_ACTION
+  """ 发布 3"""
+  PUBLISH_ACTION
+  """ 评论 4"""
+  COMMENT_ACTION
+  """ 添加 5"""
+  ADD_ACTION
+ """ 取消 6"""
+  UPDATE_ACTION
+  """ 获的 7"""
+  ACHIEVE_ACTION
+}
+
+"""
+Activityfeed / 内容流
+"""
+type Activityfeed {
+
+  action: Action!
+
+  activities: [Activity]
+
+  """ 对象类型"""
+  objectType: ObjectType!
+
+  """ 目标类型"""
+  targetType: TargetType
+
+  user: User!
+}
+
+type Activity {
+ """ 关注 1 点赞 2 发布 3 评论 4 添加 5"""
+  action: Action!
+
+  object: Node
+
+  objectItemId: ID!
+   """ 图片 1 用户 7  评论 8 影集 14 大赛 16 课程 17"""
+  objectType: ObjectType!
+
+  published: String!
+
+  target: Node
+
+  targetItemId: ID
+
+  targetType: TargetType
+
+  userId: ID!
+}
+
+type ActivityfeedEdge {
+  node: Activityfeed
+  cursor: String
+}
+
+type ActivityfeedConnection {
+  edges: [ActivityfeedEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+}

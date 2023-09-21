@@ -1,0 +1,99 @@
+enum MembershipTier {
+  """普通用户"""
+  BASIC
+
+  """Awesome用户"""
+  AWESOME
+
+  """Pro用户"""
+  PRO
+
+  """iOS UNLIMITED UPLOAd用户"""
+  IOS_UNLIMITED_UPLOAD
+}
+
+enum MembershipPaymentStatus {
+  """Granted by admin for free"""
+  FREE
+  """Granted during a period of trial"""
+  TRIAL
+  """Paid by users"""
+  PAID
+}
+
+enum MembershipPeriod {
+  """week trial"""
+  W
+  """monthly"""
+  M
+  """yearly"""
+  Y
+}
+
+enum MembershipProvider {
+
+  """ other """
+  PX
+  """ google play store """
+  PLAY_STORE
+  """ apple store """
+  APP_STORE
+
+}
+
+"""
+Membership / 会员
+"""
+type Membership implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  tier: MembershipTier!
+
+  paymentStatus: MembershipPaymentStatus
+
+  autoRenewal: Boolean
+
+  startDate: String
+
+  expiryDate: String
+
+  period: MembershipPeriod
+
+  provider: MembershipProvider
+
+  currentProductSaleId:String
+
+  stackingNumber:Int
+
+  stackingSaleId:Int
+
+  upgradeProductId:Int
+
+  """How many photos a user can upload; -1 for unlimited / 还可以上传多少张照片，无限制时为-1"""
+  photoUploadQuota: Int @complexity(value: 10)
+  """When the upload quota will be refreshed / 何时可以上传更多照片"""
+  refreshPhotoUploadQuotaAt: String @complexity(value: 10)
+
+  membershipInfo: MembershipInfo
+}
+
+type MembershipEdge {
+  node: Membership @complexity(value: 10)
+  cursor: String
+}
+
+type MembershipConnection {
+  edges: [Membership]
+  pageInfo: PageInfo
+  totalCount: Int
+}
+
+type MembershipInfo {
+  tier: MembershipTier!
+  uploadLimit: Int!
+  exclusivePayoutPercentage: String!
+  nonExclusivePayoutPercentage: String!
+}

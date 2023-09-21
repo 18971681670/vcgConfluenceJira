@@ -1,0 +1,40 @@
+enum ThemeAssetSize {
+  ORIGINAL
+}
+
+type ThemeAsset {
+  size: ThemeAssetSize
+  url: String!
+}
+
+enum ThemeFont {
+  INTER
+  ALEO
+  PT_SERIF
+}
+
+enum ThemeColour {
+  BORDER
+  ACCENT_ORANGE
+  ACCENT_GOLD
+  ACCENT_TEAL
+  ACCENT_BLUE
+  ACCENT_VIOLET
+  ACCENT_ASH
+  ACCENT_MONO
+}
+
+enum ThemeAppearance {
+  LIGHT
+  DARK
+}
+
+type Theme implements Node {
+  id: ID!
+  name: String!
+  description: String!
+  imageUrls(sizes: [ThemeAssetSize!] = [ORIGINAL]): [ThemeAsset!]!
+  defaultFont: ThemeFont!
+  defaultColour: ThemeColour!
+  defaultAppearance: ThemeAppearance!
+}

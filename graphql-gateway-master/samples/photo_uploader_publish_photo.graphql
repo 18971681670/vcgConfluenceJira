@@ -1,0 +1,15 @@
+mutation PublishPhoto($input: UpdatePhotoInput) {
+  updatePhoto(input: $input) {
+    photo {
+      name
+      canonicalPath
+      description
+    }
+  }
+}
+
+# variables
+# {"input": {"legacyId": 1000001101, "name": "my test update", "description": "test description", "shutterSpeed": "1/10000", "category": "PEOPLE"}}
+
+# headers
+# {"x-500px-user-id": 22156121}

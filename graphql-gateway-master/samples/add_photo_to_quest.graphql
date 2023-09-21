@@ -1,0 +1,15 @@
+mutation AddPhotoToQuest($photoId: ID!, $questId: ID!) {
+  addPhotoToQuest(input: {photoLegacyId: $photoId, questLegacyId: $questId}) {
+    clientMutationId
+    photo {
+      canonicalPath
+      legacyId
+    }
+    quest {
+      canonicalPath
+      legacyId
+    }
+  }
+}
+
+# {"photoId": 1000000683, "questId": 279}

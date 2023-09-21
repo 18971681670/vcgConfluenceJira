@@ -1,0 +1,30 @@
+
+# ------------------------------------------
+# Please update src/schemas/__MICROSERVICE_SNAKECASE__/__RESOURCE_TYPE_SNAKECASE__.graphqls
+# using the following content
+# ------------------------------------------
+
+type __RESOURCE_TYPE_PASCALCASE__ {
+  # Any existing quries in the schema...
+
+  __PREFIXED_ASSOCIATED_RESOURCE_TYPE_CAMELCASE_PLURALIZED__(
+    first: Int = 10
+    after: String
+  ) : __ASSOCIATED_RESOURCE_TYPE_PASCALCASE__ConnectionFor__PREFIXED_ASSOCIATED_RESOURCE_TYPE_PASCALCASE_PLURALIZED__On__RESOURCE_TYPE_PASCALCASE__ @complexity(value: 10, multipliers: ["first"])
+}
+
+type __ASSOCIATED_RESOURCE_TYPE_PASCALCASE__EdgeFor__PREFIXED_ASSOCIATED_RESOURCE_TYPE_PASCALCASE_PLURALIZED__On__RESOURCE_TYPE_PASCALCASE__ {
+  node: __ASSOCIATED_RESOURCE_TYPE_PASCALCASE__ @complexity(value: 10)
+
+  cursor: String
+
+  # TODO: more edge fields if needed.
+}
+
+type __ASSOCIATED_RESOURCE_TYPE_PASCALCASE__ConnectionFor__PREFIXED_ASSOCIATED_RESOURCE_TYPE_PASCALCASE_PLURALIZED__On__RESOURCE_TYPE_PASCALCASE__ {
+  edges: [__ASSOCIATED_RESOURCE_TYPE_PASCALCASE__EdgeFor__PREFIXED_ASSOCIATED_RESOURCE_TYPE_PASCALCASE_PLURALIZED__On__RESOURCE_TYPE_PASCALCASE__!]!
+
+  pageInfo: PageInfo
+
+  totalCount: Int
+}

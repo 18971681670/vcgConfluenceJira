@@ -1,0 +1,317 @@
+
+#input BulkCreateLicensingPhotoInput {
+#  clientMutationId: String
+#
+#  operations: [CreateLicensingPhotoInput!]!
+#}
+
+input CreateLicensingPhotoInput {
+
+  """Photo to submit / 待提交的照片"""
+  photoLegacyId: ID!
+
+  caption: String
+  category: PhotoCategory!
+
+  privacy: PhotoPrivacy
+
+  exclusiveUsage: Boolean!
+
+  longitude: Float
+  latitude: Float
+  location: String
+
+  keywords: [String!]
+
+  modelReleaseLegacyIds: [ID!]
+  propertyReleaseLegacyIds: [ID!]
+
+  fileName: String
+  description: String
+  width: Int!
+  height: Int!
+
+  takenAt: String
+
+  aperture: String
+  shutterSpeed: String
+  focalLength: String
+  iso: String
+  camera: String
+  lens: String
+
+  recognizablePeople: Boolean
+
+  recognizableProperties: Boolean
+
+  autoLicensing: Boolean
+}
+
+type BulkCreateLicensingPhotoPayload {
+  clientMutationId: String
+
+  """新提交的图库图"""
+  licensingPhotos: [LicensingPhoto!]!
+}
+
+input BulkUpdateLicensingPhotosInput {
+  clientMutationId: String
+
+  operations: [UpdateLicensingPhotoInput!]!
+}
+
+input UpdateLicensingPhotoInput {
+
+  legacyId: ID!
+  """ release 有修改，则把最终的所有model & property release 一起提交"""
+  modelReleaseLegacyIds: [ID!]
+
+  """ release 有修改，则把最终的所有model & property release 一起提交"""
+  propertyReleaseLegacyIds: [ID!]
+
+  """传null 表示没有重新上传图"""
+  reUploadInput: LicensingReUploadMetadataInput
+    """ 是否提交到cms"""
+  submitToCms: Boolean
+
+  recognizablePeople: Boolean
+
+  recognizableProperties: Boolean
+
+  autoLicensing: Boolean
+}
+
+type BulkUpdateLicensingPhotosPayload {
+  clientMutationId: String
+
+  operations: [LicensingPhoto!]!
+}
+
+input LicensingReUploadMetadataInput {
+  fileName:String!
+  width: Int!
+  height: Int!
+}
+
+
+input BulkDeleteLicensingPhotosInput {
+  clientMutationId: String
+  legacyIds: [ID!]!
+}
+type BulkDeleteLicensingPhotosPayload {
+  clientMutationId: String
+
+  operations: [LicensingPhoto!]!
+}
+
+input ReuploadPhotoForLicensingInput {
+  clientMutationId: String
+
+  legacyId: ID!
+}
+
+type ReuploadPhotoForLicensingPayload {
+  clientMutationId: String
+
+  directUpload: MediaDirectUpload
+}
+
+input CreateModelReleaseInput {
+  clientMutationId: String
+
+  filename: String!
+}
+
+type CreateModelReleasePayload {
+  clientMutationId: String
+
+  modelRelease: LicensingRelease
+
+  """Upload info / 上传信息"""
+  directUpload: MediaDirectUpload
+}
+
+
+input CreateModelReleaseInvitationInput {
+  clientMutationId: String
+
+  firstName: String @deprecated(reason: "never use , will be Filled By Model. 2020-02-10")
+  lastName: String @deprecated(reason: "never use , will be Filled By Model. 2020-02-10")
+
+  takenCountry:String!
+  takenProvince:String!
+  takenCity:String
+  photographerFirstName:String
+  photographerLastName:String
+  shootDescription:String
+  modelReleaseTitle:String
+  takenAt:String!
+
+  legacyLicensingPhotoId:ID!
+}
+
+type CreateModelReleaseInvitationPayload {
+  clientMutationId: String
+
+  modelRelease: LicensingRelease
+}
+
+
+input ActivateModelReleaseInput {
+  clientMutationId: String
+
+  legacyId: ID!
+}
+
+type ActivateModelReleasePayload {
+  clientMutationId: String
+
+  modelRelease: LicensingRelease
+}
+
+input AddModelReleaseToLicensingPhotoInput {
+  clientMutationId: String
+
+  modelReleaseLegacyId: ID!
+  licensingPhotoLegacyId: ID!
+}
+
+type AddModelReleaseToLicensingPhotoPayload {
+  clientMutationId: String
+
+  licensingPhoto: LicensingPhoto
+}
+
+input RemoveModelReleaseFromLicensingPhotoInput {
+  clientMutationId: String
+
+  modelReleaseLegacyId: ID!
+  licensingPhotoLegacyId: ID!
+}
+
+type RemoveModelReleaseFromLicensingPhotoPayload {
+  clientMutationId: String
+
+  licensingPhoto: LicensingPhoto
+}
+
+input CreatePropertyReleaseInput {
+  clientMutationId: String
+
+  filename: String!
+}
+
+type CreatePropertyReleasePayload {
+  clientMutationId: String
+
+  propertyRelease: LicensingRelease
+
+  """Upload info / 上传信息"""
+  directUpload: MediaDirectUpload
+}
+
+input ActivatePropertyReleaseInput {
+  clientMutationId: String
+
+  legacyId: ID!
+}
+
+type ActivatePropertyReleasePayload {
+  clientMutationId: String
+
+  propertyRelease: LicensingRelease
+}
+
+input AddPropertyReleaseToLicensingPhotoInput {
+  clientMutationId: String
+
+  modelReleaseLegacyId: ID!
+  licensingPhotoLegacyId: ID!
+}
+
+type AddPropertyReleaseToLicensingPhotoPayload {
+  clientMutationId: String
+
+  licensingPhoto: LicensingPhoto
+}
+
+input RemovePropertyReleaseFromLicensingPhotoInput {
+  clientMutationId: String
+
+  modelReleaseLegacyId: ID!
+  licensingPhotoLegacyId: ID!
+}
+
+type RemovePropertyReleaseFromLicensingPhotoPayload {
+  clientMutationId: String
+
+  licensingPhoto: LicensingPhoto
+}
+
+
+#enum ModelReleaseGender{
+#  FEMALE
+#  MALE
+#  PREFER_NOT_TO_SAY
+#  OTHER
+#}
+
+enum ModelReleaseEthnicity{
+  ASIAN
+  ARAB
+  BLACK_AFRICAN_DESCENT
+  HISPANIC_LATINO
+  NATIVE_AMERICAN
+  PACIFIC_ISLANDER
+  SOUTH_ASIAN
+  WHITE_CAUCASIAN
+}
+
+input PermissionModelReleaseInvitationInput {
+  clientMutationId: String
+
+  token:String!
+    """model's firstName """
+  firstName: String!
+    """model's lastName """
+  lastName: String!
+
+  dateOfBirth:String!
+  gender:String!
+    ethnicities:[ModelReleaseEthnicity!]!
+  email:String!
+  countryCode:String!
+  phone:String!
+  streetAddress:String!
+  city:String!
+  province:String!
+  country:String!
+  zipCode:String!
+  guardianFirstName:String
+  guardianLastName:String
+
+}
+
+enum RejectModelReleaseInvitationFeedback {
+  NOT_IN_PHOTO
+  NOT_AGREE
+  NOT_KNOW_PHOTOGRAPHER
+}
+input RejectModelReleaseInvitationInput {
+  clientMutationId: String
+
+  token:String!
+
+  feedbacks:[RejectModelReleaseInvitationFeedback!]
+  otherMessage:String
+
+}
+
+type PermissionModelReleaseInvitationPayload {
+  clientMutationId: String
+  modelReleaseInvitation:ModelReleaseMetadata
+}
+type RejectModelReleaseInvitationPayload {
+  clientMutationId: String
+  modelReleaseInvitation:ModelReleaseMetadata
+}

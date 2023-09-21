@@ -1,0 +1,89 @@
+enum __RESOURCE_TYPE_PASCALCASE__AnotherField {
+  ENUM_ZERO
+  ENUM_ONE
+  ENUM_TWO
+}
+
+"""
+__RESOURCE_TYPE_PASCALCASE__ Resource
+"""
+type __RESOURCE_TYPE_PASCALCASE__ implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  # TODO Please add fields here
+  """Sample field / 样例字段"""
+  fieldName: String
+  anotherField: __RESOURCE_TYPE_PASCALCASE__AnotherField
+
+  """Sample to-one resource / 样例 to-one 关联资源"""
+  owner: User @complexity(value: 10)
+}
+
+type __RESOURCE_TYPE_PASCALCASE__Edge {
+  node: __RESOURCE_TYPE_PASCALCASE__ @complexity(value: 10)
+  cursor: String
+}
+
+type __RESOURCE_TYPE_PASCALCASE__Connection {
+  edges: [__RESOURCE_TYPE_PASCALCASE__Edge]
+  pageInfo: PageInfo
+  totalCount: Int
+}
+
+input Create__RESOURCE_TYPE_PASCALCASE__Input {
+  clientMutationId: String
+
+  fieldName: String
+  anotherField: __RESOURCE_TYPE_PASCALCASE__AnotherField
+}
+
+type Create__RESOURCE_TYPE_PASCALCASE__Payload {
+  clientMutationId: String
+
+  """Newly created resource of __RESOURCE_TYPE_PASCALCASE__ / 新创建__RESOURCE_TYPE_PASCALCASE__资源"""
+  __RESOURCE_TYPE_CAMELCASE__: __RESOURCE_TYPE_PASCALCASE__
+}
+
+input Update__RESOURCE_TYPE_PASCALCASE__Input {
+  clientMutationId: String
+
+  legacyId: ID!
+
+  fieldName: String
+  anotherField: __RESOURCE_TYPE_PASCALCASE__AnotherField
+}
+
+type Update__RESOURCE_TYPE_PASCALCASE__Payload {
+  clientMutationId: String
+
+  """__RESOURCE_TYPE_PASCALCASE__ after update / 修改后的__RESOURCE_TYPE_PASCALCASE__资源"""
+  __RESOURCE_TYPE_CAMELCASE__: __RESOURCE_TYPE_PASCALCASE__
+}
+
+input Delete__RESOURCE_TYPE_PASCALCASE__Input {
+  clientMutationId: String
+
+  legacyId: ID!
+}
+
+type Delete__RESOURCE_TYPE_PASCALCASE__Payload {
+  clientMutationId: String
+}
+
+#######################################
+# For mutation.graphqls
+#######################################
+
+type Mutation {
+  """创建__RESOURCE_TYPE_PASCALCASE__资源"""
+  create__RESOURCE_TYPE_PASCALCASE__(input: Create__RESOURCE_TYPE_PASCALCASE__Input): Create__RESOURCE_TYPE_PASCALCASE__Payload
+
+  """更新__RESOURCE_TYPE_PASCALCASE__信息"""
+  update__RESOURCE_TYPE_PASCALCASE__(input: Update__RESOURCE_TYPE_PASCALCASE__Input): Update__RESOURCE_TYPE_PASCALCASE__Payload
+
+  """删除__RESOURCE_TYPE_PASCALCASE__"""
+  delete__RESOURCE_TYPE_PASCALCASE__(input: Delete__RESOURCE_TYPE_PASCALCASE__Input!): Delete__RESOURCE_TYPE_PASCALCASE__Payload!
+}

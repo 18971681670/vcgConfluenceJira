@@ -1,0 +1,19 @@
+enum UserAvatarResizeImageSize {
+  TINY
+  SMALL
+  MEDIUM
+  LARGE
+  COVER
+}
+"""
+UserAvatarResizeImage / 用户头像切图后CDN图片资源
+"""
+type UserAvatarResizeImage implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  size: UserAvatarResizeImageSize!
+  url: String!
+}

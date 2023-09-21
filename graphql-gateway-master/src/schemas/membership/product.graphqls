@@ -1,0 +1,61 @@
+enum SubscriptionPeriod {
+  MONTHLY
+  ANNUAL
+}
+
+interface Product {
+  name: String!
+  subscriptionPeriod: SubscriptionPeriod
+  priceInCents: Int!
+}
+
+type ProductMembership implements Node & Product {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID
+
+  subscriptionPeriod: SubscriptionPeriod!
+  priceInCents: Int!
+  name: String!
+
+  tier: MembershipTier!
+}
+
+enum AdobeRegion {
+  ROW
+  EMEA
+}
+
+type ProductAdobeBundle implements Node & Product {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID
+
+  subscriptionPeriod: SubscriptionPeriod
+  priceInCents: Int!
+  name: String!
+
+  bundledMembership: ProductMembership! @complexity(value: 10)
+
+  region: AdobeRegion!
+  outOfStock: Boolean!
+}
+
+type ProductEdge {
+  node: Product @complexity(value: 10)
+  cursor: String
+
+  """If you are allowed to purchase this product / 是否允许用户购买此产品"""
+  eligible: Boolean! @complexity(value: 10)
+
+  """优惠信息"""
+  discount: PromotionDiscount @complexity(value: 10)
+}
+
+type ProductConnection {
+  edges: [ProductEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+}

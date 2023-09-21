@@ -1,0 +1,29 @@
+enum PhotoFilterType {
+  STATUS
+  USER_STATUS
+  USER_ID
+  PRIVACY
+  NSFW
+  CATEGORY
+  FEATURE_NAME
+  FEATURE_START_AT
+  FEATURE_END_AT
+  CAMERA_ID
+  LENS_ID
+  GEO_COORDINATES
+  LICENSING
+}
+
+input PhotoSearchFilter {
+  key: PhotoFilterType!
+  value: String!
+}
+
+enum PhotoSort {
+  """No sort"""
+  RELEVANCE
+  """Highest rating"""
+  PULSE
+  """Created at date"""
+  NEWEST
+}

@@ -1,0 +1,130 @@
+query TopNav($count: Int) {
+  me {
+    displayName
+    avatar {
+      images(sizes: [MEDIUM]) {
+        url
+        size
+      }
+    }
+  }
+
+  ...Notifications
+
+  authorizedFeatures(
+    features: [
+      NEW_STATS_LANDING
+      STATS
+    ]
+  )
+}
+
+fragment Notifications on Query {
+  myGroupedNotifications(last: $count) {
+    edges {
+      node {
+        actions
+        ...NotificationGroupPhoto
+        ...NotificationGroupGalleryItem
+        ...NotificationGroupGallery
+        ...NotificationGroupUser
+        ...NotificationGroupQuest
+        ...NotificationGroupPhotoComment
+      }
+    }
+
+    unreadCount
+  }
+}
+
+fragment NotificationGroupUserDisplayableImage on User {
+  avatar {
+    images(sizes: [SMALL]) {
+      url
+    }
+  }
+}
+
+fragment NotificationGroupActors on GroupedNotification {
+  actors {
+    displayName
+    canonicalPath
+    ...NotificationGroupUserDisplayableImage
+  }
+}
+
+fragment NotificationGroupPhotoDisplayableImage on Photo {
+  images(sizes: [4]) {
+    url
+  }
+}
+
+fragment NotificationGroupPhoto on GroupedNotification {
+  ...NotificationGroupActors
+  items {
+    ... on Photo {
+      name
+      canonicalPath
+      ...NotificationGroupPhotoDisplayableImage
+    }
+  }
+}
+
+fragment NotificationGroupGallery on GroupedNotification {
+  ...NotificationGroupActors
+  items {
+    ... on Gallery {
+      canonicalPath
+      name
+      cover {
+        ...NotificationGroupPhotoDisplayableImage
+      }
+    }
+  }
+}
+
+fragment NotificationGroupUser on GroupedNotification {
+  ...NotificationGroupActors
+  items {
+    ... on User {
+      displayName
+      canonicalPath
+      ...NotificationGroupUserDisplayableImage
+    }
+  }
+}
+
+fragment NotificationGroupGalleryItem on GroupedNotification {
+  ...NotificationGroupActors
+  items {
+    ... on GroupedNotificationItemGalleryItem {
+      photo {
+        name
+        canonicalPath
+        ...NotificationGroupPhotoDisplayableImage
+      }
+    }
+  }
+}
+
+fragment NotificationGroupPhotoComment on GroupedNotification {
+  ...NotificationGroupActors
+  items {
+    ... on GroupedNotificationItemPhotoComment {
+      photo {
+        name
+        canonicalPath
+        ...NotificationGroupPhotoDisplayableImage
+      }
+    }
+  }
+}
+
+fragment NotificationGroupQuest on GroupedNotification {
+  items {
+    ... on Quest {
+      canonicalPath
+      title
+    }
+  }
+}

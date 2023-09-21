@@ -1,0 +1,14 @@
+
+# ------------------------------------------
+# Please update src/schemas/query.graphqls
+# using the following content
+# ------------------------------------------
+
+type Query {
+  # Any existing quries in the schema...
+
+  __CLASS_NAME_CAMELCASE__(
+    first: Int = 10
+    after: String
+  ) : __RESOURCE_TYPE_PASCALCASE__Connection @complexity(value: 10, multipliers: ["first"])
+}

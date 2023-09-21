@@ -1,0 +1,27 @@
+query QuestDetailSubmissions (
+  $questId: ID!
+  $pageSize: Int
+  $cursor: String
+  $photoGridImageSizes: [Int!]
+) {
+  questSubmittedPhotos(questLegacyId: $questId, after: $cursor, first: $pageSize) {
+    edges {
+      node {
+        ... on Photo {
+          legacyId
+          images(sizes: $photoGridImageSizes) {
+            size
+            url
+          }
+        }
+      }
+    }
+
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}
+
+# {"questId": 447, "photoGridImageSizes": [32, 34]}

@@ -1,0 +1,36 @@
+query ProductFeed {
+  monthlyProducts: productFeed(period: MONTHLY) {
+    ...ProductCard
+  }
+
+  annualProducts: productFeed(period: ANNUAL) {
+    ...ProductCard
+  }
+}
+
+fragment ProductCard on ProductEdge {
+  node {
+    name
+    priceInCents
+    subscriptionPeriod
+    __typename
+    ...on ProductMembership {
+      tier
+    }
+    ...on ProductAdobeBundle {
+      bundledMembership {
+        tier
+      }
+      region
+    }
+  }
+  eligible
+  discount {
+    priceInCents
+    percent
+    code
+  }
+}
+
+# local dev headers
+# {"x-500px-user-id": 1539553}

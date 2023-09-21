@@ -1,0 +1,50 @@
+"""
+Workshop / 用户课程
+"""
+type Workshop implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  """Workshop title / 课程名称"""
+  title: String
+
+  """Workshop start time / 课程开始时间"""
+  startTime: String
+
+  """Workshop time zone / 课程开始时间的时区"""
+  timeZone: String
+
+  """Workshop price currentcy / 课程价格的币种"""
+  currency: String
+
+  """Workshop price / 课程价格"""
+  price: Float
+
+  """Workshop url link / 课程链接"""
+  url: String
+
+  """Workshop creator / 课程创建者"""
+  creator: User @complexity(value: 10)
+
+  """Workshop cover photo / 课程头图"""
+  cover: Photo @complexity(value: 10)
+
+  """Workshop location / 课程地点"""
+  location: Location@complexity(value: 10)
+
+  disabled: Boolean
+
+}
+
+type WorkshopEdge {
+  node: Workshop @complexity(value: 10)
+  cursor: String
+}
+
+type WorkshopConnection {
+  edges: [WorkshopEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+}

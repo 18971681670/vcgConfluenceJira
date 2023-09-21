@@ -1,0 +1,49 @@
+enum WorkshopSortedType {
+  NEWEST
+  TRENDING
+  UPCOMING
+  NEAREST
+}
+
+enum WorkshopResourceType {
+  ARTICLE
+  LIVESTREAM
+  VIDEO
+  WORKSHOP
+  OTHER
+}
+
+enum WorkshopFormatType {
+  ONLINE
+  OFFLINE
+}
+
+enum DiscoverSectionType {
+  FEATURED_SECTION
+  TRENDING_SECTION
+	UPCOMING_SECTION
+	HAPPENING_NEAR_ME_SECTION
+	ARTICLES_SECTION
+	VIDEOS_SECTION
+	LIVESTREAM_SECTION
+	ONLINE_WORKSHOPS_SECTION
+	INPERSON_WORKSHOP_SECTION
+	ONLINE_OTHER_SECTION
+	INPERSON_OTHER_SECTION
+}
+
+type ResourceTitleAutocomplete implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+
+  text: String
+}
+
+type ResourceUserAutocomplete implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+
+  user: User
+}
+
+union ResourceAutocoplete = ResourceTitleAutocomplete | ResourceUserAutocomplete

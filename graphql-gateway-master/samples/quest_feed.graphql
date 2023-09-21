@@ -1,0 +1,51 @@
+query QuestFeed (
+  $filter: QuestFeedFilter
+  $coverPhotoImageSizes: [Int!]
+  $pageSize: Int
+  $cursor: String
+) {
+
+  quests(filter: $filter, first: $pageSize, after: $cursor) {
+    edges {
+      node {
+        ...QuestCard
+      }
+    }
+
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}
+
+fragment CoverPhoto on Photo {
+  legacyId
+  canonicalPath
+
+  uploader {
+    displayName
+    canonicalPath
+  }
+
+  images(sizes: $coverPhotoImageSizes) {
+    size
+    url
+  }
+}
+
+fragment QuestCard on Quest {
+  legacyId
+  canonicalPath
+  title
+  startsAt
+  endsAt
+  prizeName
+
+  geofenced
+  isUserInGeofence
+
+  cover {
+    ...CoverPhoto
+  }
+}

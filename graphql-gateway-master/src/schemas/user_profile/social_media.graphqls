@@ -1,0 +1,98 @@
+"""
+SocialMedia Resource
+"""
+type SocialMedia implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+  website: String
+  twitter: String
+  instagram: String
+  facebook: String
+}
+
+enum SocialMediaEnum {
+  twitter
+  instagram
+  facebookpage
+  website
+  portfolioSite
+}
+
+type SocialMediaItem implements Node {
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+  name: SocialMediaEnum!
+  value: String
+  visible: Boolean!
+}
+
+
+#
+#type SocialMediaEdge {
+#  node: SocialMedia @complexity(value: 10)
+#  cursor: String
+#}
+#
+#type SocialMediaConnection {
+#  edges: [SocialMediaEdge]
+#  pageInfo: PageInfo
+#  totalCount: Int
+#}
+#
+#input CreateSocialMediaInput {
+#  clientMutationId: String
+#
+#  fieldName: String
+#  anotherField: SocialMediaAnotherField
+#}
+#
+#type CreateSocialMediaPayload {
+#  clientMutationId: String
+#
+#  """Newly created resource of SocialMedia / 新创建SocialMedia资源"""
+#  socialMedia: SocialMedia
+#}
+#
+#input UpdateSocialMediaInput {
+#  clientMutationId: String
+#
+#  legacyId: ID!
+#
+#  fieldName: String
+#  anotherField: SocialMediaAnotherField
+#}
+#
+#type UpdateSocialMediaPayload {
+#  clientMutationId: String
+#
+#  """SocialMedia after update / 修改后的SocialMedia资源"""
+#  socialMedia: SocialMedia
+#}
+#
+#input DeleteSocialMediaInput {
+#  clientMutationId: String
+#
+#  legacyId: ID!
+#}
+#
+#type DeleteSocialMediaPayload {
+#  clientMutationId: String
+#}
+#
+########################################
+## For mutation.graphqls
+########################################
+#
+#type Mutation {
+#  """创建SocialMedia资源"""
+#  createSocialMedia(input: CreateSocialMediaInput): CreateSocialMediaPayload
+#
+#  """更新SocialMedia信息"""
+#  updateSocialMedia(input: UpdateSocialMediaInput): UpdateSocialMediaPayload
+#
+#  """删除SocialMedia"""
+#  deleteSocialMedia(input: DeleteSocialMediaInput!): DeleteSocialMediaPayload!
+#}

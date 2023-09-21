@@ -1,0 +1,23 @@
+"""
+User My Balance Resource
+"""
+
+type MyBalance implements Node {
+   """Global ID / 全局 ID"""
+  id: ID!
+
+  totalEarnings: Float
+  totalSales: Int
+  availableEarnings: Float
+  availableSales: Int
+  pendingEarnings: Float
+  pendingSales: Int
+}
+
+type MapEntry implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+
+  text: String!
+  value: String!
+}

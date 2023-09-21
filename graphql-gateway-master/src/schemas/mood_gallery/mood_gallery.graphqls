@@ -1,0 +1,168 @@
+"""
+MoodGallery
+"""
+type MoodGallery implements Node {
+    """Global ID / 全局 ID"""
+    id: ID!
+    """Resource Internal ID / 资源内部ID"""
+    legacyId: ID!
+
+    title: String
+
+    description: String
+
+    photosNumber: Int
+
+    keywords: [String]
+
+    createdBy: User
+
+    createdAt: String
+
+    updatedAt: String
+
+    status: MoodStatus
+
+    """the date time of the gallery last changed to archive"""
+    archiveSince: String
+
+    """照片排序类型：recently added, impression, pulse."""
+    photoSortType: ItemSortType
+
+    """影集头图"""
+    cover: Photo @complexity(value: 10)
+
+    photos(
+        first: Int = 10
+        after: String
+        """是否是admin端查询"""
+        isAdmin: Boolean = false
+    ): MoodGalleryItemsConnection
+
+    """the date time of the gallery first published at"""
+    firstPublishedAt: String
+
+    """the date time of the gallery last published at"""
+    lastPublishedAt: String
+
+    """the number of photo added since the gallery was last published"""
+    photosAddedSinceLastPublished: Int
+
+    """前台detail详情链接"""
+    canonicalPath: String
+
+    isLikedByMe: Boolean @complexity(value: 10)
+
+    """浏览量"""
+    viewCount: Int!
+    likesCount: Int!
+
+    viewStat:ViewStat
+
+    photosAddedToGallery:Int @complexity(value: 10)
+
+
+}
+
+enum MoodStatus {
+    CREATED
+    ARCHIVE
+    PUBLISHED
+}
+
+enum MoodGalleriesSort {
+    ACTIVITY_DATE_ASC
+    ACTIVITY_DATE_DESC
+    ID_ASC
+    ID_DESC
+    TITLE_ASC
+    TITLE_DESC
+    ARCHIVE_DATE_ASC
+    ARCHIVE_DATE_DESC
+    PUBLISH_DATE_ASC
+    PUBLISH_DATE_DESC
+}
+
+enum ItemSortType {
+    HIGHEST_PULSE_ASC
+    IMPRESSIONS_ASC
+    RECENTLY_ADDED_ASC
+    HIGHEST_PULSE_DESC
+    IMPRESSIONS_DESC
+    RECENTLY_ADDED_DESC
+}
+
+type MoodGalleryEdge {
+    node: MoodGallery
+    cursor: String
+}
+
+type MoodGalleryConnection {
+    edges: [MoodGalleryEdge]
+    pageInfo: PageInfo
+    totalCount: Int
+}
+
+
+"""admin create\edit\view detail\query mood"""
+input MoodGalleryInput {
+    """创建mood时不需要传，修改时需传"""
+    moodId: ID
+    title: String!
+    description: String
+    photoNumber: Int
+    keywords: String!
+    """照片排序类型"""
+    photoSortType: ItemSortType! = RECENTLY_ADDED_DESC
+    items: [MoodGalleryItemInput]
+}
+
+input MoodGalleryItemInput {
+    photoId: ID
+    """照片热度"""
+    photoPulse: Float
+    """照片印象"""
+    photoImpression: Float
+    createdAt: String
+    #    """数据变化状态：1 add，0 default"""
+    #    changeStatus: Int = 0
+}
+
+type MoodGalleryItem implements Node {
+    """Global ID / 全局 ID"""
+    id: ID!
+    moodId: ID
+    photoId: ID
+    photo: Photo
+    createdAt: String
+    """照片热度"""
+    photoPulse: Float
+    """照片印象"""
+    photoImpression: Float
+}
+
+type MoodGalleryItemEdge {
+    node: MoodGalleryItem
+    cursor: String
+}
+
+type MoodGalleryItemsConnection {
+    edges: [MoodGalleryItemEdge]
+    pageInfo: PageInfo
+    totalCount: Int
+}
+
+type MoodGalleryPayload {
+    status: String
+    message: String
+    moodId: ID
+    hasLiveMoodWithSameTitle: Boolean
+}
+
+type MoodGalleriesConnection {
+    edges: [MoodGallery]
+    page: Int
+    size: Int
+    pages: Int
+    totalCount: Int
+}

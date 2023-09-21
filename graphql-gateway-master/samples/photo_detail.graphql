@@ -1,0 +1,35 @@
+query PhotoDetail (
+  $id: ID!
+  $imageSizes: [Int!]
+) {
+
+  photo: nodeByLegacyId(resourceType: "Photo", legacyId: $id) {
+    ... on Photo {
+      ...PhotoDetailBasic
+    }
+  }
+}
+
+fragment PhotoDetailBasic on Photo {
+  legacyId
+  name
+  aperture
+
+  canonicalPath
+
+  uploader {
+    legacyId
+    canonicalPath
+
+    displayName
+  }
+
+  images(sizes: $imageSizes) {
+    size
+    url
+  }
+
+  licensing {
+    status
+  }
+}

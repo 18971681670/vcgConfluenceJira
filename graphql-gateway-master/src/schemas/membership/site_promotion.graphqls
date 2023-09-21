@@ -1,0 +1,27 @@
+
+"""
+SitePromotion Resource
+"""
+type SitePromotion implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  # add fields here
+  """promo code field / 优惠码字段"""
+  promoCode: String!
+
+}
+
+type SitePromotionEdge {
+  node: SitePromotion @complexity(value: 10)
+  cursor: String
+}
+
+type SitePromotionConnection {
+  edges: [SitePromotionEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+}
+

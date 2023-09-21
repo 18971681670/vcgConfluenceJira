@@ -1,0 +1,23 @@
+mutation CreateGallery(
+  $name: String!
+  $privacy: GalleryPrivacy!
+) {
+  createGallery(input: {
+    name: $name
+    privacy: $privacy
+  }) {
+    clientMutationId
+    gallery {
+      legacyId
+      id
+      privacy
+      canonicalPath
+    }
+  }
+}
+
+# variables
+# {"name": "my gallery", "privacy": "PUBLIC"}
+
+# headers
+# {"x-500px-user-id": 1000000093}

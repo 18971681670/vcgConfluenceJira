@@ -1,0 +1,15 @@
+"""
+OnboardingCategory
+"""
+type OnboardingCategory implements Node {
+
+    """Global ID / 全局 ID"""
+    id: ID!
+    """Resource Internal ID / 资源内部ID"""
+    legacyId: ID!
+
+    category: String
+
+    backgroundImage: String
+
+}

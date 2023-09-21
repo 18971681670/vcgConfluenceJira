@@ -1,0 +1,14 @@
+"""
+UserAvatar Resource / 用户头像原图
+"""
+type UserAvatar implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  version: Int!
+
+  # Only API call will be made, no need to use complexity multiplier
+  images(sizes: [UserAvatarResizeImageSize!] = [SMALL]): [UserAvatarResizeImage] @complexity(value: 10)
+}

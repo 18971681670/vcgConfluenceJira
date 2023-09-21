@@ -1,0 +1,22 @@
+"""
+设备厂商
+"""
+type GearBrand implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: String
+
+  name: String
+}
+
+type GearBrandEdge {
+  node: GearBrand @complexity(value: 10)
+  cursor: String
+}
+
+type GearBrandConnection {
+  edges: [GearBrandEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+}

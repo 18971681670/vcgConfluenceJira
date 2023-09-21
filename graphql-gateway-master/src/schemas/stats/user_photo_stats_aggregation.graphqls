@@ -1,0 +1,10 @@
+"""
+Photo stats aggregation for a user.
+"""
+type UserPhotoAggregation {
+  """the like count of all photos of a specific user"""
+  likeCount: Int
+
+   """the view count of all photos of a specific user"""
+  viewCount: Int
+}

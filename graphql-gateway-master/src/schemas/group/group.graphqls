@@ -1,0 +1,20 @@
+"""
+Group
+"""
+type Group implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: String!
+
+  canonicalPath: String @complexity(value: 10)
+
+  name: String
+  description: String
+  membersCount: Int
+  coverPhotoUrl: String
+
+  creator: User
+
+  avatarUrl(size: UserAvatarResizeImageSize = SMALL): String
+}

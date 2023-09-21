@@ -1,0 +1,32 @@
+"""
+Comment Resource
+"""
+type Comment implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: String!
+  parentLegacyId: String
+
+  body: String
+  createdAt: String
+  """当前时间与createdAt间相差的毫秒数"""
+  milliAfterCreatedAt: String
+
+  replyTo: Comment @complexity(value: 10) @deprecated(reason: "Doesn't work. Use `replies`")
+
+  creator: User @complexity(value: 10)
+  replies: [Comment]!
+}
+
+type CommentEdge {
+  node: Comment @complexity(value: 10)
+  cursor: String
+}
+
+type CommentConnection {
+  edges: [CommentEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+  commentsAndRepliesTotalCount: Int
+}

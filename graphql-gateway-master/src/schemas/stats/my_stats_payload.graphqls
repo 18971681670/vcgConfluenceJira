@@ -1,0 +1,96 @@
+enum MyStatsHighlightsFilter {
+  PHOTO_UPLOAD_COUNT
+  PHOTO_VIEW_COUNT
+  PHOTO_LIKE_COUNT
+  PHOTO_AVERAGE_PULSE
+  USER_FOLLOWER_COUNT
+  USER_VIEW_COUNT
+}
+
+interface StatsHighlight  {
+  numberInCurrentWindow: Float
+  numberInPreviousWindow: Float
+}
+
+type StatsHighlightPhotoUploadCount implements StatsHighlight  {
+  numberInCurrentWindow: Float @complexity(value: 10)
+  numberInPreviousWindow: Float @complexity(value: 10)
+}
+
+type StatsHighlightUserFollowerCount implements StatsHighlight  {
+  numberInCurrentWindow: Float @complexity(value: 10)
+  numberInPreviousWindow: Float @complexity(value: 10)
+}
+
+type StatsHighlightPhotoViewCount implements StatsHighlight  {
+  numberInCurrentWindow: Float @complexity(value: 10)
+  numberInPreviousWindow: Float @complexity(value: 10)
+}
+
+type StatsHighlightPhotoLikeCount implements StatsHighlight  {
+  numberInCurrentWindow: Float @complexity(value: 10)
+  numberInPreviousWindow: Float @complexity(value: 10)
+}
+
+type StatsHighlightUserViewCount implements StatsHighlight  {
+  numberInCurrentWindow: Float @complexity(value: 10)
+  numberInPreviousWindow: Float @complexity(value: 10)
+}
+
+type StatsHighlightPhotoAveragePulse implements StatsHighlight  {
+  numberInCurrentWindow: Float @complexity(value: 10)
+  numberInPreviousWindow: Float @complexity(value: 10)
+}
+
+"""用户统计信息"""
+type MyStatsPayload {
+  lastUpdatedAt: String @complexity(value: 10)
+
+  # The array is generated locally, use 0
+  highlights(
+    filter: [MyStatsHighlightsFilter!] = [
+      PHOTO_UPLOAD_COUNT
+      PHOTO_VIEW_COUNT
+      PHOTO_LIKE_COUNT
+      PHOTO_AVERAGE_PULSE
+      USER_FOLLOWER_COUNT
+      USER_VIEW_COUNT
+    ]
+  ) : [StatsHighlight] @complexity(value: 0, multipliers: ["filter"])
+
+  photoStatsAggregations: [PhotoStatsAggregation] @complexity(value: 10)
+
+  userStatsAggregations: [UserStatsAggregation] @complexity(value: 10)
+
+  topPhotos(
+    sort: MyPhotosSort = HIGHEST_PULSE_DESC
+  ) : PhotoConnection @complexity(value: 20)
+
+  topGear(
+    type: TopGearType!
+  ): GearConnectionForTopLensOnMyStatsPayload @complexity(value: 50)
+}
+
+union Gear = Lens | Camera
+
+enum TopGearType {
+  CAMERA
+  LENS
+}
+
+type GearEdgeForTopLensOnMyStatsPayload {
+  node: Gear @complexity(value: 10)
+
+  cursor: String
+
+  photoUploadCount: Int
+  photoLikeCount: Int
+}
+
+type GearConnectionForTopLensOnMyStatsPayload {
+  edges: [GearEdgeForTopLensOnMyStatsPayload!]!
+
+  pageInfo: PageInfo
+
+  totalCount: Int
+}

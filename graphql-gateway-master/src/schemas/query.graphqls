@@ -1,0 +1,1015 @@
+enum SecurityTokenType {
+  PASSWORD
+  TFA_CODE
+}
+
+enum QuestFeedFilter {
+  ONGOING
+  ENDED
+  COMMUNITY
+  LICENSING
+}
+enum QuestLicensingPhotoCandidateFilter {
+  NOT_SUBMITTED
+  UNDER_REVIEW
+  CHANGE_REQUIRED
+  ACCEPTED
+  DECLINED
+  REMOVED
+  RELEASE_REQUIRED
+  DELETED
+}
+enum QuestPhotoUploadFromFilter {
+  COM
+  CN
+}
+
+enum StatsWindow {
+  LAST_SEVEN_DAYS
+  LAST_TWO_WEEKS
+  LAST_MONTH
+  LAST_THREE_MONTHS
+  LAST_SIX_MONTHS
+  LAST_YEAR
+}
+
+enum MyPhotosSort {
+  """Sorted by id desc, equivalent to created_at desc, but the ids are also desc"""
+  ID_DESC
+  """Sorted by created_at desc"""
+  CREATED_AT_DESC
+  """Sorted by view count desc, and then created_at desc"""
+  VIEW_COUNT_DESC
+  """Sorted by like count desc, and then created_at desc"""
+  LIKE_COUNT_DESC
+  """Sorted by comment & reply count desc, and then created_at desc"""
+  COMMENT_AND_REPLY_COUNT_DESC
+  """Sorted by highest pulse desc, and then created_at desc"""
+  HIGHEST_PULSE_DESC
+  """Sorted by created_at asc"""
+  CREATED_AT_ASC
+  """Sorted by view count asc, and then created_at asc"""
+  VIEW_COUNT_ASC
+  """Sorted by like count asc, and then created_at asc"""
+  LIKE_COUNT_ASC
+  """Sorted by comment & reply count asc, and then created_at asc"""
+  COMMENT_AND_REPLY_COUNT_ASC
+}
+
+enum LicensingSortType {
+  SUBMIT_DATE_ASC
+  SUBMIT_DATE_DESC
+  SOLD_TIMES_ASC
+  SOLD_TIMES_DESC
+  TOTAL_EARNINGS_ASC
+  TOTAL_EARNINGS_DESC
+  EXCLUSIVITY_ASC
+  EXCLUSIVITY_DESC
+}
+
+enum LikedPhotoSort {
+  LIKED_DATE_DESC
+  LIKED_DATE_ASC
+}
+
+enum MyGalleriesSort {
+  POSITION_ASC
+  PHOTO_ADDED_AT_DESC
+  CREATED_DATE_ASC
+  CREATED_DATE_DESC
+}
+
+enum GalleriesPrivacyType {
+  BOTH
+  PRIVATE
+  PUBLIC
+}
+
+enum SuggestPhotoSort {
+  SUGGEST_DATE_ASC
+  SUGGEST_DATE_DESC
+  VIEWS_ASC
+  VIEWS_DESC
+  LIKES_ASC
+  LIKES_DESC
+  COMMENTS_ASC
+  COMMENTS_DESC
+}
+
+enum WorkshopSort {
+  START_TIME_ASC
+  START_TIME_DESC
+}
+
+"""USER_LICENSING, QUEST_SUBMISSION"""
+enum ServiceName {
+  USER_PROFILE
+  GALLERY
+  QUEST_INSPIRATION
+  HOMEFEED
+}
+
+enum ResourceFilter {
+  UPCOMING
+}
+
+enum GearType {
+  CAMERA
+  LENS
+}
+
+"""查询主入口"""
+type Query {
+  """Single Resource Query by Global ID / 单个资源查询(使用全局ID)"""
+  node(id: ID!): Node @complexity(value: 10)
+
+  """Single Resource Query by Legacy DB ID / 单个资源查询(使用老资源ID)"""
+  nodeByLegacyId(resourceType: String!, legacyId: ID!): Node @complexity(value: 10)
+
+  """查询当前登录用户"""
+  me: User @complexity(value: 10)
+
+  userByUsername(username: String!): User @complexity(value: 10)
+
+  userSearch(
+    first: Int = 5
+    after: String
+    last: Int
+    before: String
+    search: String
+    filters: [UserSearchFilter!]
+    sort: UserSort = RELEVANCE
+  ): UserConnection @complexity(value: 10, multipliers: ["first"])
+
+  profileGroupsByUsername(username: String!): [Group] @complexity(value: 10)
+
+  """查询可以访问哪些功能"""
+  authorizedFeatures(
+    features: [AuthorizedFeature!]!
+  ) : [AuthorizedFeature!]! @complexity(value: 10, multipliers: ["features"])
+
+  """当前用户站内提醒"""
+  myGroupedNotifications(
+    last: Int
+    before: String
+  ) : GroupedNotificationConnection @complexity(value: 10, multipliers: ["last"])
+
+  """当前用户社区图列表页"""
+  myPhotos(
+    privacy: PhotoPrivacy
+    sort: MyPhotosSort = CREATED_AT_DESC
+    first: Int = 5
+    after: String
+  ) : PhotoConnection @complexity(value: 10, multipliers: ["first"])
+
+  """当前用户社区图列表页new"""
+  myPhotosV2(
+    privacy: PhotoPrivacy = ALL
+    sort: MyPhotosSort = CREATED_AT_DESC
+    first: Int = 5
+    after: String
+  ) : PhotoConnection @complexity(value: 10, multipliers: ["first"])
+
+  """Might not return exactly `first` number of photos in cases where some photos from the MS are null"""
+  likedPhotos(
+    first: Int = 5
+    after: String
+    sort: LikedPhotoSort = LIKED_DATE_DESC
+  ): PhotoConnection @complexity(value: 10, multipliers: ["first"])
+
+  pageLikedResource(
+    first: Int = 5
+    after: String
+    sort: LikedPhotoSort = LIKED_DATE_DESC
+    filter: LikedResourceType!
+    search: [LikeSearchFilter!]
+  ): LikedResourceItemConnection @complexity(value: 10, multipliers: ["first"])
+
+  userPhotos(
+    first: Int = 5
+    after: String
+    last: Int
+    before: String
+    photoLegacyId: String!
+  ): PhotoConnection @complexity(value: 10, multipliers: ["first"])
+
+  userPublicPhotos(
+    """
+    third client clientId;
+    """
+    clientId: String!
+    """
+    third client clientSecret;
+    """
+    clientSecret: String!
+    """
+    authorization_code.
+    """
+    token: String!
+    page: Int = 1
+    size: Int = 20
+    startUploadedDate: Float
+    endUploadedDate: Float
+  ): PhotoPublicInfoConnection @complexity(value: 10)
+
+  userPublicPhotoDetail(
+    """
+    third client clientId;
+    """
+    clientId: String!
+    """
+    third client clientSecret;
+    """
+    clientSecret: String!
+    """
+    authorization_code.
+    """
+    token: String!
+    photoId: String!
+  ): PhotoPublicDetailEdge
+
+  photos(
+    first: Int = 5
+    after: String
+    last: Int
+    before: String
+    serviceName: ServiceName!
+    serviceLegacyId: String!
+    inspirationGalleryId: ID
+    inclusive: Boolean = false
+    countPhotoView: Boolean = false
+  ): PhotoConnection @complexity(value: 10, multipliers: ["first"])
+
+  photoSearch(
+    first: Int = 5
+    after: String
+    last: Int
+    before: String
+    search: String
+    filters: [PhotoSearchFilter!]
+    sort: PhotoSort = RELEVANCE
+  ): PhotoConnection @complexity(value: 10, multipliers: ["first"])
+
+  photoDiscoverSearch (
+    first: Int = 5
+    after: String
+    last: Int
+    before: String
+    search: String
+    filters: [PhotoDiscoverSearchFilter!]
+    sort: PhotoDiscoverSort = NONE
+  ): PhotoConnection @complexity(value: 10, multipliers: ["first"])
+
+  gallerySearch(
+    first: Int = 5
+    after: String
+    last: Int
+    before: String
+    search: String
+    filters: [GallerySearchFilter!]
+    sort: GallerySort = RELEVANCE
+  ): GalleryConnection @complexity(value: 10, multipliers: ["first"])
+
+  myUnlicensedPhotos(
+    first: Int = 5
+    after: String
+    sort: PhotoSort = NEWEST
+  ) : PhotoConnection @complexity(value: 10, multipliers: ["first"])
+
+  """当前用户图库候选图列表页"""
+  myLicensingPhotoCandidates(
+    filter: LicensingPhotoCandidateFilter
+    first: Int = 5
+    after: String
+  ) : PhotoConnection @complexity(value: 10, multipliers: ["first"])
+
+  """当前用户图库候选图列表页-V2新版"""
+  myLicensingPhotoCandidatesV2(
+    filter: LicensingPhotoCandidateFilter
+    sort: SuggestPhotoSort=SUGGEST_DATE_ASC
+    first: Int = 5
+    after: String
+  ) : PhotoConnection @complexity(value: 10, multipliers: ["first"])
+
+  """当前用户图库图列表页"""
+  myLicensingPhotos(
+    status: LicensingPhotoStatus!
+    first: Int = 5
+    after: String
+  ) : LicensingPhotoConnection @complexity(value: 10, multipliers: ["first"])
+
+  """当前用户图库图列表页web"""
+  myLicensingPhotosV2(
+    sort: LicensingSortType
+    status: LicensingPhotoStatus!
+    first: Int = 5
+    after: String
+  ) : LicensingPhotoConnection @complexity(value: 10, multipliers: ["first"])
+
+  """用户通过token获取表单详情信息，用于model release签约"""
+  findModelReleaseInvitationByToken(token: String!): ModelReleaseMetadata @complexity(value: 10)@deprecated(reason: "Please use query in `findModelReleaseInvitationByToken2`")
+
+  """用户通过token获取表单详情信息，用于model release签约"""
+  findModelReleaseInvitationByTokenV2(token: String!): LicensingRelease @complexity(value: 10)
+
+  """当前用户肖像权/物权列表"""
+  myLicensingReleases(
+    first: Int = 10
+    after: String
+    filter: ReleaseType
+  ) : LicensingReleaseConnection @complexity(value: 10, multipliers: ["first"])
+
+  """查询大赛列表页"""
+  quests(
+    filter: QuestFeedFilter
+    locale: String
+    first: Int = 5
+    after: String
+  ) : QuestConnection @complexity(value: 10, multipliers: ["first"])
+
+  questInspirationPhotos(
+    questLegacyId: ID!
+    first: Int = 20
+    after: String
+  ) : PhotoConnection @complexity(value: 10, multipliers: ["first"]) @deprecated(reason: "Please use query in `Quest`")
+
+  questSubmittedPhotos(
+    questLegacyId: ID!
+    first: Int = 20
+    after: String
+    filter:QuestLicensingPhotoCandidateFilter
+  ) : PhotoConnection @complexity(value: 10, multipliers: ["first"]) @deprecated(reason: "Please use query in `Quest`")
+
+  myStats(
+    window: StatsWindow!
+  ) : MyStatsPayload @complexity(value: 0)
+
+  myGalleries(
+    sort: MyGalleriesSort = POSITION_ASC
+    """fuzzy gallery name to search"""
+    search: String
+    first: Int = 10
+    after: String
+    showNude: Boolean = true
+  ) : GalleryConnection @complexity(value: 10, multipliers: ["first"])
+
+  myGalleriesV2(
+    sort: MyGalleriesSort = POSITION_ASC
+    """fuzzy gallery name to search"""
+    search: String
+    first: Int = 10
+    after: String
+    showNude: Boolean = true
+    privacy: GalleriesPrivacyType = BOTH
+  ) : GalleryConnection @complexity(value: 10, multipliers: ["first"])
+
+  photoStories(
+    privacy: StoryPrivacy
+    sort: PhotoStorySort = CREATED_AT_DESC
+    first: Int = 10
+    after: String
+    ownerId: ID
+    filters: [StorySearchFilter]
+    search: String
+    realTime: Boolean = false
+    """是否传统分页"""
+    isByPage: Boolean = false
+  ) : PhotoStoryConnection @complexity(value: 10, multipliers: ["first"])
+
+  myRecommendGalleries(
+    first: Int = 3
+    after: String
+  ): RecommendGalleryConnection @complexity(value: 10, multipliers: ["first"])
+
+  """find a user's gallery pagable list"""
+  galleries(
+    """the user legacy id who own the these gallery"""
+    galleryOwnerLegacyId: ID!
+    sort: MyGalleriesSort = POSITION_ASC
+    """fuzzy gallery name to search"""
+    search: String
+    first: Int = 10
+    after: String
+    showNude: Boolean = false
+  ) : GalleryConnection @complexity(value: 10, multipliers: ["first"])
+
+  """get a gallery data by gallery legacy id"""
+  gallery(
+    galleryLegacyId: ID!
+  ): Gallery @deprecated(reason: "please use nodeByLegacyId instead")
+
+  """Public galleries accessed by a public slug and owner id - or - token"""
+  galleryByOwnerIdAndSlugOrToken(
+    ownerLegacyId: String
+    slug: String
+    token: String
+  ): Gallery
+
+  galleryByOwnerIdAndSlug(
+    ownerLegacyId: String!
+    slug: String!
+  ): Gallery @deprecated(reason: "use  galleryByOwnerIdAndSlugOrToken instead")
+
+  myGalleryIdsOfPhoto(
+    photoLegacyIds: [ID!]!
+  ) : [GallerysIdOfPhoto] @complexity(value: 10, multipliers: ["photoLegacyIds"])
+
+  productFeed(
+    period: SubscriptionPeriod!
+  ) : [ProductEdge!]! @complexity(value: 10)
+
+  """boss sale history list query"""
+  mySalesHistorys(
+    first: Int = 10
+    after: String
+    year: Int
+    source: SaleSource
+    territory: String
+    payoutStatus: PayoutStatus
+  ): SaleHistoryConnection @complexity(value: 10, multipliers: ["first"])
+
+  """boss payout history list query"""
+  myPayoutHistorys(
+    first: Int = 10
+    after: String
+  ): PayoutHistoryConnection @complexity(value: 10, multipliers: ["first"])
+
+  myPayoutHistorysV2(
+    first: Int = 10
+    after: String
+  ): PayoutHistoryConnection @complexity(value: 10, multipliers: ["first"])
+
+  myLicensingPhotoSaleDetail(
+    first: Int = 10
+    after: String
+    photoId: ID!
+  ): SaleDetailConnection @complexity(value: 10, multipliers: ["first"])
+
+  """boss my balance query"""
+  myBalance: MyBalance @complexity(value: 10)
+
+  isFirstFillTipalti: IsFirstFillTipaltiForm @complexity(value: 10)
+
+  myTipaltiIframeUrls: TipaltiIframeUrl @complexity(value: 10)
+
+  tipaltiPayable: TipaltiPayable @complexity(value: 10)
+
+  tipaltiSetup: TipaltiSetup @complexity(value: 10)
+
+  myAvailableFilterYear: [String] @complexity(value: 10)
+
+  myAvailableFilterSource(
+    year: Int
+  ): [MapEntry] @complexity(value: 10)
+
+  myAvailableFilterTerritory(
+    year: Int
+    source: SaleSource
+  ): [String] @complexity(value: 10)
+
+  myAvailableFilterPayoutStatus(
+    year: Int
+    source: SaleSource
+    territory: String
+  ): [MapEntry] @complexity(value: 10)
+
+  """my following user list for search username or full name"""
+  mySearchFollowingUsers(
+    first: Int = 10
+    after: String
+    searchText: String
+  ): UserConnection
+
+  """workshop resource hub section"""
+  resourceDiscoverSectionSearch(
+    first: Int = 10
+    after: String
+    discoverSectionType: DiscoverSectionType!
+    lat: Float
+    lon: Float
+    distance: Float
+  ): ResourceConnection
+
+  """workshop resource search"""
+  resourceSearch(
+    first: Int = 10
+    after: String
+    hasPrice: Boolean
+    title: String
+    userId: String
+    resourceType: WorkshopResourceType
+    formatType: WorkshopFormatType
+    sortedType: WorkshopSortedType
+    lat: Float
+    lon: Float
+    distance: Float
+  ): ResourceConnection
+
+  """workshop autocomplete """
+  resourceAutocomplete(
+    size: Int = 10
+    keywords: String
+  ): [ResourceAutocoplete]
+
+  """my following user list for new messenger"""
+  mySearchMessengerFriends(
+    first: Int = 10
+    after: String
+    searchText: String
+  ): UserConnection
+
+  """my inbox conversation list"""
+  myInboxConversation(
+    first: Int = 10
+    after: String
+  ): UserInboxConversationInfoConnection
+
+  """my inbox conversation list for search username or full name"""
+  mySearchInboxConversation(
+    first: Int = 10
+    after: String
+    searchText: String
+  ): UserInboxConversationInfoConnection
+
+  """get my stranger conversation list"""
+  myStrangerInboxConversation: UserInboxConversationInfoConnection
+
+  conversationMessage(
+    first: Int = 10
+    after: String
+    conversationId: String!
+  ): MessageConnection
+
+  getSocketMessageInfo(
+    id: String
+    sender: String
+    receiver: String
+    kind: String
+    read: Boolean
+    content: String
+    createdAt: String
+  ): Message
+
+  """get my stranger conversation total"""
+  myStrangerMesssageCnt: Int
+
+  isMessageBlock(blockId: String!): Boolean
+
+  """totalCount on the connection will always be null"""
+  myChatBlockedUsers(
+    first: Int = 20
+    after: String
+  ): UserConnection @complexity(value: 10, multipliers: ["first"])
+
+  isHomefeedNeedRecommend: Boolean @complexity(value: 10)
+
+  isActivityfeedNeedRecommend: Boolean @complexity(value: 10)
+
+  upcomingWorkshops(
+    sort: WorkshopSort = START_TIME_ASC
+    first: Int = 5
+    after: String
+    ownerUserLegacyId: Int!
+  ): WorkshopConnection @complexity(value: 10, multipliers: ["first"])
+
+  myHomefeeds(
+    first: Int = 5
+    after: String
+    recommendations: Boolean = true
+    excludeNude: Boolean = false
+  ): HomefeedConnection @complexity(value: 10, multipliers: ["first"])
+
+  myHomefeed(
+    first: Int = 5
+    after: String
+    excludeNude: Boolean = false
+  ): HomefeedItemConnection @complexity(value: 10, multipliers: ["first"])
+
+  featuredPhotographers(
+    first: Int = 5
+    after: String
+    ignoreDismissal: Boolean = false
+  ): FeaturedPhotographerConnection @complexity(value: 10, multipliers: ["first"])
+
+  """ memebership site promotion query"""
+  sitePromotion: SitePromotion @complexity(value: 10)
+
+  """Get web accessToken/用户登录获取web accessToken"""
+  webAccessToken(
+    captchaVersion: String
+    captchaResponse: String
+    """
+    The username of user to login, for google,facebook and apple login, the username is 'from_google','from_facebook' and 'from_apple'
+    """
+    username: String!
+    """
+    The password of user to login, for google,facebook and apple login, the password is the accessToken given by google,facebook and apple.
+    """
+    password: String!
+  ): WebAccessTokenResponse
+
+  """Get oauth2 accessToken/用户通过oauth2 登录获取accessToken"""
+  oauth2AccessToken(
+    """
+    The standard 'Basic access authentication' of clientId and secretId.
+
+    For example in Java:
+
+    String clientCert = "Basic " + Base64.getUrlEncoder().encodeToString((clientId + ":" + clientSecret).getBytes());
+    """
+    clientCert: String!
+    grantType: String = "password"
+    scope: String = "official"
+    """
+    The username of user to login, for google,facebook and apple login, the username is 'from_google','from_facebook' and 'from_apple'
+    """
+    username: String!
+    """
+    The password of user to login, for google,facebook and apple login, the password is the accessToken given by google,facebook and apple.
+    """
+    password: String!
+  ): AccessToken
+
+  """第三方产品 获取 500px oauth2 登录界面"""
+  oauth2LoginPage(
+    """
+    third client clientId;
+    """
+    clientId: String!
+    """
+    可选，登录授权后回调页面，不传则回调默认回调界面
+    """
+    callbackUrl: String
+    """
+    回调时，回传此字段.
+    """
+    state: String
+  ): LoginUrl
+
+  """获取第三方callback url with oauth2 code"""
+  oauth2GetCallBackUrl(
+    """
+    third client clientId;
+    """
+    clientId: String!
+    """
+    用户勾选授权资源code，like： 1,2
+    """
+    resourceAuth: String!
+    """
+    第三方回调页面，path里有值就传.
+    """
+    callbackUrl: String
+    """
+    回调时，回传此字段, path里有值就传.
+    """
+    state: String
+  ): CallbackUrl
+
+  """获取登录用户信息和第三方产品信息"""
+  oauth2LoginInfoAndClientInfo(
+    """
+    third client clientId;
+    """
+    clientId: String!
+  ): LoginInfoAndClientInfo
+
+  """After login， client with authorization_code get oauth2 accessToken and user public info/用户登录后第三方产品通过授权码获取accessToken和用户公开信息"""
+  oauth2AccessTokenByCode(
+    """
+    third client clientId;
+    """
+    clientId: String!
+    """
+    third client clientSecret;
+    """
+    clientSecret: String!
+    """
+    authorization_code.
+    """
+    code: String!
+  ): UserInfoAndToken
+
+    """get user public info by oauth2 access token/获取用户公开信息"""
+  oauth2UserPublicInfo(
+    """
+    third client clientId;
+    """
+    clientId: String!
+    """
+    third client clientSecret;
+    """
+    clientSecret: String!
+    """
+    authorization_code.
+    """
+    token: String!
+  ): UserPublicInfo
+
+
+  """
+    Get new accessToken by refreshToken/通过refreshToken刷新accessToken
+  """
+  oauth2RefreshAccessToken(
+    """
+    The standard 'Basic access authentication' of clientId and secretId.
+
+    For example in Java:
+
+    String clientCert = "Basic " + Base64.getUrlEncoder().encodeToString((clientId + ":" + clientSecret).getBytes());
+    """
+    clientCert: String!
+    """
+    The refresh token given by oauth2-server lastTime.
+    """
+    refreshToken: String!
+  ): AccessToken
+
+  editorChoicePhotos: [Photo] @complexity(value: 10)
+
+  bestGalleriesPhotos: [Photo] @complexity(value: 10)
+
+  questsPhotos: [Photo] @complexity(value: 10)
+
+  resourcePhotos: [Photo] @complexity(value: 10)
+
+  activityfeeds(
+    first: Int = 5
+    after: String
+    excludeNude: Boolean = false
+  ): ActivityfeedConnection @complexity(value: 10, multipliers: ["first"])
+
+  """
+  get the pageable data of newly added to a gallery since it was last published.
+  """
+  newlyAddedGalleryPhotos(
+    legacyGalleryId: ID!
+    first: Int = 10
+    after: String
+  ): PhotoConnectionForPhotosOnGallery @complexity(value: 10, multipliers: ["first"])
+
+  getResourceByLegacyId(
+    legacyId: ID!
+  ): Resource
+
+  """
+  Passing "filter: Upcoming" means only resources with a startTime in the future or null are returned.
+  """
+  getUserResources(
+    legacyId: ID!
+    first: Int = 20
+    after: String
+    filter: ResourceFilter
+  ): ResourceConnection
+
+  getResourceByUserIdAndSlug(
+    userId: String!
+    slug: String!
+  ): Resource
+
+  getUserDraftResourceCount: Int @complexity(value: 10)
+
+  listPortfolioThemes(sizes: [ThemeAssetSize!] = [ORIGINAL]): [Theme!]!
+
+  getPortfolioByUserId(userId: String!): Portfolio @deprecated(reason: "Please use getPortfolioById")
+
+  getPortfolioById(portfolioId: String!): Portfolio
+
+  getPortfolioByDomain(domain: String!): Portfolio
+
+  getFolderById(id: ID!): Folder
+
+  getMyFoldersByPhotoIds(photoIds: [String!]!): [GetMyFoldersByPhotoIdsResponse!]!
+
+  """
+  get the suggest keyword of uploaed photo
+  photoUrl and photoBase64Content can not be empty at the same time.
+  """
+  getPhotoKeywords(
+    """the id of uploaded photo"""
+    photoId: ID!
+    """the id of user who uploaded the photo"""
+    userId: ID!
+    """the url of photo with resize size (Optional, when photoUrl is empty, the photoBase64Content can't be null)"""
+    photoUrl: String
+    """
+    The photo content encoded with base64 (Optional, when photoBase64Content is empty, the photoUrl can't be null)
+    """
+    photoBase64Content: String
+    """the size of keywords list return"""
+    quantity: Int = 15
+  ): [Keyword]
+
+  getAiDetectionData(
+    """the id of uploaded photo"""
+    photoId: ID!
+    """the id of user who uploaded the photo"""
+    userId: ID!
+    """
+    The url of photo with resize size. (Optional, to specific the size of photo, skip the resized photo url generating).
+    """
+    photoUrl: String
+    """
+    (only for keyword) The photo content encoded with base64. (Optional, to specific photo content to be computed).
+    """
+    photoBase64Content: String
+    """the size of keywords list return"""
+    keywordsQuantity: Int = 15
+  ): LiveAiData!
+
+  """
+  batch get keywords for multiple photos and get the intersection collection and union collection of keyword.
+  """
+  batchGetPhotoKeywords(
+    """the list of photo information"""
+    photos: [PhotoPayload!]!
+    """the userId who own those photos"""
+    userId: ID!
+    """the number of intersection colletion size of keyword need to return."""
+    intersectionQuantity: Int = 15
+    """the number of union colletion size of keyword need to return."""
+    unionQuantity: Int = 30
+  ): BatchKeyword
+
+  getAiQualityData(
+    """the id of uploaded photo"""
+    photoIds: [ID!]!
+  ): [AiQualityData]!
+
+  getAiKeywordData(
+    """the  id of uploaded photo"""
+    photoIds: [ID!]!
+  ): [AiKeywordData]!
+
+  featuresCoverPhoto(
+    """if includeCovers is null or missing, all cover photos will be returned"""
+    includeCovers: [PhotoDiscoverSectionCoverType!]
+  ):[DiscoverCover] @complexity(value: 10)
+
+  categoriesCoverPhoto:[DiscoverCover] @complexity(value: 10)
+
+  """photo Discover section"""
+  photoDiscoverSectionSearch(
+    first: Int = 50
+    after: String
+    discoverSectionType: PhotoDiscoverSectionType!
+    followersCount: Int
+    personalizedCategories: Boolean = false
+    categories: [PhotoCategory!]
+  ): PhotoConnection
+
+  getCustomDomainByFQDN(fqdn: String!): CustomDomain
+
+  getCustomDomainByPortfolioId(portfolioId: String!): CustomDomain
+
+  getExploreFeed(first: Int = 10, after: String): ExploreConnection!
+
+  """to detect if a account of a user can be deleted."""
+  getCurrentUserAccountDeletable(legacyUserId: String!): UserAccountDeletable!
+
+  """to verify a password or TFA code is valid of a user."""
+  verifySecurityToken(legacyUserId: String! securityToken: String! securityTokenType: SecurityTokenType!): Boolean!
+
+  """get the user account status by email, to see if the account exist and return some data of the account."""
+  getUserAccountStatus(email:String!): UserAccountStatus!
+
+  getRemoteConfig(clientId: Int!, version: String): Config
+
+  """fetch hire locations by user id"""
+  getUserHireLocations(userId: String!): HireLocationsPayload
+
+  """fetch hire location by latitue and longitude"""
+  getHireLocations(latitude: Float!, longitude: Float!): HireLocationsPayload
+
+  """fetch location data by place id"""
+  getLocation(placeId: String!): Location
+
+  getGear(
+    type: GearType!,
+    """Use either model AND brand OR legacyId. If legacyId is provided, the model and brand are ignored"""
+    brand: String,
+    model: String,
+    legacyId: String
+  ): Gear
+
+  """ Get photos about search by aggregate """
+  photosAggregationSearch(
+    term: String
+    tag: String
+    geo: String
+    only: String
+    exclude: String
+    userId: Float
+    createdAfterDaysAgo: Int
+    wasFeaturedType: String
+    followersCount: String
+    sort: String
+    page: Int
+    rpp: Int
+    excludeNude: Boolean
+    mediaType: String
+    likedBy: String
+    category: Int
+    aggregate: String!
+    top: Int
+  ): PhotoAggregateResponse @complexity(value: 10, multipliers: ["first"])
+
+  """ Get photos search by tag """
+  photosLikeSearch(
+    term: String
+    terms: String
+    tag: String
+    geo: String
+    only: String
+    exclude: String
+    userId: Float
+    createdAfterDaysAgo: Int
+    wasFeaturedType: String
+    followersCount: String
+    sort: String
+    page: Int
+    rpp: Int
+    imageSize: String
+    excludeNude: Boolean!
+    mediaType: String
+    likedBy: String
+    category: Int
+    camera: String
+    lens: String
+  ): PhotoConnection @complexity(value: 10, multipliers: ["first"])
+
+  """for list of individual notifications, Try to use grouped param to pick out single or grouped notification to query"""
+  myNotifications(
+    first: Int = 5
+    after: String
+    grouped: Boolean = false
+  ): NotificationConnection
+
+  mySubNotifications(
+    first: Int = 5
+    after: String!
+    groupedType: String!
+    groupedEndCursor: String!
+  ): NotificationConnection
+
+  """Verify playstore purchase"""
+  verifyPlayStorePurchase(
+    packageName: String!
+    subscriptionId: String!
+    playstoreToken: String!
+  ): VerifyPlayStore
+
+  """This query includes internal photo view tracking. Try to use maximum once per photo query."""
+  photoByLegacyId(
+    photoId: String!,
+    countPhotoView: Boolean = true
+  ): Photo
+
+  getMembershipInfo(tier: MembershipTier): [MembershipInfo]
+
+  """
+  Get header images for Quest Overview with metadata. Data is defined in data_sources/quest/quest_header
+  When not in production env, we use a default photo id to avoid throwing errors. The photo meta data is wrong, but is right in production
+  """
+  questHeaderPhotos: [QuestHeaderPhoto]
+
+  getUserBlockList(first: Int, after: String): UserConnection
+
+  downloadUrlByPhotoId(
+    photoId: ID!
+    licensingDownload: Boolean = false
+  ): DownloadUrl
+
+  exploreMoodGallery(
+    first: Int
+    after: String
+  ): MoodGalleryConnection
+
+  moodGalleries(
+    status: MoodStatus = CREATED
+    sort: MoodGalleriesSort = ACTIVITY_DATE_DESC
+    page: Int = 1
+    size: Int = 20
+  ) : MoodGalleriesConnection @complexity(value: 20, multipliers: ["first"])
+
+  getMoodDetailById(moodId: ID!): MoodGallery
+
+  getMoodDetailBySlug(slug: String!): MoodGallery
+
+  addSpecificPhotosToMoodGallery(photoIds: String!): [MoodGalleryItem]
+
+  aiGeneratePhoto(uuid: String,keyWords: String!,photoNumber:Int!): [MoodGalleryItem]
+
+  aiGenerateMoodTitle(uuid: String!): String
+
+  getStoryDetailById(storyId: ID!): Story
+
+  getStoryDetailBySlug(slug: String!): Story
+
+  getRelateStoryByPhotoId(photoIds: [ID!]): [Story]
+
+  viewDataStat(
+    viewId:ID!,
+    filter: LikedResourceType!
+  ):LikedResourceItem
+}

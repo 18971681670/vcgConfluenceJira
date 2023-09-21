@@ -1,0 +1,67 @@
+query PhotoManagerCommunityTab {
+  unlistedBucket: myPhotos(privacy: UNLISTED, first: 1) {
+    ...PhotoManagerCommunityBucketCard
+  }
+
+  profileBucket: myPhotos(privacy: PROFILE, first: 1) {
+    ...PhotoManagerCommunityBucketCard
+  }
+
+  limitedAccessBucket: myPhotos(privacy: LIMITED_ACCESS, first: 1) {
+    ...PhotoManagerCommunityBucketCard
+  }
+
+  suggestedBucket: myLicensingPhotoCandidates(filter: SUGGESTED, first: 1) {
+    ...PhotoManagerCandidateBucketCard
+  }
+
+  notSubmittedBucket: myLicensingPhotoCandidates(filter: NOT_SUBMITTED, first: 1) {
+    ...PhotoManagerCandidateBucketCard
+  }
+
+  underReviewBucket: myLicensingPhotos(status: UNDER_REVIEW, first: 1) {
+    ...PhotoManagerLicensningBucketIndicator
+  }
+
+  changeRequiredBucket: myLicensingPhotos(status: CHANGE_REQUIRED, first: 1) {
+    ...PhotoManagerLicensningBucketIndicator
+  }
+
+  acceptedBucket: myLicensingPhotos(status: ACCEPTED, first: 1) {
+    ...PhotoManagerLicensningBucketIndicator
+  }
+
+  declinedBucket: myLicensingPhotos(status: DECLINED, first: 1) {
+    ...PhotoManagerLicensningBucketIndicator
+  }
+
+  removedBucket: myLicensingPhotos(status: REMOVED, first: 1) {
+    ...PhotoManagerLicensningBucketIndicator
+  }
+}
+
+fragment PhotoManagerCommunityBucketCard on PhotoConnection {
+  totalCount
+  edges {
+    node {
+      images(sizes: [4]) {
+        size
+        url
+      }
+    }
+  }
+}
+
+fragment PhotoManagerLicensningBucketIndicator on LicensingPhotoConnection {
+  edges {
+    node {
+      updatedAt
+    }
+  }
+}
+
+fragment PhotoManagerCandidateBucketCard on PhotoConnection {
+  edges {
+    licensingCandidateUpdatedAt
+  }
+}

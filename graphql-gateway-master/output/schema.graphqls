@@ -1,0 +1,7886 @@
+
+# === BEGIN schema partial from src/schemas/ai_detection/ai_data.graphqls ===
+"""The data of live eai detection"""
+type LiveAiData {
+    keywords: [Keyword!]
+    categories: [Category!]
+    title: String
+}
+
+
+
+"""
+图片的keyword/The keyword of photo from EAI
+"""
+type Keyword {
+    """the keyword of photo"""
+    keyword: String!
+    """the probability of the keyword"""
+    probability: Float!
+}
+
+"""
+批量获取的图片的keyword/The data of multiple photo keyword from EAI
+"""
+type BatchKeyword {
+    """
+    多张图片的keyword交集/The intersection of keyword in multiple photos.
+    """
+    intersection: [Keyword]
+    """
+    多张图片的keyword并集/The union collection of keyword in multiple photos.
+    """
+    union: [Keyword]!
+}
+
+"""
+图片自动分类结果/The result of auto category detection.
+"""
+type Category {
+    """The category of photo"""
+    category: String!
+    """The probability of photo category detection result"""
+    probability: Float!
+}
+
+"""
+the payload of photo information for batch get photo keyword.
+"""
+input PhotoPayload {
+    """photo id"""
+    id: ID!
+    """the url of photo"""
+    url: String!
+}
+
+type AiQualityData {
+    photoId: ID!
+    keywords: KeywordAiData!
+    licensing: LicensingAiData!
+    aesthetic: AestheticAiData!
+    copyright: CopyrightAiData!
+    nsfw: NsfwAiData!
+    title: TitleAiData!
+    human: HumanAiData!
+    qualityTier: QualityTierData!
+}
+
+type AiKeywordData {
+    photoId: ID!
+    keywords: KeywordAiData!
+}
+
+type KeywordAiData {
+    result: [String]
+    status: AiDataStatusType!
+}
+
+type LicensingAiData {
+    result: AiDataResultType!
+    status: AiDataStatusType!
+}
+
+type AestheticAiData {
+    result: AiDataResultType!
+    status: AiDataStatusType!
+}
+
+type CopyrightAiData {
+    result: AiDataResultType!
+    status: AiDataStatusType!
+}
+
+type NsfwAiData {
+    result: AiDataResultType!
+    status: AiDataStatusType!
+}
+
+type TitleAiData {
+    result: String
+    status: AiDataStatusType!
+}
+
+type HumanAiData {
+    result: Boolean!
+    status: AiDataStatusType!
+}
+
+type QualityTierData {
+    result: QualityTierType!
+    status: AiDataStatusType!
+}
+
+enum AiDataResultType {
+    PASS
+    FAIL
+    NA
+}
+
+enum QualityTierType {
+    GREAT
+    GOOD
+    MAYBE
+    NOT_MEET
+    NA
+}
+
+enum AiDataStatusType {
+    IN_PROGRESS
+    DONE
+    ERROR
+}
+
+# === END schema partial from src/schemas/ai_detection/ai_data.graphqls ===
+
+# === BEGIN schema partial from src/schemas/boss/my_balance.graphqls ===
+"""
+User My Balance Resource
+"""
+
+type MyBalance implements Node {
+   """Global ID / 全局 ID"""
+  id: ID!
+
+  totalEarnings: Float
+  totalSales: Int
+  availableEarnings: Float
+  availableSales: Int
+  pendingEarnings: Float
+  pendingSales: Int
+}
+
+type MapEntry implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+
+  text: String!
+  value: String!
+}
+
+# === END schema partial from src/schemas/boss/my_balance.graphqls ===
+
+# === BEGIN schema partial from src/schemas/boss/payout_history.graphqls ===
+"""
+User Payout History Resource
+"""
+
+type PayoutHistory implements Node {
+   """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  reference: String
+  amount: Float
+  payoutStatus: String
+  paidDate: String
+  payoutDate: String
+  salesCount: Int
+}
+
+type PayoutHistoryEdge {
+  node: PayoutHistory @complexity(value: 10)
+  cursor: String
+}
+
+type PayoutHistoryConnection {
+  edges: [PayoutHistoryEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+}
+
+# === END schema partial from src/schemas/boss/payout_history.graphqls ===
+
+# === BEGIN schema partial from src/schemas/boss/sales_detail.graphqls ===
+
+type SaleDetail implements Node {
+    """Global ID / 全局 ID"""
+    id: ID!
+    """Resource Internal ID / 资源内部ID"""
+    legacyId: ID!
+
+    photoId: ID!
+    saleDate: String
+    source: String
+    sharePercentage: String
+    earning: Float
+    payStatus: String
+}
+
+type SaleDetailEdge {
+    node: SaleDetail @complexity(value: 10)
+    cursor: String
+}
+
+type SaleDetailConnection {
+    edges: [SaleDetailEdge]
+    pageInfo: PageInfo
+    totalCount: Int
+    totalEarnings: Float
+}
+
+# === END schema partial from src/schemas/boss/sales_detail.graphqls ===
+
+# === BEGIN schema partial from src/schemas/boss/sales_history.graphqls ===
+"""
+Photo Sale History Resource
+"""
+enum SaleSource {
+  GETTY_IMAGES
+  VCG
+  OTHER
+  CONNECT_SALES
+}
+
+enum PayoutStatus {
+  AVAILABLE_REQUEST
+  REQUESTED
+  PAID
+}
+
+type SaleHistory implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  photoId: ID!
+  photoThumbnailUrl: String
+  saleDate: String
+  source: String
+  salesTerritory: String
+  exclusived: String
+  sharePercentage: Float
+  earning: Float
+  payStatus: String
+}
+
+type SaleHistoryEdge {
+  node: SaleHistory @complexity(value: 10)
+  cursor: String
+}
+
+type SaleHistoryConnection {
+  edges: [SaleHistoryEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+  totalSum: Float
+}
+
+# === END schema partial from src/schemas/boss/sales_history.graphqls ===
+
+# === BEGIN schema partial from src/schemas/boss/tipalti.graphqls ===
+"""
+User Tipalti Iframe Url Info
+"""
+
+type TipaltiIframeUrl implements Node {
+   """Global ID / 全局 ID"""
+  id: ID!
+
+  setupUrl: String
+  invoiceHistoryUrl: String
+  paymentHistoryUrl: String
+}
+
+type TipaltiPayable implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+
+  payable: Boolean
+  reason: String
+}
+
+type IsFirstFillTipaltiForm implements Node {
+  id: ID!
+
+  isFirstFill: Boolean
+}
+
+type TipaltiSetup implements Node {
+    """Global ID / 全局 ID"""
+  id: ID!
+
+  setup: Boolean
+  reason: String
+}
+
+# === END schema partial from src/schemas/boss/tipalti.graphqls ===
+
+# === BEGIN schema partial from src/schemas/commenting/comment.graphqls ===
+"""
+Comment Resource
+"""
+type Comment implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: String!
+  parentLegacyId: String
+
+  body: String
+  createdAt: String
+  """当前时间与createdAt间相差的毫秒数"""
+  milliAfterCreatedAt: String
+
+  replyTo: Comment @complexity(value: 10) @deprecated(reason: "Doesn't work. Use `replies`")
+
+  creator: User @complexity(value: 10)
+  replies: [Comment]!
+}
+
+type CommentEdge {
+  node: Comment @complexity(value: 10)
+  cursor: String
+}
+
+type CommentConnection {
+  edges: [CommentEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+  commentsAndRepliesTotalCount: Int
+}
+
+# === END schema partial from src/schemas/commenting/comment.graphqls ===
+
+# === BEGIN schema partial from src/schemas/config/config.graphqls ===
+type EnvVar {
+    key: String!
+    value: String!
+}
+
+type Config implements Node {
+    id: ID!
+    clientId:Int!
+    timestamp: String
+    lastSupportedAndroidVersion: String
+    updateBannerMinVersion: String
+    updateBannerMaxVersion: String
+    unsupportedAndroidVersionMessage: String
+    emailVerificationCutOffTimestamp: String
+    blacklist: [String]!
+    envStore: [EnvVar]!
+    versionSupport: VersionSupport
+}
+
+type VersionSupport implements Node{
+    id: ID!
+
+    minBuildNumber: String
+    minDisplayVersion: String
+    minUpgradeDescription: String
+
+    suggestedBuildNumber: String
+    suggestedDisplayVersion: String
+    suggestedUpgradeDescription: String
+
+    appStoreUrl: String
+}
+# === END schema partial from src/schemas/config/config.graphqls ===
+
+# === BEGIN schema partial from src/schemas/content_stream/content_stream.graphqls ===
+"""
+ContentStream Resource
+"""
+interface ContentStream {
+  enteredAt: String!
+}
+
+"""
+Popular
+"""
+type ContentStreamPopular implements ContentStream {
+  enteredAt: String!
+}
+
+"""
+Upcoming
+"""
+type ContentStreamUpcoming implements ContentStream {
+  enteredAt: String!
+}
+
+
+"""
+Fresh
+"""
+type ContentStreamFresh implements ContentStream {
+  enteredAt: String!
+}
+
+"""
+EditorsChoice
+"""
+type ContentStreamEditorsChoice implements ContentStream {
+  enteredAt: String!
+  selectedBy: User @complexity(value: 10)
+}
+
+enum PhotoDiscoverSectionType {
+  POPULAR_SECTION
+  UPCOMING_SECTION
+  FRESH_SECTION
+  EDITORS_CHOICE_SECTION
+}
+
+enum PhotoDiscoverSectionCoverType {
+  POPULAR_SECTION
+  UPCOMING_SECTION
+  FRESH_SECTION
+  EDITORS_CHOICE_SECTION
+  UNDISCOVERED
+}
+
+# === END schema partial from src/schemas/content_stream/content_stream.graphqls ===
+
+# === BEGIN schema partial from src/schemas/content_stream/photo_pulse.graphqls ===
+"""
+PhotoPulse Resource
+"""
+type PhotoPulse implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  """当前热度"""
+  current: Float
+  """最高热度"""
+  highest: Float
+  """达到最高热度的时间戳"""
+  highestAchievedAt: String
+}
+
+interface Pulse {
+  """当前热度"""
+  currentPulse: Float
+
+  """最高热度"""
+  highestPulse: Float
+
+  """达到最高热度的时间戳"""
+  highestPulseAchievedAt: String
+}
+
+# === END schema partial from src/schemas/content_stream/photo_pulse.graphqls ===
+
+# === BEGIN schema partial from src/schemas/content_stream/story_pulse.graphqls ===
+"""
+StoryPulse Resource
+"""
+type StoryPulse implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  """当前热度"""
+  current: Float
+  """最高热度"""
+  highest: Float
+  """达到最高热度的时间戳"""
+  highestAchievedAt: String
+}
+
+
+# === END schema partial from src/schemas/content_stream/story_pulse.graphqls ===
+
+# === BEGIN schema partial from src/schemas/directives.graphqls ===
+directive @constraint(
+  # String constraints
+  minLength: Int
+  maxLength: Int
+  startsWith: String
+  endsWith: String
+  contains: String
+  notContains: String
+  pattern: String
+  format: String
+
+  # Number constraints
+  min: Int
+  max: Int
+  exclusiveMin: Int
+  exclusiveMax: Int
+  multipleOf: Int
+) on INPUT_FIELD_DEFINITION | ARGUMENT_DEFINITION | FIELD_DEFINITION
+
+enum CacheControlScope {
+  PUBLIC
+  PRIVATE
+}
+
+directive @cacheControl(
+  maxAge: Int,
+  scope: CacheControlScope
+) on FIELD_DEFINITION | OBJECT | INTERFACE
+
+directive @complexity(
+  # The complexity value for the field
+  value: Int!,
+
+  # Optional multipliers
+  multipliers: [String!]
+) on FIELD_DEFINITION
+
+directive @deprecated(
+reason: String = "No longer supported"
+) on FIELD_DEFINITION | ENUM_VALUE | INPUT_FIELD_DEFINITION
+# === END schema partial from src/schemas/directives.graphqls ===
+
+# === BEGIN schema partial from src/schemas/domains/customDomain.graphqls ===
+enum CustomDomainStatus {
+  INACTIVE
+  ACTIVE
+  PENDING
+}
+
+enum ValidationRecordStatus {
+  PENDING
+  MISSING
+  INCORRECT
+  VALIDATED
+}
+
+type ValidationRecord {
+  host: String!
+  type: String!
+  data: String!
+  status: ValidationRecordStatus!
+}
+
+type CustomDomain implements Node {
+  id: ID!
+  legacyId: String!
+  fqdn: String!
+  status: CustomDomainStatus!
+  validationSet: [ValidationRecord!]!
+  resourceId: String!
+  invalidationDate: String
+}
+
+type ValidationToken {
+  token: String!
+  ownerId: String!
+  parentId: String!
+  resourceId: String!
+}
+# === END schema partial from src/schemas/domains/customDomain.graphqls ===
+
+# === BEGIN schema partial from src/schemas/explore/explore.graphqls ===
+type ExploreConnection {
+  edges: [ExploreEdge!]!
+  pageInfo: PageInfo
+}
+
+type ExploreEdge {
+  node: Photo!
+  cursor: String!
+}
+
+# === END schema partial from src/schemas/explore/explore.graphqls ===
+
+# === BEGIN schema partial from src/schemas/gallery/gallery.graphqls ===
+enum GalleryPrivacy {
+  PUBLIC
+  PRIVATE
+}
+
+enum GalleryReportStatus{
+  """user not login or other reason"""
+  UNAUTHORIZED
+  """can't report, may be the gallery belong to himself"""
+  DISABLED
+  """gallery has been reported by the user"""
+  REPORTED
+  """gallery haven't been reported by the user"""
+  UNREPORTED
+}
+
+"""
+Gallery / 影集
+"""
+type Gallery implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  """Gallery name / 影集名字"""
+  name: String
+  """Privacy control / 访问控制"""
+  privacy: GalleryPrivacy
+
+  """If any NSFW photo exists / 是否包含任何成人图片"""
+  notSafeForWork: Boolean @deprecated(reason: "NSFW filtering is handled at the photo level and is not set here")
+  """If all photos are owned by creator / 是否所有照片均为影集创建者拥有"""
+  ownPhotosOnly: Boolean
+
+  """Gallery Path / 影集路径: 1) /{create.username}/galleries/{publicSlug} 2) /g/{privateToken}"""
+  canonicalPath: String @complexity(value: 10)
+
+  """Public gallery slug / 公开影集后缀"""
+  publicSlug: String
+  """Private gallery token / 私有影集后缀"""
+  privateToken: String
+
+  """Gallery creator / 影集创建者"""
+  creator: User @complexity(value: 10)
+  """Gallery cover photo / 影集头图"""
+  cover: Photo @complexity(value: 10)
+
+  coverPhotos(
+      excludeNude: Boolean,
+      first: Int = 4
+  ): [Photo]
+
+  photos(
+    first: Int = 10
+    after: String
+    before: String
+    last: Int
+    """whether to show the NSFW photo in gallery"""
+    showNude: Boolean = true
+  ) : PhotoConnectionForPhotosOnGallery @complexity(value: 10, multipliers: ["first"])
+
+  """if this gallery can be reported by a specific user"""
+  reportStatus: GalleryReportStatus
+
+  description: String
+
+  """external gallery url just shown for admin user, otherwise it will be null"""
+  externalUrl: String
+
+  """gallery button name just shown for admin user, otherwise it will be null"""
+  buttonName: String
+
+  """the date time of the gallery last published at"""
+  lastPublishedAt: String
+
+  """the number of photo added since the gallery was last published"""
+  photosAddedSinceLastPublished: Int
+
+  isLikedByMe: Boolean @complexity(value: 10)
+
+  updatedAt:String
+
+  createdAt:String
+
+  editorsChoiceFlag:Boolean
+
+  itemsCount:Int
+
+  viewStat:ViewStat
+
+  likesCount:Int @complexity(value: 10)
+
+  photosAddedToGallery:Int @complexity(value: 10)
+
+
+}
+
+type GalleryEdge {
+  node: Gallery @complexity(value: 10)
+  cursor: String
+}
+
+type GalleryConnection {
+  edges: [GalleryEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+}
+
+type RecommendGalleryConnection {
+  edges: [GalleryEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+}
+
+enum GalleryContainsPhotosStatus {
+  ALL
+  SOME
+  NONE
+}
+
+type PhotoEdgeForPhotosOnGallery {
+  node: Photo @complexity(value: 10)
+  cursor: String
+}
+
+type PhotoConnectionForPhotosOnGallery {
+  edges: [PhotoEdgeForPhotosOnGallery]
+  pageInfo: PageInfo
+  totalCount: Int
+
+  """Check if a given list of photos exist in my gallery / 查询我的影集是否包含某几张照片"""
+  containsPhotos(photoLegacyIds: [ID!]): GalleryContainsPhotosStatus @complexity(value: 10, multipliers: ["photoLegacyIds"]) @deprecated
+}
+
+type GallerysIdOfPhoto{
+  photoLegacyId:ID!
+  gallerylegacyIds:[ID!]!
+}
+
+# === END schema partial from src/schemas/gallery/gallery.graphqls ===
+
+# === BEGIN schema partial from src/schemas/gear/camera.graphqls ===
+enum CameraType {
+  DSLR
+  FILM
+  SMARTPHONE
+  MIRRORLESS
+  COMPACT
+  MEDIUM_FORMAT
+  FILM_SCANNER
+  ACTION_CAMERA
+  DRONE
+}
+
+interface CameraInfo {
+  displayName: String @deprecated(reason: "Please use `rawName`")
+  """Raw string from EXIF / EXIF中原始字符串"""
+  rawName: String
+  canonicalPath: String
+}
+
+union CameraOption = UnverifiedCamera | Camera
+
+type UnverifiedCamera implements CameraInfo {
+  displayName: String @deprecated(reason: "Please use `rawName`")
+  """Raw string from EXIF / EXIF中原始字符串"""
+  rawName: String
+  canonicalPath: String
+}
+
+"""
+Camera Resource
+"""
+type Camera implements Node & CameraInfo {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID String / 资源内部ID"""
+  legacyId: String
+  type: CameraType
+
+  """Display name with brand / 带品牌的全名"""
+  displayName: String @complexity(value: 10)
+  """Raw string from EXIF / EXIF中原始字符串"""
+  rawName: String
+  canonicalPath: String @complexity(value: 10)
+
+  brand: GearBrand @complexity(value: 10)
+
+  features: String
+  imageUrl: String
+
+  dateHistogram: [GearHistogramDataPoint]!
+  best100Photos: [Photo]!
+  topPhotographers: [TopPhotographer]!
+  topCategories: [GearTopPhotoCategory]!
+}
+
+type CameraEdge {
+  node: Camera @complexity(value: 10)
+  cursor: String
+}
+
+type CameraConnection {
+  edges: [CameraEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+}
+
+# === END schema partial from src/schemas/gear/camera.graphqls ===
+
+# === BEGIN schema partial from src/schemas/gear/gear_brand.graphqls ===
+"""
+设备厂商
+"""
+type GearBrand implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: String
+
+  name: String
+}
+
+type GearBrandEdge {
+  node: GearBrand @complexity(value: 10)
+  cursor: String
+}
+
+type GearBrandConnection {
+  edges: [GearBrandEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+}
+
+# === END schema partial from src/schemas/gear/gear_brand.graphqls ===
+
+# === BEGIN schema partial from src/schemas/gear/gear_stats_aggregation.graphqls ===
+type GearHistogramDataPoint {
+  key: String!
+  value: Float!
+}
+
+type TopPhotographer {
+  photo: Photo
+}
+
+type GearTopPhotoCategory {
+  category: PhotoCategory!
+  usersCount: Int!
+  photosCount: Int!
+  photos: [Photo]!
+}
+
+# === END schema partial from src/schemas/gear/gear_stats_aggregation.graphqls ===
+
+# === BEGIN schema partial from src/schemas/gear/lens.graphqls ===
+interface LensInfo {
+  displayName: String @deprecated(reason: "Please use `rawName`")
+  """Raw string from EXIF / EXIF中原始字符串"""
+  rawName: String
+  canonicalPath: String
+}
+
+union LensOption = UnverifiedLens | Lens
+
+type UnverifiedLens implements LensInfo {
+  displayName: String @deprecated(reason: "Please use `rawName`")
+  rawName: String
+  canonicalPath: String
+}
+
+"""
+结构化镜头信息
+"""
+type Lens implements Node & LensInfo {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID String / 资源内部ID"""
+  legacyId: String
+
+  """Display name with brand / 带品牌的全名"""
+  displayName: String @complexity(value: 10)
+  """Raw string from EXIF / EXIF中原始字符串"""
+  rawName: String
+  canonicalPath: String @complexity(value: 10)
+
+  brand: GearBrand @complexity(value: 10)
+
+  features: String
+  imageUrl: String
+
+  dateHistogram: [GearHistogramDataPoint]!
+  best100Photos: [Photo]!
+  topPhotographers: [TopPhotographer]!
+  topCategories: [GearTopPhotoCategory]!
+}
+
+type LensEdge {
+  node: Lens
+  cursor: String
+}
+
+type LensConnection {
+  edges: [LensEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+}
+
+# === END schema partial from src/schemas/gear/lens.graphqls ===
+
+# === BEGIN schema partial from src/schemas/group/group.graphqls ===
+"""
+Group
+"""
+type Group implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: String!
+
+  canonicalPath: String @complexity(value: 10)
+
+  name: String
+  description: String
+  membersCount: Int
+  coverPhotoUrl: String
+
+  creator: User
+
+  avatarUrl(size: UserAvatarResizeImageSize = SMALL): String
+}
+
+# === END schema partial from src/schemas/group/group.graphqls ===
+
+# === BEGIN schema partial from src/schemas/homefeed/activityfeed.graphqls ===
+""" Object Type Enum / 对象类型 """
+enum ObjectType {
+  """ 图片 1"""
+  PHOTO_OBJECT_TYPE
+  """ 用户 7 """
+  USER_OBJECT_TYPE
+  """ 评论 8"""
+  COMMENT_OBJECT_TYPE
+  """影集 14"""
+  GALLERY_OBJECT_TYPE
+  """大赛 16"""
+  QUEST_OBJECT_TYPE
+  """课程 """
+  WORKSHOP_OBJECT_TYPE
+  """未知 0"""
+  UNKNOWN_OBJECT_TYPE
+}
+
+enum TargetType {
+  """ 图片 1"""
+  PHOTO_OBJECT_TYPE
+  """ 用户 7 """
+  USER_OBJECT_TYPE
+  """ 评论 8"""
+  COMMENT_OBJECT_TYPE
+  """影集 14"""
+  GALLERY_OBJECT_TYPE
+  """大赛 16"""
+  QUEST_OBJECT_TYPE
+  """课程 """
+  WORKSHOP_OBJECT_TYPE
+  """未知 0"""
+  UNKNOWN_OBJECT_TYPE
+}
+
+""" Object Type Enum / 对象类型 """
+enum Action {
+  """ 关注 1"""
+  FOLLOW_ACTION
+  """ 点赞 2"""
+  LIKE_ACTION
+  """ 发布 3"""
+  PUBLISH_ACTION
+  """ 评论 4"""
+  COMMENT_ACTION
+  """ 添加 5"""
+  ADD_ACTION
+ """ 取消 6"""
+  UPDATE_ACTION
+  """ 获的 7"""
+  ACHIEVE_ACTION
+}
+
+"""
+Activityfeed / 内容流
+"""
+type Activityfeed {
+
+  action: Action!
+
+  activities: [Activity]
+
+  """ 对象类型"""
+  objectType: ObjectType!
+
+  """ 目标类型"""
+  targetType: TargetType
+
+  user: User!
+}
+
+type Activity {
+ """ 关注 1 点赞 2 发布 3 评论 4 添加 5"""
+  action: Action!
+
+  object: Node
+
+  objectItemId: ID!
+   """ 图片 1 用户 7  评论 8 影集 14 大赛 16 课程 17"""
+  objectType: ObjectType!
+
+  published: String!
+
+  target: Node
+
+  targetItemId: ID
+
+  targetType: TargetType
+
+  userId: ID!
+}
+
+type ActivityfeedEdge {
+  node: Activityfeed
+  cursor: String
+}
+
+type ActivityfeedConnection {
+  edges: [ActivityfeedEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+}
+
+# === END schema partial from src/schemas/homefeed/activityfeed.graphqls ===
+
+# === BEGIN schema partial from src/schemas/homefeed/featured_blogs.graphqls ===
+"""
+FeaturedBlog / 推荐博客
+"""
+type FeaturedBlog implements Node {
+    """Global ID / 全局 ID"""
+    id: ID!
+
+    blog: Blog
+
+}
+
+type Blog implements Node {
+    """Global ID / 全局 ID"""
+    id: ID!
+    """Resource Internal ID / 资源内部ID"""
+    legacyId: ID!
+
+    title: String
+
+    blogContent: String
+
+    photo: Photo
+
+    """单位：s"""
+    readingTime: Int
+
+    createdAt: String!
+
+    isLikedByMe: Boolean @complexity(value: 10)
+}
+
+type FeaturedBlogEdge {
+    node: FeaturedBlog @complexity(value: 10)
+    cursor: String
+}
+
+type FeaturedBlogConnection {
+    edges: [FeaturedBlogEdge]
+    pageInfo: PageInfo
+    totalCount: Int
+    enabled: Boolean
+}
+
+# === END schema partial from src/schemas/homefeed/featured_blogs.graphqls ===
+
+# === BEGIN schema partial from src/schemas/homefeed/featured_gallerys.graphqls ===
+"""
+FeaturedGallery / 推荐相册
+"""
+type FeaturedGallery implements Node {
+    """Global ID / 全局 ID"""
+    id: ID!
+
+    gallery: Gallery
+
+}
+
+type FeaturedGalleryEdge {
+    node: FeaturedGallery @complexity(value: 10)
+    cursor: String
+}
+
+type FeaturedGalleryConnection {
+    edges: [FeaturedGalleryEdge]
+    pageInfo: PageInfo
+    totalCount: Int
+}
+# === END schema partial from src/schemas/homefeed/featured_gallerys.graphqls ===
+
+# === BEGIN schema partial from src/schemas/homefeed/featured_photographer.graphqls ===
+"""
+Workshop / 用户课程
+"""
+type FeaturedPhotographer implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  
+  photographer: User!
+}
+
+type FeaturedPhotographerEdge {
+  node: FeaturedPhotographer @complexity(value: 10)
+  cursor: String
+}
+
+type FeaturedPhotographerConnection {
+  edges: [FeaturedPhotographerEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+  enabled: Boolean
+}
+# === END schema partial from src/schemas/homefeed/featured_photographer.graphqls ===
+
+# === BEGIN schema partial from src/schemas/homefeed/following_userprofile.graphqls ===
+"""
+userprofile_feed
+"""
+type FollowingProfile implements Node {
+    """Global ID / 全局 ID"""
+    id: ID!
+
+    photographer: User!
+
+    """Editor’s Choice、Quest Submission、Created a Gallery、Licensed a Photo"""
+    pickedStreams: PickedStreams!
+    """卡片pickedStream的资源id，跟据不同的pickedStream点击跳转到不同的详情页，如果是Created a Gallery就需要gallery id"""
+    pickedStreamLegacyId: ID!
+
+    isLikedByMe: Boolean @complexity(value: 10)
+
+    isCongratulatedByMe: Boolean @complexity(value: 10)
+}
+
+
+enum PickedStreams {
+    EDITOR_CHOICE
+    QUEST_SUBMISSION
+    CREATED_GALLERY
+    LICENSED_PHOTO
+}
+
+
+# === END schema partial from src/schemas/homefeed/following_userprofile.graphqls ===
+
+# === BEGIN schema partial from src/schemas/homefeed/for_you_feed.graphqls ===
+"""
+for_you_feed / 内容流
+"""
+union ForYouFeedItem = Photo | FeaturedGallery | FeaturedBlog | FeaturedPhotographer | FollowingProfile | Story | MoodGallery
+
+type ForYouFeed implements Node {
+    id: ID!
+    """ 创建时间"""
+    createdAt: String
+    """card Type / 卡片类型"""
+    cardType: ForYouFeedTypeEnum
+    cardNode: ForYouFeedItem
+    cursor: String
+}
+
+type ForYouFeedItemEdge {
+    node: ForYouFeed
+    cursor: String
+}
+
+type ForYouFeedItemConnection {
+    edges: [ForYouFeedItemEdge]
+    pageInfo: PageInfo
+    totalCount: Int
+}
+
+enum ForYouFeedTypeEnum {
+    PHOTO,
+    FEATURED_GALLERY,
+    FEATURED_PHOTOGRAPHER,
+    FEATURED_BLOG,
+    FOLLOWING_PROFILE,
+    STORY,
+    MOOD_GALLERY
+}
+
+# === END schema partial from src/schemas/homefeed/for_you_feed.graphqls ===
+
+# === BEGIN schema partial from src/schemas/homefeed/homefeed.graphqls ===
+"""
+Homefeed / 内容流
+"""
+type Homefeed implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """event  ID / 事件ID"""
+  eventId: String
+
+  """event Type / 事件类型"""
+  eventType: String
+
+  """ 创建时间"""
+  createdAt: String
+
+  """ 对象类型"""
+  objectType: String
+
+  """资料"""
+  objects: [Node]
+}
+
+type HomefeedEdge {
+  node: Homefeed
+  cursor: String
+}
+
+type HomefeedConnection {
+  edges: [HomefeedEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+}
+
+union HomefeedItem = Photo | Gallery
+
+type HomefeedItemEdge {
+  node: HomefeedItem
+  cursor: String
+}
+
+type HomefeedItemConnection {
+  edges: [HomefeedItemEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+}
+
+# === END schema partial from src/schemas/homefeed/homefeed.graphqls ===
+
+# === BEGIN schema partial from src/schemas/homefeed/onboarding_category.graphqls ===
+"""
+OnboardingCategory
+"""
+type OnboardingCategory implements Node {
+
+    """Global ID / 全局 ID"""
+    id: ID!
+    """Resource Internal ID / 资源内部ID"""
+    legacyId: ID!
+
+    category: String
+
+    backgroundImage: String
+
+}
+# === END schema partial from src/schemas/homefeed/onboarding_category.graphqls ===
+
+# === BEGIN schema partial from src/schemas/licensing/auto_licensing_photo.graphqls ===
+enum AutoLicensingStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  CANCELLED
+  REMOVED
+}
+
+"""
+AutoLicensingPhoto Resource
+"""
+type AutoLicensingPhoto implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  status: AutoLicensingStatus!
+
+  exclusiveUsage: Boolean!
+}
+
+# === END schema partial from src/schemas/licensing/auto_licensing_photo.graphqls ===
+
+# === BEGIN schema partial from src/schemas/licensing/licensing_contributor.graphqls ===
+"""
+LicensingContributor / 图库供稿人
+"""
+type LicensingContributor implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  """If contract has been signed / 是否已签约"""
+  signed: Boolean!
+
+  """Contract Signing Timestamp / 签约时间"""
+  signedAt: String
+
+  """Community user linked / 相关社区用户"""
+  user: User @complexity(value: 10)
+
+  initAutoLicensingSetting: Boolean
+
+  autoLicensingSetting: AutoLicensingSetting
+}
+
+type LicensingContributorEdge {
+  node: LicensingContributor
+  cursor: String
+}
+
+type LicensingContributorConnection {
+  edges: [LicensingContributorEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+}
+
+enum AutoLicensingSetting {
+  DISABLED
+  LATER
+  ENABLED_NOT_EXCLUSIVELY
+  ENABLED_EXCLUSIVELY
+}
+
+# === END schema partial from src/schemas/licensing/licensing_contributor.graphqls ===
+
+# === BEGIN schema partial from src/schemas/licensing/licensing_mutation.graphqls ===
+
+#input BulkCreateLicensingPhotoInput {
+#  clientMutationId: String
+#
+#  operations: [CreateLicensingPhotoInput!]!
+#}
+
+input CreateLicensingPhotoInput {
+
+  """Photo to submit / 待提交的照片"""
+  photoLegacyId: ID!
+
+  caption: String
+  category: PhotoCategory!
+
+  privacy: PhotoPrivacy
+
+  exclusiveUsage: Boolean!
+
+  longitude: Float
+  latitude: Float
+  location: String
+
+  keywords: [String!]
+
+  modelReleaseLegacyIds: [ID!]
+  propertyReleaseLegacyIds: [ID!]
+
+  fileName: String
+  description: String
+  width: Int!
+  height: Int!
+
+  takenAt: String
+
+  aperture: String
+  shutterSpeed: String
+  focalLength: String
+  iso: String
+  camera: String
+  lens: String
+
+  recognizablePeople: Boolean
+
+  recognizableProperties: Boolean
+
+  autoLicensing: Boolean
+}
+
+type BulkCreateLicensingPhotoPayload {
+  clientMutationId: String
+
+  """新提交的图库图"""
+  licensingPhotos: [LicensingPhoto!]!
+}
+
+input BulkUpdateLicensingPhotosInput {
+  clientMutationId: String
+
+  operations: [UpdateLicensingPhotoInput!]!
+}
+
+input UpdateLicensingPhotoInput {
+
+  legacyId: ID!
+  """ release 有修改，则把最终的所有model & property release 一起提交"""
+  modelReleaseLegacyIds: [ID!]
+
+  """ release 有修改，则把最终的所有model & property release 一起提交"""
+  propertyReleaseLegacyIds: [ID!]
+
+  """传null 表示没有重新上传图"""
+  reUploadInput: LicensingReUploadMetadataInput
+    """ 是否提交到cms"""
+  submitToCms: Boolean
+
+  recognizablePeople: Boolean
+
+  recognizableProperties: Boolean
+
+  autoLicensing: Boolean
+}
+
+type BulkUpdateLicensingPhotosPayload {
+  clientMutationId: String
+
+  operations: [LicensingPhoto!]!
+}
+
+input LicensingReUploadMetadataInput {
+  fileName:String!
+  width: Int!
+  height: Int!
+}
+
+
+input BulkDeleteLicensingPhotosInput {
+  clientMutationId: String
+  legacyIds: [ID!]!
+}
+type BulkDeleteLicensingPhotosPayload {
+  clientMutationId: String
+
+  operations: [LicensingPhoto!]!
+}
+
+input ReuploadPhotoForLicensingInput {
+  clientMutationId: String
+
+  legacyId: ID!
+}
+
+type ReuploadPhotoForLicensingPayload {
+  clientMutationId: String
+
+  directUpload: MediaDirectUpload
+}
+
+input CreateModelReleaseInput {
+  clientMutationId: String
+
+  filename: String!
+}
+
+type CreateModelReleasePayload {
+  clientMutationId: String
+
+  modelRelease: LicensingRelease
+
+  """Upload info / 上传信息"""
+  directUpload: MediaDirectUpload
+}
+
+
+input CreateModelReleaseInvitationInput {
+  clientMutationId: String
+
+  firstName: String @deprecated(reason: "never use , will be Filled By Model. 2020-02-10")
+  lastName: String @deprecated(reason: "never use , will be Filled By Model. 2020-02-10")
+
+  takenCountry:String!
+  takenProvince:String!
+  takenCity:String
+  photographerFirstName:String
+  photographerLastName:String
+  shootDescription:String
+  modelReleaseTitle:String
+  takenAt:String!
+
+  legacyLicensingPhotoId:ID!
+}
+
+type CreateModelReleaseInvitationPayload {
+  clientMutationId: String
+
+  modelRelease: LicensingRelease
+}
+
+
+input ActivateModelReleaseInput {
+  clientMutationId: String
+
+  legacyId: ID!
+}
+
+type ActivateModelReleasePayload {
+  clientMutationId: String
+
+  modelRelease: LicensingRelease
+}
+
+input AddModelReleaseToLicensingPhotoInput {
+  clientMutationId: String
+
+  modelReleaseLegacyId: ID!
+  licensingPhotoLegacyId: ID!
+}
+
+type AddModelReleaseToLicensingPhotoPayload {
+  clientMutationId: String
+
+  licensingPhoto: LicensingPhoto
+}
+
+input RemoveModelReleaseFromLicensingPhotoInput {
+  clientMutationId: String
+
+  modelReleaseLegacyId: ID!
+  licensingPhotoLegacyId: ID!
+}
+
+type RemoveModelReleaseFromLicensingPhotoPayload {
+  clientMutationId: String
+
+  licensingPhoto: LicensingPhoto
+}
+
+input CreatePropertyReleaseInput {
+  clientMutationId: String
+
+  filename: String!
+}
+
+type CreatePropertyReleasePayload {
+  clientMutationId: String
+
+  propertyRelease: LicensingRelease
+
+  """Upload info / 上传信息"""
+  directUpload: MediaDirectUpload
+}
+
+input ActivatePropertyReleaseInput {
+  clientMutationId: String
+
+  legacyId: ID!
+}
+
+type ActivatePropertyReleasePayload {
+  clientMutationId: String
+
+  propertyRelease: LicensingRelease
+}
+
+input AddPropertyReleaseToLicensingPhotoInput {
+  clientMutationId: String
+
+  modelReleaseLegacyId: ID!
+  licensingPhotoLegacyId: ID!
+}
+
+type AddPropertyReleaseToLicensingPhotoPayload {
+  clientMutationId: String
+
+  licensingPhoto: LicensingPhoto
+}
+
+input RemovePropertyReleaseFromLicensingPhotoInput {
+  clientMutationId: String
+
+  modelReleaseLegacyId: ID!
+  licensingPhotoLegacyId: ID!
+}
+
+type RemovePropertyReleaseFromLicensingPhotoPayload {
+  clientMutationId: String
+
+  licensingPhoto: LicensingPhoto
+}
+
+
+#enum ModelReleaseGender{
+#  FEMALE
+#  MALE
+#  PREFER_NOT_TO_SAY
+#  OTHER
+#}
+
+enum ModelReleaseEthnicity{
+  ASIAN
+  ARAB
+  BLACK_AFRICAN_DESCENT
+  HISPANIC_LATINO
+  NATIVE_AMERICAN
+  PACIFIC_ISLANDER
+  SOUTH_ASIAN
+  WHITE_CAUCASIAN
+}
+
+input PermissionModelReleaseInvitationInput {
+  clientMutationId: String
+
+  token:String!
+    """model's firstName """
+  firstName: String!
+    """model's lastName """
+  lastName: String!
+
+  dateOfBirth:String!
+  gender:String!
+    ethnicities:[ModelReleaseEthnicity!]!
+  email:String!
+  countryCode:String!
+  phone:String!
+  streetAddress:String!
+  city:String!
+  province:String!
+  country:String!
+  zipCode:String!
+  guardianFirstName:String
+  guardianLastName:String
+
+}
+
+enum RejectModelReleaseInvitationFeedback {
+  NOT_IN_PHOTO
+  NOT_AGREE
+  NOT_KNOW_PHOTOGRAPHER
+}
+input RejectModelReleaseInvitationInput {
+  clientMutationId: String
+
+  token:String!
+
+  feedbacks:[RejectModelReleaseInvitationFeedback!]
+  otherMessage:String
+
+}
+
+type PermissionModelReleaseInvitationPayload {
+  clientMutationId: String
+  modelReleaseInvitation:ModelReleaseMetadata
+}
+type RejectModelReleaseInvitationPayload {
+  clientMutationId: String
+  modelReleaseInvitation:ModelReleaseMetadata
+}
+
+# === END schema partial from src/schemas/licensing/licensing_mutation.graphqls ===
+
+# === BEGIN schema partial from src/schemas/licensing/licensing_photo.graphqls ===
+enum LicensingPhotoStatus {
+  UNDER_REVIEW
+  CHANGE_REQUIRED
+  ACCEPTED
+  DECLINED
+  REMOVED
+  RELEASE_REQUIRED
+  """老数据 迁移过来的状态 新平台数据不显示 原来的状态值0."""
+  LEGACY_PHOTO
+  """ 老数据 迁移过来的状态 新平台数据不显示 原来的状态值10. """
+  RIGHTS_MANAGED
+  """ 老数据 迁移过来的状态 新平台数据不显示 原来的状态值9. """
+  PRESUBMITTED
+  """ 老数据 """
+  DELETED
+  ALL
+  ARCHIVE
+  ARCHIVE_PENDING
+}
+
+
+enum LicensingPhotoCandidateFilter {
+  NOT_SUBMITTED
+  SUGGESTED
+}
+
+enum LicensingCollection{
+  CORE
+  PRIME
+  CORE_EDITORIAL
+  PRIME_EDITORIAL
+}
+
+enum LicensingOrientation{
+  SQUARE
+  PORTRAIT
+  LANDSCAPE
+}
+
+enum LicensingPhotoRemovedByType{
+  UPLOADER
+  ADMINISTRATOR
+}
+
+enum LicensingPhotoFeedbackCode {
+  """ 编辑输入 """
+  EDITOR_INPUT
+
+  """ change require code """
+  QUALITY_ISSUE
+  WATERMARK_BORDER_ISSUE
+  MODEL_RELEASE_REQUIRED
+  PROPERTY_RELEASE_REQUIRED
+  PERMISSION_REQUIRED
+  COPYRIGHT_IP_ISSUE
+
+  TAG_ISSUE
+  SIGNED_MODEL_RELEASE_REQUIRED
+  CONTACT_INFORMATION_ISSUE
+  FILE_SIZE_ISSUE
+
+  """ decline code """
+  SEXUALLY_EXPLICIT
+  INAPPROPRIATE_CONTENT
+  SIMILAR_IMAGE_FOUND
+  NO_MODEL_RELEASE_AND_NOT_SUITABLE_FOR_EDITORIAL
+  NOT_SUITABLE_FOR_EDITORIAL
+  EDITORIAL_INTEGRITY_ISSUE
+  LIMITED_VALUE
+  OUT_OF_FOCUS
+  COPRIGHT_IP_ISSUE
+  GENERAL_TECHNICAL_ISSUE
+  MODEL_RELEASE_INVITATION_REJECTED
+}
+
+"""
+LicensingPhoto Resource
+"""
+type LicensingPhoto implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  """Caption / 标题"""
+  caption: String
+
+  """description / 描述"""
+  description: String
+
+  """关键词"""
+  keywords: [String]!
+
+  width: Int!
+  height: Int!
+
+  """独家授权"""
+  exclusiveUsage: Boolean!
+
+  collection: LicensingCollection
+  fileName: String
+
+  latitude: Float
+  longitude: Float
+  location: String
+
+  aperture: String
+  shutterSpeed: String
+  focalLength: String
+  iso: String
+  camera: String
+  lens: String
+
+  orientation: LicensingOrientation
+
+  status: LicensingPhotoStatus!
+
+  takenAt: String
+  submittedAt: String!
+  updatedAt: String
+  createdAt: String
+  acceptedAt: String
+  removedAt: String
+  removedBy: LicensingPhotoRemovedByType
+
+  reuploaded: Boolean!
+  modelReleaseChanged: Boolean!
+  propertyReleaseChanged: Boolean!
+
+  gettyId: ID
+  vcgId: ID
+
+  images(sizes: [Int!] = [4]): [LicensingPhotoResizeImage] @complexity(value: 10)
+
+  downloadLink: String
+
+  modelReleases: [LicensingRelease] @complexity(value: 10)
+
+  propertyReleases: [LicensingRelease] @complexity(value: 10)
+
+  feedbacks: [LicensingPhotoFeedback!]
+
+  feedbacksV2: [LicensingPhotoFeedback!]
+
+  uploader: User! @complexity(value: 10)
+
+  canonicalPath: String @complexity(value: 10)
+
+  photo: Photo @complexity(value: 10)
+
+  resubmit: Boolean!
+
+  soldTimes: Int
+
+  totalEarnings: Float
+
+  privacy: PhotoPrivacy
+
+  photoStatus: Int
+}
+
+type LicensingPhotoEdge {
+  node: LicensingPhoto @complexity(value: 10)
+  cursor: String
+}
+
+type LicensingPhotoConnection {
+  edges: [LicensingPhotoEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+  unViewCount(markAsViewed: Boolean = false): Int @complexity(value: 10)
+}
+
+type LicensingPhotoFeedback {
+  code: LicensingPhotoFeedbackCode!
+  title: String!
+  message: String!
+}
+
+type LicensingPhotoStats {
+  totalUnderReview: Int
+  totalChangesRequired: Int
+  totalAccepted: Int
+  totalRemoved: Int
+  totalReleaseRequired: Int
+  totalDeleted: Int
+  totalDeclined: Int
+}
+
+# === END schema partial from src/schemas/licensing/licensing_photo.graphqls ===
+
+# === BEGIN schema partial from src/schemas/licensing/licensing_release.graphqls ===
+
+type LicensingReleaseEdge {
+  node: LicensingRelease
+  cursor: String
+}
+
+type LicensingReleaseConnection {
+  edges: [LicensingReleaseEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+}
+
+
+enum ReleaseStatus{
+  DIRECT_UPLOADED
+  PENDING
+  SIGNED
+  """ 模特选择拒绝原因 not_in_photo,not_know_photographer，这种不影响用户再次修改提交图片 """
+  REJECTED
+  """模特选择拒绝原因 not_agree，这种表示图片上存在模特本人，但是不同意签约，后台会直接吧图片设置成decline"""
+  REJECTED_PHOTO
+}
+
+enum ModelReleaseInvitationStatus{
+  PENDING
+  SIGNED
+  REJECTED
+  REJECTED_PHOTO
+}
+
+enum ReleaseType{
+  MODEL
+  PROPERTY
+}
+"""
+LicensingRelease Resource
+"""
+type LicensingRelease implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  filename: String
+  downloadLink: String
+
+  type:ReleaseType!
+  status: ReleaseStatus!
+
+  modelReleaseMetadata: ModelReleaseMetadata @complexity(value: 10)
+
+}
+
+type ModelReleaseMetadata implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+    """model's firstName """
+    firstName: String
+    """model's lastName """
+    lastName: String
+  """填写表单的地址"""
+  invitationLink: String
+
+  status: ModelReleaseInvitationStatus!
+  feedbacks:[String!]!
+
+  licensingPhoto: LicensingPhoto @complexity(value: 10)
+  photo: Photo @complexity(value: 10)
+
+  dateOfBirth:String
+  gender:String
+  ethnicities:[ModelReleaseEthnicity]
+  email:String
+  countryCode:String
+  phone:String
+  streetAddress:String
+  city:String
+  province:String
+  country:String
+  zipCode:String
+  guardianFirstName:String
+  guardianLastName:String
+
+  takenCountry:String
+  takenProvince:String
+
+  takenCity:String
+  photographerFirstName:String
+  photographerLastName:String
+  shootDescription:String
+
+  takenAt:String
+
+}
+
+
+
+# === END schema partial from src/schemas/licensing/licensing_release.graphqls ===
+
+# === BEGIN schema partial from src/schemas/location/location.graphqls ===
+"""
+Location / 位置信息
+"""
+type Location implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  """Location place id / 位置 id(google id)"""
+  placeId: String
+
+  """Location address / 位置的地址"""
+  locality: String
+
+  """Location sub address 1 / 位置详细地址1"""
+  administrativeArea1: String
+
+  """Location sub address 2 / 位置详细地址2"""
+  administrativeArea2: String
+
+  """Location sub address 3 / 位置详细地址2"""
+  administrativeArea3: String
+
+  """Location sub address 4 / 位置详细地址2"""
+  administrativeArea4: String
+
+  """Location country / 位置所属国家"""
+  country: String
+
+  """Location country code /位置所属国家编号"""
+  countryCode: String
+
+  """Location latitude / 位置纬度"""
+  latitude: Float
+
+  """Location longitude / 位置经度"""
+  longitude: Float
+
+  """Location address fomatted / 位置格式化信息"""
+  formattedAddress: String
+}
+
+
+type LocationDetails {
+
+  county: [String]
+
+  state: [String]
+
+  city: [String]
+
+  country: [String]
+}
+
+# === END schema partial from src/schemas/location/location.graphqls ===
+
+# === BEGIN schema partial from src/schemas/media/user_avatar.graphqls ===
+"""
+UserAvatar Resource / 用户头像原图
+"""
+type UserAvatar implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  version: Int!
+
+  # Only API call will be made, no need to use complexity multiplier
+  images(sizes: [UserAvatarResizeImageSize!] = [SMALL]): [UserAvatarResizeImage] @complexity(value: 10)
+}
+
+# === END schema partial from src/schemas/media/user_avatar.graphqls ===
+
+# === BEGIN schema partial from src/schemas/membership/authorized_feature.graphqls ===
+enum AuthorizedFeature {
+  #############################
+  #### Membership features ####
+  #############################
+
+  """Can access Workshops in User Profile"""
+  WORKSHOPS
+
+  """Can access My Stats"""
+  STATS
+
+  """Can user User-based GA tracking"""
+  GA_TRACKING
+
+  """Can access Services in User Profile"""
+  SERVICES
+
+  """Can access Pro Profile tabs in User Profile"""
+  PRO_PROFILE
+
+  """Can access Photo Slideshows"""
+  SLIDESHOWS
+
+  """Can access My Likes"""
+  LIKES_HISOTRY
+
+  """Can enjoy the website without Ads"""
+  AD_FREE
+
+  """Can post links in photo description"""
+  LINK_POSTING
+
+  ######################################################
+  #### Rollouts defined in Admin rollout controller ####
+  ######################################################
+
+  """New uploader/manager/licensing in web-client-v2"""
+  NEW_UPLOADER
+
+  """New landing page (web-client-v2) for users who are not authorized to access Stats"""
+  NEW_STATS_LANDING
+
+  """New stats charts (web-client-v2) for users who are authorized to access Stats"""
+  NEW_STATS_CHARTS
+
+   """New licensing manager (web-client-v2) for users who are authorized to access"""
+  NEW_LICENSING_MANAGER
+
+  """New quests (web-client-v2) for users who are authorized"""
+  NEW_QUESTS
+
+  BLUESNAP_PHASE1
+
+  NEW_HOMEFEED
+
+  NEW_ACTIVITY_FEED
+
+  RESOURCE_HUB
+
+  PORTFOLIO
+
+  NEW_MESSENGER
+
+  NFT_PRELAUNCH
+
+  AUTO_LICENSING
+
+  ANDROID_MEMBERSHIP_PROMOTION
+
+  EXPLORE_FEED
+
+  ANDROID_NEW_EMAIL_VERIFICATION
+
+  AMPLITUDE_TRACKING
+
+  AUTO_UPLOADER_TAGGING
+
+  CONTENT_FEED_V1
+}
+
+# === END schema partial from src/schemas/membership/authorized_feature.graphqls ===
+
+# === BEGIN schema partial from src/schemas/membership/membership.graphqls ===
+enum MembershipTier {
+  """普通用户"""
+  BASIC
+
+  """Awesome用户"""
+  AWESOME
+
+  """Pro用户"""
+  PRO
+
+  """iOS UNLIMITED UPLOAd用户"""
+  IOS_UNLIMITED_UPLOAD
+}
+
+enum MembershipPaymentStatus {
+  """Granted by admin for free"""
+  FREE
+  """Granted during a period of trial"""
+  TRIAL
+  """Paid by users"""
+  PAID
+}
+
+enum MembershipPeriod {
+  """week trial"""
+  W
+  """monthly"""
+  M
+  """yearly"""
+  Y
+}
+
+enum MembershipProvider {
+
+  """ other """
+  PX
+  """ google play store """
+  PLAY_STORE
+  """ apple store """
+  APP_STORE
+
+}
+
+"""
+Membership / 会员
+"""
+type Membership implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  tier: MembershipTier!
+
+  paymentStatus: MembershipPaymentStatus
+
+  autoRenewal: Boolean
+
+  startDate: String
+
+  expiryDate: String
+
+  period: MembershipPeriod
+
+  provider: MembershipProvider
+
+  currentProductSaleId:String
+
+  stackingNumber:Int
+
+  stackingSaleId:Int
+
+  upgradeProductId:Int
+
+  """How many photos a user can upload; -1 for unlimited / 还可以上传多少张照片，无限制时为-1"""
+  photoUploadQuota: Int @complexity(value: 10)
+  """When the upload quota will be refreshed / 何时可以上传更多照片"""
+  refreshPhotoUploadQuotaAt: String @complexity(value: 10)
+
+  membershipInfo: MembershipInfo
+}
+
+type MembershipEdge {
+  node: Membership @complexity(value: 10)
+  cursor: String
+}
+
+type MembershipConnection {
+  edges: [Membership]
+  pageInfo: PageInfo
+  totalCount: Int
+}
+
+type MembershipInfo {
+  tier: MembershipTier!
+  uploadLimit: Int!
+  exclusivePayoutPercentage: String!
+  nonExclusivePayoutPercentage: String!
+}
+
+# === END schema partial from src/schemas/membership/membership.graphqls ===
+
+# === BEGIN schema partial from src/schemas/membership/playstore.graphqls ===
+type VerifyPlayStore {
+  isVerified: Boolean!
+  errorCode: String
+  message: String
+}
+
+# === END schema partial from src/schemas/membership/playstore.graphqls ===
+
+# === BEGIN schema partial from src/schemas/membership/product.graphqls ===
+enum SubscriptionPeriod {
+  MONTHLY
+  ANNUAL
+}
+
+interface Product {
+  name: String!
+  subscriptionPeriod: SubscriptionPeriod
+  priceInCents: Int!
+}
+
+type ProductMembership implements Node & Product {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID
+
+  subscriptionPeriod: SubscriptionPeriod!
+  priceInCents: Int!
+  name: String!
+
+  tier: MembershipTier!
+}
+
+enum AdobeRegion {
+  ROW
+  EMEA
+}
+
+type ProductAdobeBundle implements Node & Product {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID
+
+  subscriptionPeriod: SubscriptionPeriod
+  priceInCents: Int!
+  name: String!
+
+  bundledMembership: ProductMembership! @complexity(value: 10)
+
+  region: AdobeRegion!
+  outOfStock: Boolean!
+}
+
+type ProductEdge {
+  node: Product @complexity(value: 10)
+  cursor: String
+
+  """If you are allowed to purchase this product / 是否允许用户购买此产品"""
+  eligible: Boolean! @complexity(value: 10)
+
+  """优惠信息"""
+  discount: PromotionDiscount @complexity(value: 10)
+}
+
+type ProductConnection {
+  edges: [ProductEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+}
+
+# === END schema partial from src/schemas/membership/product.graphqls ===
+
+# === BEGIN schema partial from src/schemas/membership/promotion_discount.graphqls ===
+enum PromotionType {
+  """全站优惠活动"""
+  SITE_PROMOTION
+  """初次购买优惠"""
+  INTRO_PRICING
+  """特定优惠码活动"""
+  PROMO_CODE
+}
+
+"""
+Product discount info in a promotion / 优惠活动对具体某个产品的折扣
+"""
+type PromotionDiscount implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  """Price after discount / 优惠后的产品价格"""
+  priceInCents: Int!
+
+  """Percent discount"""
+  percent: Int!
+
+  code: String
+  type: PromotionType
+}
+
+type PromotionDiscountEdge {
+  node: PromotionDiscount @complexity(value: 10)
+  cursor: String
+}
+
+type PromotionDiscountConnection {
+  edges: [PromotionDiscountEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+}
+
+# === END schema partial from src/schemas/membership/promotion_discount.graphqls ===
+
+# === BEGIN schema partial from src/schemas/membership/site_promotion.graphqls ===
+
+"""
+SitePromotion Resource
+"""
+type SitePromotion implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  # add fields here
+  """promo code field / 优惠码字段"""
+  promoCode: String!
+
+}
+
+type SitePromotionEdge {
+  node: SitePromotion @complexity(value: 10)
+  cursor: String
+}
+
+type SitePromotionConnection {
+  edges: [SitePromotionEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+}
+
+
+# === END schema partial from src/schemas/membership/site_promotion.graphqls ===
+
+# === BEGIN schema partial from src/schemas/messenger/inbox_conversation.graphqls ===
+type UserInboxConversationInfo implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  conversationId: String
+
+  isFriend: Boolean
+
+  toUser: User @complexity(value: 10)
+
+  unreadCount: Int
+
+  lastlyMessage: String
+
+  lastlyMessageTime: String
+}
+
+type UserInboxConversationInfoEdge {
+  node: UserInboxConversationInfo @complexity(value: 10)
+}
+
+type UserInboxConversationInfoConnection {
+  edges: [UserInboxConversationInfoEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+}
+
+type TextMessage {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+  
+  sender: User @complexity(value: 10)
+
+  recevier: User @complexity(value: 10)
+
+  messageType: String
+
+  content: String
+
+  read: Boolean
+
+  createdAt: String
+}
+
+type PhotoMessage {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+  
+  sender: User @complexity(value: 10)
+
+  recevier: User @complexity(value: 10)
+
+  messageType: String
+
+  photo: Photo @complexity(value: 10)
+
+  read: Boolean
+
+  createdAt: String
+}
+
+type GalleryMessage {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+  
+  sender: User @complexity(value: 10)
+
+  recevier: User @complexity(value: 10)
+
+  messageType: String
+
+  gallery: Gallery @complexity(value: 10)
+
+  read: Boolean
+
+  createdAt: String
+}
+
+type UserprofileMessage {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+  
+  sender: User @complexity(value: 10)
+
+  recevier: User @complexity(value: 10)
+
+  messageType: String
+  
+  profile: User @complexity(value: 10)
+
+  read: Boolean
+
+  createdAt: String
+}
+
+type QuestMessage {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+  
+  sender: User @complexity(value: 10)
+
+  recevier: User @complexity(value: 10)
+
+  messageType: String
+
+  quest: Quest @complexity(value: 10)
+
+  read: Boolean
+
+  createdAt: String
+}
+
+type ResourceMessage {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+  
+  sender: User @complexity(value: 10)
+
+  recevier: User @complexity(value: 10)
+
+  messageType: String
+
+  resource: Resource @complexity(value: 10)
+
+  read: Boolean
+
+  createdAt: String
+}
+
+union Message = TextMessage | PhotoMessage | GalleryMessage | UserprofileMessage | QuestMessage | ResourceMessage
+
+type MessageEdge {
+  node: Message @complexity(value: 10)
+}
+
+type MessageConnection {
+  edges: [MessageEdge]
+  pageInfo: PageInfo
+}
+# === END schema partial from src/schemas/messenger/inbox_conversation.graphqls ===
+
+# === BEGIN schema partial from src/schemas/mood_gallery/mood_gallery.graphqls ===
+"""
+MoodGallery
+"""
+type MoodGallery implements Node {
+    """Global ID / 全局 ID"""
+    id: ID!
+    """Resource Internal ID / 资源内部ID"""
+    legacyId: ID!
+
+    title: String
+
+    description: String
+
+    photosNumber: Int
+
+    keywords: [String]
+
+    createdBy: User
+
+    createdAt: String
+
+    updatedAt: String
+
+    status: MoodStatus
+
+    """the date time of the gallery last changed to archive"""
+    archiveSince: String
+
+    """照片排序类型：recently added, impression, pulse."""
+    photoSortType: ItemSortType
+
+    """影集头图"""
+    cover: Photo @complexity(value: 10)
+
+    photos(
+        first: Int = 10
+        after: String
+        """是否是admin端查询"""
+        isAdmin: Boolean = false
+    ): MoodGalleryItemsConnection
+
+    """the date time of the gallery first published at"""
+    firstPublishedAt: String
+
+    """the date time of the gallery last published at"""
+    lastPublishedAt: String
+
+    """the number of photo added since the gallery was last published"""
+    photosAddedSinceLastPublished: Int
+
+    """前台detail详情链接"""
+    canonicalPath: String
+
+    isLikedByMe: Boolean @complexity(value: 10)
+
+    """浏览量"""
+    viewCount: Int!
+    likesCount: Int!
+
+    viewStat:ViewStat
+
+    photosAddedToGallery:Int @complexity(value: 10)
+
+
+}
+
+enum MoodStatus {
+    CREATED
+    ARCHIVE
+    PUBLISHED
+}
+
+enum MoodGalleriesSort {
+    ACTIVITY_DATE_ASC
+    ACTIVITY_DATE_DESC
+    ID_ASC
+    ID_DESC
+    TITLE_ASC
+    TITLE_DESC
+    ARCHIVE_DATE_ASC
+    ARCHIVE_DATE_DESC
+    PUBLISH_DATE_ASC
+    PUBLISH_DATE_DESC
+}
+
+enum ItemSortType {
+    HIGHEST_PULSE_ASC
+    IMPRESSIONS_ASC
+    RECENTLY_ADDED_ASC
+    HIGHEST_PULSE_DESC
+    IMPRESSIONS_DESC
+    RECENTLY_ADDED_DESC
+}
+
+type MoodGalleryEdge {
+    node: MoodGallery
+    cursor: String
+}
+
+type MoodGalleryConnection {
+    edges: [MoodGalleryEdge]
+    pageInfo: PageInfo
+    totalCount: Int
+}
+
+
+"""admin create\edit\view detail\query mood"""
+input MoodGalleryInput {
+    """创建mood时不需要传，修改时需传"""
+    moodId: ID
+    title: String!
+    description: String
+    photoNumber: Int
+    keywords: String!
+    """照片排序类型"""
+    photoSortType: ItemSortType! = RECENTLY_ADDED_DESC
+    items: [MoodGalleryItemInput]
+}
+
+input MoodGalleryItemInput {
+    photoId: ID
+    """照片热度"""
+    photoPulse: Float
+    """照片印象"""
+    photoImpression: Float
+    createdAt: String
+    #    """数据变化状态：1 add，0 default"""
+    #    changeStatus: Int = 0
+}
+
+type MoodGalleryItem implements Node {
+    """Global ID / 全局 ID"""
+    id: ID!
+    moodId: ID
+    photoId: ID
+    photo: Photo
+    createdAt: String
+    """照片热度"""
+    photoPulse: Float
+    """照片印象"""
+    photoImpression: Float
+}
+
+type MoodGalleryItemEdge {
+    node: MoodGalleryItem
+    cursor: String
+}
+
+type MoodGalleryItemsConnection {
+    edges: [MoodGalleryItemEdge]
+    pageInfo: PageInfo
+    totalCount: Int
+}
+
+type MoodGalleryPayload {
+    status: String
+    message: String
+    moodId: ID
+    hasLiveMoodWithSameTitle: Boolean
+}
+
+type MoodGalleriesConnection {
+    edges: [MoodGallery]
+    page: Int
+    size: Int
+    pages: Int
+    totalCount: Int
+}
+# === END schema partial from src/schemas/mood_gallery/mood_gallery.graphqls ===
+
+# === BEGIN schema partial from src/schemas/mutation.graphqls ===
+type Mutation {
+  markMyGroupedNotificationsAsRead(input: MarkMyGroupedNotificationsAsReadInput): MarkMyGroupedNotificationsAsReadPayload
+
+  """修改用户基本信息"""
+  updateUser(input: UpdateUserInput): UpdateUserPayload
+
+  """申请修改用户联系方式(需验证)"""
+  updateUserContact(input: UpdateUserContactInput): UpdateUserContactPayload
+
+  """验证用户联系方式"""
+  verifyUserContact(input: VerifyUserContactInput): VerifyUserContactPayload
+
+  """Email and push notification subscriptions"""
+  updateUserSubscriptions(input: UpdateUserSubscriptionsInput!): UpdateUserSubscriptionsPayload @deprecated(reason: "Use UpdateUserSubscriptionsPayloadV2")
+
+  """Set all Email and Push notifications at once"""
+  updateAllUserSubscriptions(input: UpdateAllUserSubscriptionsInput!): UpdateAllUserSubscriptionsPayload @deprecated(reason: "Use updateAllUserSubscriptionsV2")
+
+  """Email and push notification subscriptions"""
+  updateUserSubscriptionsV2(input: UpdateUserSubscriptionsInput!): UpdateUserSubscriptionsV2Payload
+
+  """Set all Email and Push notifications at once"""
+  updateAllUserSubscriptionsV2(input: UpdateAllUserSubscriptionsInput!): UpdateAllUserSubscriptionsV2Payload
+
+  """创建照片资源"""
+  createPhoto(input: CreatePhotoInput): CreatePhotoPayload
+
+  """发布照片信息"""
+  publishPhoto(input: PublishPhotoInput): PublishPhotoPayload
+
+  """更新照片信息"""
+  updatePhoto(input: UpdatePhotoInput): UpdatePhotoPayload
+
+  """删除照片"""
+  deletePhoto(input: DeletePhotoInput!): DeletePhotoPayload!
+
+  """创建Gallery资源"""
+  createGallery(input: CreateGalleryInput!): CreateGalleryPayload!
+
+  createStory(input: CreateStoryInput!): CreateStoryPayload!
+
+  deleteStory(input: DeleteStoryInput!): DeleteStoryPayload!
+
+  updateStoryPrivacy(input: UpdateStoryPrivacyInput!): UpdateStoryPrivacyPayload!
+
+  """更新Gallery信息"""
+  updateGallery(input: UpdateGalleryInput!): UpdateGalleryPayload!
+
+  """删除Gallery"""
+  deleteGallery(input: DeleteGalleryInput!): DeleteGalleryPayload!
+
+  """图库签约"""
+  createLicensingContributor(input: CreateLicensingContributorInput): CreateLicensingContributorPayload
+
+  updateAutoLicensingSetting(input: AutoLicensingSettingInput!): AutoLicensingSettingPayload
+
+  cancelAutoLicensingPhoto(input: CancelAutoLicensingPhotoInput!): CancelAutoLicensingPhotoPayload
+
+  """提交照片到大赛"""
+  addPhotoToQuest(input: AddPhotoToQuestInput): AddPhotoToQuestPayload
+  removePhotoFromQuest(input: RemovePhotoFromQuestInput): RemovePhotoFromQuestPayload!
+
+  """Quest shortlist"""
+  addPhotoToShortlist(input: AddPhotoToShortlistInput): AddPhotoToShortlistPayload!
+  removePhotoFromShortlist(input: RemovePhotoFromShortlistInput): RemovePhotoFromShortlistPayload!
+
+  """批量更新图库照片信息"""
+  bulkUpdateLicensingPhotos(input: BulkUpdateLicensingPhotosInput): BulkUpdateLicensingPhotosPayload
+
+  """批量从图库删除照片"""
+  bulkDeleteLicensingPhotos(input: BulkDeleteLicensingPhotosInput): BulkDeleteLicensingPhotosPayload
+
+  """创建肖像权许可"""
+  createModelRelease(input: CreateModelReleaseInput): CreateModelReleasePayload
+  activateModelRelease(input: ActivateModelReleaseInput): ActivateModelReleasePayload
+
+  """创建数字肖像权许可邀请"""
+  createModelReleaseInvitation(input: CreateModelReleaseInvitationInput): CreateModelReleaseInvitationPayload
+
+  """创建物权授许可"""
+  createPropertyRelease(input: CreatePropertyReleaseInput): CreatePropertyReleasePayload
+  activatePropertyRelease(input: ActivatePropertyReleaseInput): ActivatePropertyReleasePayload
+
+  """Re-upload a photo qualified for Licensing, on top of existing community photo / 重新上传专供图库使用的大图"""
+  reuploadPhotoForLicensing(input: ReuploadPhotoForLicensingInput): ReuploadPhotoForLicensingPayload
+
+  rejectModelReleaseInvitation(input: RejectModelReleaseInvitationInput): RejectModelReleaseInvitationPayload
+  permissionModelReleaseInvitation(input: PermissionModelReleaseInvitationInput): PermissionModelReleaseInvitationPayload
+
+  followUser(input: FollowUserInput): FollowUserPayload
+  unfollowUser(input: UnfollowUserInput): UnfollowUserPayload
+
+  likePhoto(input: LikePhotoInput): LikePhotoPayload
+  unlikePhoto(input: UnlikePhotoInput): UnlikePhotoPayload
+
+  likeResource(input: LikeAndUnLikeInput): LikeAndUnlikePayload
+  unlikeResource(input: LikeAndUnLikeInput): LikeAndUnlikePayload
+  batchSaveLiked(input: BatchLikeAndUnLikeInput):  Boolean
+
+  addPhotoToGallery(input: AddPhotoToGalleryInput!) : AddPhotoToGalleryPayload! @deprecated(reason: "please use addPhotosToGallery instead")
+
+  addPhotosToGallery(input: AddPhotosToGalleryInput!) : AddPhotosToGalleryPayload!
+  addGalleryPhotosToGallery(input: AddGalleryPhotosToGalleryInput!) : AddGalleryPhotosToGalleryPayload!
+  removePhotoFromGallery(input: RemovePhotoFromGalleryInput!) : RemovePhotoFromGalleryPayload!
+  batchRemovePhotosFromGallery(input: BatchRemovePhotoFromGalleryInput!) : BatchRemovePhotoFromGalleryPayload!
+
+  """生成Keyword Service的请求参数"""
+  signPhotoKeywordReqeuest(input: SignPhotoKeywordInput!): SignPhotoKeywordPayload!
+
+  """删除用户头像"""
+  deleteAvatar(input: DeleteAvatarInput!) : DeleteAvatarPayload!
+
+  """用户提现申请"""
+  userRequestPayout: RequestPayoutPayload
+
+  """添加照片评论"""
+  addCommentOnPhoto(input: PhotoCommentInput!) : CommentPayLoad!
+
+  """添加评论回复"""
+  addCommentOnComment(input: ReplyCommentInput!) : CommentPayLoad!
+
+  """delete a comment by community user."""
+  deleteComment(input: DeleteCommentInput!): DeleteCommentPayLoad!
+
+  """添加story评论"""
+  addCommentOnStory(input: PhotoCommentInput!) : CommentPayLoad!
+
+  """添加story评论回复"""
+  addCommentOnStoryComment(input: ReplyCommentInput!) : CommentPayLoad!
+
+  """report a comment to review."""
+  flagComment(input: FlagCommentInput!): FlagCommentPayload!
+
+  """添加图片到编辑推荐(管理员)"""
+  editorsChoice(input: EditorsChoiceInput): EditorsChoicePayload
+
+  """从编辑推荐移除图片(管理员)"""
+  uneditorsChoice(input: UneditorsChoiceInput): UneditorsChoicePayload
+
+  """设置图片为敏感图片(管理员)"""
+  updatePhotoNsfw(input: UpdatePhotoNsfwInput): UpdatePhotoNsfwPayload
+
+  """设置图片为私有(管理员)"""
+  updatePhotoPrivacy(input: UpdatePhotoPrivacyInput): UpdatePhotoPrivacyPayload
+
+  """修改licensing的privacy"""
+  updateLicensingPrivacy(input: UpdateLicensingPrivacyInput): UpdatePhotoPrivacyPayload
+
+  """修改图片类别(管理员)"""
+  updatePhotoCategory(input: UpdatePhotoCategorizeInput): UpdatePhotoCategorizePayload
+
+  """
+    注销oauth2 access token
+
+    revoke a oauth2 accessToken, and all the clients with same clientId of that user will be revoked
+  """
+  oauth2Revoke(
+    """The accessToken given by oauth2-server last time"""
+    input: String!
+  ): String
+
+  """关闭FeaturedPhotographer显示"""
+  disableFeaturedPhotographer: String
+
+  """打开FeaturedPhotographer显示"""
+  enabledFeaturedPhotographer: String
+  """register a uer from web appliction"""
+  webUserRegister(input: UserRegistryInput!): UserRegistryPayloadWithToken
+
+  """register a uer from mobile applictions"""
+  mobileUserRegister(input: UserRegistryInput!): UserRegistryPayload
+
+  """rearrange the order of gallery in the gallery list"""
+  rearrangeGallery(input: GalleryRearrangeInput!): GalleryRearrangePayload
+
+  """rearrange the order of photo in a gallery"""
+  rearrangeGalleryPhoto(input: GalleryPhotoRearrangeInput!): GalleryPhotoRearrangePayload
+
+  """Report user"""
+  flagUser(input: FlagUserInput!): FlagUserPayload
+
+  """Report gallery"""
+  flagGallery(input: FlagGalleryInput!): FlagGalleryPayload
+
+  """Report photo"""
+  flagPhoto(input: FlagPhotoInput!): FlagPhotoPayload
+
+  """Report groupPost"""
+  flagGroupPost(input: FlagGroupPostInput!): FlagGroupPostPayload
+
+  """Report resource"""
+  flagResource(input: FlagResourceInput!): FlagResourcePayload
+
+  """update a gallery's external url and button name (just for admin user)"""
+  updateGalleryExternalUrl(input: UpdateGalleryExternalUrlInput!): UpdateGalleryExternalUrlPayload
+
+  """publish a gallery"""
+  publishGallery(input: PublishGalleryInput!): PublishGalleryPayload
+
+  removePhotographer(input: RemovePhotographerInput!): RemovePhotographerPayload
+
+  addPhotographer(input: AddPhotographerInput!): AddPhotographerPayload
+
+    """upload Presigned ResourceCover"""
+  uploadPresignedResourceCover: UploadPresignedPayload
+
+  """Create workshop"""
+  createResource(input: ResourceObj!): Resource
+
+  """Create & Publish workshop"""
+  createAndPublishResource(input: ResourceObj!): Resource
+
+  """Update workshop"""
+  updateResource(input: ResourceObj!): Resource
+
+  """Update & Publish workshop"""
+  updateAndPublishResource(input: ResourceObj!): Resource
+
+  """Publish resource """
+  publishResource(input: String!): Resource
+
+  """Unpublish resource """
+  unpublishResource(input: String!): Resource
+
+  """Feature a resource"""
+  featureResource(input: FeatureResourceInput!): FeatureResourcePayload
+
+  """Unfeature a resource"""
+  unfeatureResource(input: UnfeatureResourceInput!): UnfeatureResourcePayload
+
+  """Delete resources """
+  deleteResources(input: [String!]!): DeletedIds
+
+  """feature a gallery"""
+  featureGallery(input: FeatureGalleryInput!): FeatureGalleryPayload
+
+  """unfeature a gallery"""
+  unfeatureGallery(input: FeatureGalleryInput!): FeatureGalleryPayload
+
+  """upload Presigned Portfolio Cover"""
+  uploadPresignedPortfolioCover: UploadPresignedPayload
+  """make a relationship"""
+  makeMessengerRelation(receiver: String!): UserInboxConversationInfo
+
+  """send text message"""
+  sendTextMessage(receiver: String!, message: String!): Message
+
+  """send photo message"""
+  sendPhotoMessage(receiver: String!, photoId: String!): Message
+
+  """send profile message"""
+  sendProfileMessage(receiver: String!, profileId: String!): Message
+
+  """send gallery message"""
+  sendGalleryMessage(receiver: String!, galleryId: String!): Message
+
+   """send quest message"""
+  sendQuestMessage(receiver: String!, questId: String!): Message
+
+   """send resource message"""
+  sendResourceMessage(receiver: String!, resourceId: String!): Message
+
+  """delete user inbox conversation, but don't delete message"""
+  deleteInboxConversation(toUserIds: String!): String
+
+  """block messenger of user"""
+  blockMessageUser(blockId: String!): String
+
+  """cancel block messenger user"""
+  cancelBlockMessageUser(blockId: String!): String
+
+  createPortfolio(userId: String!, title: String!, description: String!, themeName: String!, email: String): PortfolioPayload!
+
+  updatePortfolio(portfolioId: String!, input: UpdatePortfolioInput!): Portfolio
+
+  deletePortfolio(portfolioId: String!): PortfolioPayload!
+
+  saveAndPublishPortfolio(portfolioId: String!): Portfolio
+
+  saveAndExitPortfolio(portfolioId: String!): Portfolio
+
+  activatePortfolio(portfolioId: String!): Portfolio
+
+  deactivatePortfolio(portfolioId: String!, deactivatedMessage: String): Portfolio
+
+  reorderFoldersInPortfolio(portfolioId: String!, folderId: String!, afterId: String): Portfolio
+
+  createFolder(portfolioId: String!, name: String!, description: String, coverPhotoId: String): FolderPayload!
+
+  updateFolderDetails(id: ID!, name: String, description: String, coverPhotoId: String): Folder
+
+  deleteFolder(id: ID!): FolderPayload!
+
+  addPhotosToFolder(input: FolderPhotoInput!, id: ID!): AddPhotoFolderPayload
+
+  reorderPhotoInFolder(id: ID!, photoId: String!, afterId: String): Folder
+
+  removePhotosFromFolder(input: FolderPhotoInput!, id: ID!): Folder
+
+  createPortfolioTemporaryToken: PortfolioTemporaryToken!
+
+  sendPortfolioContact(input: SendPortfolioContactInput!): SendPortfolioContactPayload!
+
+  createCustomDomain(input: CustomDomainInput!): CustomDomainPayload
+
+  createCustomDomainForHover(input: CustomDomainInput!): CustomDomainPayload
+
+  submitDomainForVerification(legacyId: String!): CustomDomainPayload
+
+  deleteCustomDomain(legacyId: String!): CustomDomainPayload
+
+  createCustomDomainValidationToken(portfolioId: String!): CreateValidationTokenPayload
+
+  # Creates a resume
+  createResume(input: CreateResumeInput!): ResumePayload
+  # Single update mutation for entire resume
+  updateResume(input: UpdateResumeInput!): ResumePayload
+  # Delete a resume
+  deleteResume(legacyId: String!): DeleteResumePayload
+
+  # Create/Update Hire Location
+  createUpdateLocationsForHire(userId: String!, input: [HireLocationInput]): HireLocationsPayload
+
+  # Create/Update Remote Config
+  createUpdateRemoteConfig(clientId: Int!, input: RemoteConfigInput!): Config
+
+  # Create/Update blacklist only in Remote Config.
+  createUpdateBlacklist(clientId: Int!, input: BlacklistInput!): Config
+
+  deleteUserAccount(input: FeedbackInput!, legacyUserId: String!): AccountDeletionPayload!
+
+  deactivateUserAccount(legacyUserId: String!, clientMutationId: String): AccountDeactivatePayload!
+
+  """request a password reset(forgot password)"""
+  requestPasswordReset(input: PasswordResetRequestIput!): PasswordResetRequestPayload!
+
+  """verify the code when user click the link in the password reset email"""
+  verifyPaswwordReset(verifyCode: String!, clientMutationId: String): PasswordResetVerifyPayload!
+
+  """do the reset password"""
+  resetPassword(verifyCode:String!, password: String!, clientMutationId:String): PasswordResetPayload!
+
+  """for a login user to change its passwrod"""
+  changePassword(input: ChangePasswordInput!):Boolean!
+
+  """
+  To request to activate a user's account.
+  Send a account activate email to user.
+  redirect: Optional, a relative URI to add as a query param to the activation link.
+  origin: Optional, represents the original location where activation was triggered.
+  newEmail: Optional, the new email if user want change the email address to receive the activation email.
+  """
+  requestActivateAccount(redirect:String, origin:String, newEmail:String): Boolean!
+
+  """
+  To complete the user account activation after a user click the activation email.
+  legacyUserId: Required, the id of user.
+  code: Required, the verify code contains in the comfirm link in the activation email.
+  """
+  completeActivateAccount(legacyUserId:String!, code:String!): Boolean!
+
+  """
+  To request a change a user's email.
+  """
+  requestChangeEmail(newEmail:String!):String!
+
+  """
+  To complete the email changing request.
+  legacyUserId: Required, the id of user.
+  code: Required, the verify code contains in the comfirm link in the activation email.
+  """
+  completeChangeEmail(legacyUserId:String!, code:String!):Boolean!
+
+  """set user onboardingStep"""
+  setUserOnboardingStep(legacyUserId:String!, onboardingStep: onboardingStepEnum!): onboardingStepEnum!
+
+  """
+  confirm the email of user account when click the link with path "account/confirm" in the email.
+  """
+  completeEmailConfirmation(legacyUserId:String!, code:String!):Boolean!
+
+  """Subscribe to an email campaign"""
+  subscribeToCampaign(signupEmail: String!, campaignName: Campaign!): CampaignSignupPayload
+
+  """Unsubscribe from an email campaign"""
+  unsubscribeFromCampaign(token: String!): CampaignSignupPayload
+
+  """
+  Send reactivation email to a deactivated user
+  Returns false if both inputs are missing. Otherwise returns true or an error.
+  Send either email OR username. Email gets used if both are sent.
+  """
+  sendReactivation(email: String, username: String):Boolean!
+
+  """Send stats tracking for stats dashboard"""
+  sendStatsTracking(input: StatsTrackingInput!): Boolean!
+
+  batchTracking(input: EventTrackingInput!): Boolean!
+
+  userBlock(userLegacyId: ID!): Boolean!
+
+  userUnblock(userLegacyId: ID!): Boolean!
+
+  dismissSuggestPhoto(photoId: ID!): Boolean!
+
+  verifyIOSAppStorePurchase(input: VerifyPlayStoreInput!): VerifyPlayStore
+
+  """
+  saveAsDraft: isPublish=false, saveAndPublish: isPublish=true
+  """
+  saveMood(input: MoodGalleryInput!, isPublish: Boolean = false, isOverrideLastMood: Boolean = false): MoodGalleryPayload
+
+  changeMoodToArchive(moodIds: [ID!]): Boolean
+
+  featureStory(storyId: ID!): Story
+
+  unFeatureStory(storyId: ID!): Story
+
+  """use param 'storyIds' if it's available"""
+  increaseStoryViewCount(storyIds: [ID!], slugs:[String]): Boolean
+
+}
+
+input VerifyPlayStoreInput {
+  receiptData: String
+}
+
+input ChangePasswordInput {
+  """the old password a user want to change"""
+  currentPassword: String!,
+  """the new password to change"""
+  password: String!,
+}
+
+input CreateResumeInput {
+  about: String!
+  yearsExperience: YearsExperienceEnum!
+  testimonials: String
+  specialties: [SpecialtyCreateInput!]
+  hireLocations: [HireLocationInput]
+}
+
+input UpdateResumeInput {
+  about: String!
+  yearsExperience: YearsExperienceEnum!
+  testimonials: String
+  # Pass a list of the titles of the ones to delete
+  deleteSpecialties: [SpecialtyTitleEnum]
+  addSpecialties: [SpecialtyCreateInput]
+  updateSpecialties: [SpecialtyUpdateInput]
+  hireLocations: [HireLocationInput]
+}
+
+input SpecialtyCreateInput {
+  title: SpecialtyTitleEnum!
+  description: String
+  # Photo legacy ids, at least one required
+  photos: [String!]!
+}
+
+input SpecialtyUpdateInput {
+  title: SpecialtyTitleEnum!
+  description: String
+  # Legacy ids of the photos
+  addPhotos: [String]
+  deletePhotos: [String]
+}
+
+input RemoteConfigInput {
+  timestamp: Int,
+  lastSupportedAndroidVersion: Int,
+  updateBannerMinVersion: Int,
+  updateBannerMaxVersion: Int,
+  unsupportedAndroidVersionMessage: String,
+  emailVerificationCutOffTimestamp: Int,
+  addToBlacklist: [String]!,
+  removeFromBlacklist: [String]!
+}
+
+input BlacklistInput {
+  addToBlacklist: [String]!,
+  removeFromBlacklist: [String]!
+}
+
+type ResumePayload {
+  resume: Resume
+  hireLocations: [HireLocationsResponse!]
+}
+
+type DeleteResumePayload {
+  id: ID!
+}
+
+input CustomDomainInput {
+  fqdn: String!  # testphotography.com
+  validationToken: String
+  portfolioId: String!
+}
+
+type CustomDomainPayload {
+  customDomain: CustomDomain
+}
+
+type CreateValidationTokenPayload {
+  token: ValidationToken
+}
+
+input FolderPhotoInput {
+  photoIds: [String!]!
+}
+
+type AddPhotoFolderPayload {
+  folder: Folder!
+  addedPhotos: [Photo]!
+}
+
+type PortfolioPayload {
+  portfolio: Portfolio
+}
+
+type FolderPayload {
+  folder: Folder
+}
+
+type DeletedIds {
+  deletedIds: [String]
+}
+
+input LocationObj {
+  placeId: String!
+  locality: String
+  administrativeArea1: String
+  administrativeArea2: String
+  administrativeArea3: String
+  administrativeArea4: String
+  country: String!
+  countryCode: String!
+  latitude: String
+  longitude: String
+  formattedAddress: String!
+}
+
+type  UploadPresignedPayload {
+  clientMutationId: String
+
+  """Upload info / 上传信息"""
+  directUpload: MediaDirectUpload
+
+  """图片练市路径"""
+  objectName: String!
+}
+
+"""Create and Update"""
+input ResourceObj {
+  legacyId: String
+  title: String!
+  description: String
+  currency: String
+  price: String
+  url: String
+  coverPhotoId: String!
+  coverObjectName: String
+  locationId: String
+  location: LocationObj
+  resourceState: ResourceState
+  startTime: String
+  timeZone: String
+  resourceType: ResourceType!
+  customResourceSlug: String
+  customResourceType: String
+}
+
+input FlagCommentInput {
+  clientMutationId: String
+  commentLegacyId: ID!
+  commentOwnerLegacyUserId: ID!
+}
+
+type FlagCommentPayload {
+  clientMutationId: String
+}
+
+input DeleteCommentInput {
+  clientMutationId: String
+  commentLegacyId: ID!
+  photoOwnerLegacyUserId: ID!
+}
+
+type DeleteCommentPayLoad {
+  clientMutationId: String
+}
+
+input PhotoCommentInput {
+  clientMutationId: String
+  """被评论的 photo id(the photo id which be commented)"""
+  photoLegacyId: ID!
+  """照片所有者ID(the user id who own the photo)"""
+  userLegacyId: ID!
+  """评论内容（the comment content body）"""
+  commentContent: String!
+}
+
+input ReplyCommentInput {
+  clientMutationId: String
+  """被回复的评论ID(comment legacyId which been replied)"""
+  commentLegacyId: ID!
+  """照片所有者ID(the user id who own the photo)"""
+  userLegacyId: ID!
+  """评论内容（the comment content body）"""
+  commentContent: String!
+  """被评论的 photo id(the photo id which be commented)"""
+  photoLegacyId: ID!
+}
+
+type CommentPayLoad {
+  clientMutationId: String
+  comment: Comment!
+}
+
+input ProfileTabInput {
+  name: TabEnum!
+  visible: Boolean!
+}
+
+input UpdateUserInput {
+  clientMutationId: String
+
+  legacyId: ID!
+  userProfile: PersonalAndProfileInput
+  # Deprecated, please use socialMediaTab
+  socialMedia: SocialMediaInput
+  # You must send all social media tabs
+  socialMediaItems: [SocialMediaItemInput!]
+  equipment: UserEquipmentInput
+  userSetting: UserSettingInput
+  contact: UserPhoneContactInput
+  # You must send all profile tabs
+  profileTabs: [ProfileTabInput!]
+
+  username: String
+  firstName: String
+  lastName: String
+
+  """TOS Acceptance. Can only be set once. Returned as gdprAcceptanceTimestamp on User"""
+  gdpr: Boolean
+
+  hireLocations: [HireLocationInput!]
+}
+
+type UpdateUserPayload {
+  clientMutationId: String
+
+  user: User
+}
+
+input UpdateUserContactInput {
+  clientMutationId: String
+
+  legacyId: ID!
+
+  """新的邮件"""
+  unverifiedEmail: String
+}
+
+type UpdateUserContactPayload {
+  clientMutationId: String
+
+  """由于需要验证，现有的联系信息并不会被覆盖"""
+  userContact: UserContact
+}
+
+input VerifyUserContactInput {
+  clientMutationId: String
+
+  """邮件验证码"""
+  emailVerificationCode: String
+
+  """短信验证码"""
+  unverifiedPhone: String
+  """新的手机号"""
+  phoneVerificationCode: String
+}
+
+type VerifyUserContactPayload {
+  clientMutationId: String
+
+  userContact: UserContact
+}
+
+type MediaDirectUpload {
+  """S3 direct upload URL / S3直传URL"""
+  url: String!
+  """S3 direct upload fields as JSON / S3直传字段(JSON格式)"""
+  fields: String!
+}
+
+input CreatePhotoInput {
+  clientMutationId: String
+  """照片隐私设置"""
+  privacy: PhotoPrivacy
+  """是否在S3直传完成后自动发布"""
+  autoPublish: Boolean
+}
+
+type CreatePhotoPayload {
+  clientMutationId: String
+
+  """New photo / 新创建图片资源"""
+  photo: Photo
+
+  """Upload info / 上传信息"""
+  directUpload: MediaDirectUpload
+
+  """Access key to Keyword API / 自动关键词API密钥"""
+  keywordKey: String!
+
+  """Uploader's licensing info / 上传者签约状态"""
+  licensingContributor: LicensingContributor
+}
+
+input CreateLicensingContributorInput {
+  clientMutationId: String
+}
+
+type CreateLicensingContributorPayload {
+  clientMutationId: String
+
+  licensingContributor: LicensingContributor
+}
+
+input AutoLicensingSettingInput {
+  autoLicensingSetting: AutoLicensingSetting!
+}
+
+type AutoLicensingSettingPayload {
+  licensingContributor: LicensingContributor
+}
+
+input CancelAutoLicensingPhotoInput {
+  legacyId: ID!
+}
+
+type CancelAutoLicensingPhotoPayload {
+  autoLicensingPhoto: AutoLicensingPhoto
+}
+
+input PublishPhotoInput {
+  clientMutationId: String
+
+  legacyId: ID!
+
+  name: String
+  description: String
+  category: PhotoCategory
+
+  longitude: Float
+  latitude: Float
+  location: String
+
+  # EXIF info overwritting
+  takenAt: String
+  aperture: String
+  shutterSpeed: String
+  focalLength: String
+  iso: String
+  lens: String
+  camera: String
+  width: Int!
+  height: Int!
+
+  notSafeForWork: Boolean
+  watermark: Boolean
+  showExifData: Boolean
+
+  privacy: PhotoPrivacy
+
+  tags: [String!]
+
+  createLicensingPhoto: CreateLicensingPhotoInput
+}
+
+type PublishPhotoPayload {
+  clientMutationId: String
+
+  """Photo after update / 发布后的图片资源"""
+  photo: Photo
+}
+
+input UpdatePhotoInput {
+  clientMutationId: String
+
+  legacyId: ID!
+
+  name: String
+  description: String
+  category: PhotoCategory
+
+  longitude: Float
+  latitude: Float
+  location: String
+
+  # EXIF info overwritting
+  takenAt: String
+  aperture: String
+  shutterSpeed: String
+  focalLength: String
+  iso: String
+  lens: String
+  camera: String
+
+  notSafeForWork: Boolean
+  watermark: Boolean
+  showExifData: Boolean
+
+  privacy: PhotoPrivacy
+
+  tags: [String!]
+
+  """是否在S3直传完成后自动发布"""
+  autoPublish: Boolean
+
+  createLicensingPhotoInput: CreateLicensingPhotoInput
+}
+
+type UpdatePhotoPayload {
+  clientMutationId: String
+
+  """Photo after update / 修改后的图片资源"""
+  photo: Photo
+}
+
+input DeletePhotoInput {
+  clientMutationId: String
+
+  legacyId: ID!
+}
+
+type DeletePhotoPayload {
+  clientMutationId: String
+}
+
+input AddPhotoToQuestInput {
+  clientMutationId: String
+
+  """Photo to submit / 待提交的照片"""
+  photoLegacyId: ID!
+  questLegacyId: ID!
+  questTopicLegacyId: ID
+}
+
+type AddPhotoToQuestPayload {
+  clientMutationId: String
+  photo: Photo
+  quest: Quest
+}
+
+input RemovePhotoFromQuestInput {
+  clientMutationId: String
+
+  """Photo to remove"""
+  photoLegacyId: ID!
+  questLegacyId: ID!
+}
+
+type RemovePhotoFromQuestPayload {
+  clientMutationId: String
+  photo: Photo
+  quest: Quest
+}
+
+input AddPhotoToShortlistInput {
+  clientMutationId: String
+
+  """Photo to submit / 待提交的照片"""
+  photoLegacyId: ID!
+  questLegacyId: ID!
+}
+
+type AddPhotoToShortlistPayload {
+  clientMutationId: String
+  photo: Photo
+  quest: Quest
+}
+
+input RemovePhotoFromShortlistInput {
+  clientMutationId: String
+
+  """Photo to remove"""
+  photoLegacyId: ID!
+  questLegacyId: ID!
+}
+
+type RemovePhotoFromShortlistPayload {
+  clientMutationId: String
+  photo: Photo
+  quest: Quest
+}
+
+input FollowUserInput {
+  clientMutationId: String
+
+  userLegacyId: ID!
+}
+
+type FollowUserPayload {
+  clientMutationId: String
+
+  me: User
+  followee: User
+}
+
+input UnfollowUserInput {
+  clientMutationId: String
+
+  userLegacyId: ID!
+}
+
+type UnfollowUserPayload {
+  clientMutationId: String
+
+  me: User
+  followee: User
+}
+
+input LikePhotoInput {
+  clientMutationId: String
+
+  photoLegacyId: ID!
+}
+
+type LikePhotoPayload {
+  clientMutationId: String
+
+  photo: Photo
+}
+
+input UnlikePhotoInput {
+  clientMutationId: String
+
+  photoLegacyId: ID!
+}
+
+type UnlikePhotoPayload {
+  clientMutationId: String
+
+  photo: Photo
+}
+
+input AddPhotoToGalleryInput {
+  clientMutationId: String
+
+  galleryLegacyId: ID!
+  photoLegacyId: ID!
+}
+
+type AddPhotoToGalleryPayload {
+  clientMutationId: String
+
+  gallery: Gallery
+  photo: Photo
+}
+
+input AddPhotosToGalleryInput {
+  clientMutationId: String
+
+  galleryLegacyId: ID!
+  photoLegacyIds: [ID!]!
+}
+
+type AddPhotosToGalleryPayload {
+  clientMutationId: String
+
+  gallery: Gallery
+  photos: [Photo]
+}
+
+input AddGalleryPhotosToGalleryInput {
+  clientMutationId: String
+
+  fromGalleryLegacyId: ID!
+  toGalleryLegacyId: ID!
+}
+
+type AddGalleryPhotosToGalleryPayload {
+  clientMutationId: String
+
+  fromGallery: Gallery
+  toGallery: Gallery
+}
+
+input RemovePhotoFromGalleryInput {
+  clientMutationId: String
+
+  galleryLegacyId: ID!
+  photoLegacyId: ID!
+}
+
+type RemovePhotoFromGalleryPayload {
+  clientMutationId: String
+
+  gallery: Gallery
+  photo: Photo
+}
+
+input BatchRemovePhotoFromGalleryInput {
+  clientMutationId: String
+
+  galleryLegacyId: ID!
+  photoLegacyIds: [ID!]!
+}
+
+type BatchRemovePhotoFromGalleryPayload {
+  clientMutationId: String
+
+  gallery: Gallery
+  photos: [Photo]
+}
+
+input CreateGalleryInput {
+  clientMutationId: String
+
+  name: String!
+  privacy: GalleryPrivacy!
+
+  publicSlug: String
+  description: String
+}
+
+type CreateGalleryPayload {
+  clientMutationId: String
+
+  """Newly created resource of Gallery / 新创建Gallery资源"""
+  gallery: Gallery
+}
+
+input UpdateGalleryInput {
+  clientMutationId: String
+
+  """the id of gallery in DB"""
+  legacyId: ID!
+
+  """the title of gallery"""
+  name: String
+  """gallery privacy"""
+  privacy: GalleryPrivacy
+  """the public path of gallery, no used yet for now"""
+  publicSlug: String
+  """the description of gallery"""
+  description: String
+  """The cover photo legacy id"""
+  coverPhotoId: String
+}
+
+type UpdateGalleryPayload {
+  clientMutationId: String
+
+  """Gallery after update / 修改后的Gallery资源"""
+  gallery: Gallery
+}
+
+input DeleteGalleryInput {
+  clientMutationId: String
+
+  legacyId: ID!
+}
+
+type DeleteGalleryPayload {
+  clientMutationId: String
+}
+
+input MarkMyGroupedNotificationsAsReadInput {
+  clientMutationId: String
+}
+
+type MarkMyGroupedNotificationsAsReadPayload {
+  clientMutationId: String
+}
+
+input SignPhotoKeywordInput {
+  clientMutationId: String
+  """交集tag的数量"""
+  intersectionQuantity: Int = 15
+  """并集tag 的数量"""
+  unionQuantity: Int = 20
+  photoLegacyIds: [ID!]!
+}
+
+type SignPhotoKeywordPayload {
+  clientMutationId: String
+  requestBody: String!
+  requestUrl: String!
+}
+
+input DeleteAvatarInput {
+  clientMutationId: String
+}
+
+type DeleteAvatarPayload {
+  clientMutationId: String
+}
+
+type RequestPayoutPayload {
+  payoutRequestResult: String
+}
+
+input EditorsChoiceInput {
+  clientMutationId: String
+
+  photoLegacyId: String!
+}
+
+type EditorsChoicePayload {
+  clientMutationId: String
+}
+
+input UneditorsChoiceInput {
+  clientMutationId: String
+
+  photoLegacyId: String!
+}
+
+type UneditorsChoicePayload {
+  clientMutationId: String
+}
+
+input UpdatePhotoNsfwInput {
+  clientMutationId: String
+
+  photoLegacyId: String!
+  nsfw: Boolean!
+}
+
+type UpdatePhotoNsfwPayload {
+  clientMutationId: String
+}
+
+input UpdatePhotoPrivacyInput{
+  clientMutationId: String
+
+  photoLegacyId: String!
+  privacy: PhotoPrivacy!
+}
+
+input UpdateLicensingPrivacyInput{
+  clientMutationId: String
+  licensingLegacyId: String!
+  privacy: PhotoPrivacy!
+}
+
+type UpdatePhotoPrivacyPayload {
+  clientMutationId: String
+}
+
+input UpdatePhotoCategorizeInput{
+  clientMutationId: String
+
+  photoLegacyId: String!
+  category: PhotoCategory!
+}
+
+type UpdatePhotoCategorizePayload {
+  clientMutationId: String
+}
+
+"""
+UserRegistryPayload / 用户注册返回信息
+"""
+type UserRegistryPayload {
+  clientMutationId: String
+  user: SimpleUser!
+}
+
+"""
+UserRegistryPayloadWithToken / 用户注册返回信息,包含token.
+"""
+type UserRegistryPayloadWithToken {
+  clientMutationId: String
+  user: SimpleUserWithToken!
+}
+
+input UserRegistryInput {
+  clientMutationId: String
+
+  """
+  required when
+  1.register with email
+  2.register on mobile side with apple and need link to a account.
+  """
+  email: String
+  """
+  required when
+  1.register with email
+  2.register on mobile side with apple and need link to a account.
+  """
+  password: String
+  analyticsCode: String
+  """google anti robot captcah response"""
+  captchaResponse: String
+  emailNotificationsEnabled: Boolean
+  """required when register from mobile apps"""
+  consumerKey: String
+  """required when register with google, facebook or apple oauth"""
+  authMode: AuthMode
+  """accessToken from google, facebook, required when register with google or facebook oauth"""
+  authToken: String
+}
+
+input GalleryRearrangeInput{
+  clientMutationId: String
+  """the id of gallery the gallery will be rearranged after to, if rearrange to the top of the list, just leave it empty"""
+  after: ID
+  """the id of gallery whilh will be rearranged"""
+  galleryId: ID!
+}
+
+type GalleryRearrangePayload {
+  clientMutationId: String
+}
+
+input GalleryPhotoRearrangeInput{
+  clientMutationId: String
+  """the id of gallery """
+  galleryLegacyId: ID!
+  """the id of photo in a gallery will be rearranged after to, if rearrange to the top of the list, just leave it empty"""
+  after: ID
+  """the id of photo in a gallery whilh will be rearranged"""
+  photoLegacyId: ID!
+}
+
+type GalleryPhotoRearrangePayload {
+  clientMutationId: String
+}
+
+enum AuthMode {
+  GOOGLE_OAUTH2
+  FACEBOOK
+  APPLE
+}
+
+enum onboardingStepEnum{
+	ABOUT
+	CHOOSE_ONE
+	COMPLETED
+}
+
+input FlagUserInput {
+  userLegacyId: String!
+  reason: Int!
+  reasonDetails: String
+}
+
+type FlagUserPayload {
+  userLegacyId: String!
+}
+
+input FlagGalleryInput {
+  galleryLegacyId: String!
+  galleryOwnerLegacyId: String!
+  reason: Int!
+  reasonDetails: String
+}
+
+type FlagGalleryPayload {
+  galleryLegacyId: String!
+}
+
+input FlagPhotoInput {
+  photoLegacyId: String!
+  photoOwnerLegacyId: String!
+  reason: Int!
+  reasonDetails: String
+}
+
+type FlagPhotoPayload {
+  photoLegacyId: String!
+}
+
+input FlagGroupPostInput {
+  groupPostLegacyId: String!
+  groupPostOwnerLegacyId: String!
+  reason: Int!
+  reasonDetails: String
+}
+
+type FlagGroupPostPayload {
+  groupPostLegacyId: String!
+}
+
+input FlagResourceInput {
+  resourceLegacyId: String!
+  resourceOwnerLegacyId: String!
+  reason: Int!
+  reasonDetails: String
+}
+
+type FlagResourcePayload {
+  resourceLegacyId: String!
+}
+
+input UpdateGalleryExternalUrlInput {
+  clientMutationId: String
+  """the legacy id of a gallery"""
+  galleryLegacyId: ID!
+  """external gallery url just for admin user"""
+  externalUrl: String
+  """gallery button name just for admin user"""
+  buttonName: String
+}
+
+type UpdateGalleryExternalUrlPayload {
+  clientMutationId: String
+}
+
+input PublishGalleryInput {
+  clientMutationId: String
+  """the legacy id of a gallery need to publish"""
+  galleryLegacyId: ID!
+}
+
+type PublishGalleryPayload {
+  clientMutationId: String
+}
+
+input RemovePhotographerInput {
+  clientMutationId: String
+
+  userLegacyId: ID!
+}
+
+input AddPhotographerInput {
+  clientMutationId: String
+  followersCount: Int!
+  lastUploadDate: String
+  photosCount: Int!
+  username: String
+  userLegacyId: ID!
+}
+
+type RemovePhotographerPayload {
+   clientMutationId: String
+   code: Int!
+   message: String
+}
+
+type AddPhotographerPayload {
+   clientMutationId: String
+   code: Int!
+   message: String
+}
+
+input FeatureGalleryInput {
+  """the legacy id of the user who owns the gallery to be featured"""
+  userLegacyId: String!
+  """the legacy id of a gallery need to publish"""
+  galleryLegacyId: String!
+}
+
+type FeatureGalleryPayload {
+  code: String
+  message: String
+}
+
+input FeatureResourceInput {
+  clientMutationId: String
+  resourceLegacyId: String!
+}
+
+type FeatureResourcePayload {
+  clientMutationId: String
+}
+
+input UnfeatureResourceInput {
+  clientMutationId: String
+  resourceLegacyId: String!
+}
+
+type UnfeatureResourcePayload {
+  clientMutationId: String
+}
+
+input PortfolioLocationInput {
+  city: String
+  country: String
+}
+
+input PortfolioSocialMediaInput {
+  twitter: String
+  instagram: String
+  facebook: String
+}
+
+input UpdatePortfolioVisibilityInput {
+  location: PortfolioVisibility
+  pxProfile: PortfolioVisibility
+  facebook: PortfolioVisibility
+  instagram: PortfolioVisibility
+  twitter: PortfolioVisibility
+}
+
+input UpdatePortfolioInput {
+  title: String
+  description: String
+  deactivatedMessage: String
+  coverPhotoId: String
+  coverUserId: String
+  coverObjectName: String
+  themeName: String
+  visibilityOptions: UpdatePortfolioVisibilityInput
+  font: ThemeFont
+  colour: ThemeColour
+  appearance: ThemeAppearance
+  termsOfUseType: PortfolioLegalType
+  termsOfUseUrl: String
+  privacyPolicyType: PortfolioLegalType
+  privacyPolicyUrl: String
+  analyticsCode: String
+  location: PortfolioLocationInput
+  socialMedia: PortfolioSocialMediaInput
+  email: String
+}
+
+input SendPortfolioContactInput {
+  portfolioOwnerId: ID!
+  subject: String!
+  senderName: String!
+  senderEmail: String!
+  domainName: String!
+  message: String!
+}
+
+type SendPortfolioContactPayload {
+  receiverId: ID!
+  subject: String!
+  senderName: String!
+  senderEmail: String!
+  domainName: String!
+  message: String!
+}
+
+input FeedbackInput {
+  clientMutationId: String
+  reason: AccountDeletionReason!
+  note: String
+}
+
+enum AccountDeletionReason {
+  MULTIPLE_ACCOUNT
+  TOO_MANY_EMAIL
+  NO_VALUE
+  PRIVACY_CONCERN
+  UNWANTED_CONTACT
+  OTHER
+}
+
+type AccountDeletionPayload {
+  clientMutationId: String
+}
+
+type AccountDeactivatePayload {
+  clientMutationId: String
+}
+
+"""email and username can not both be empty"""
+input PasswordResetRequestIput{
+  clientMutationId: String
+  email: String
+  username: String
+}
+
+type PasswordResetRequestPayload {
+  clientMutationId: String
+}
+
+type PasswordResetVerifyPayload {
+  legacyUserId: String!
+  tfaEnabled: Boolean!
+  """The valid verify code"""
+  verifyCode: String!
+  clientMutationId: String
+}
+
+type PasswordResetPayload {
+  clientMutationId: String
+}
+
+type CampaignSignupPayload {
+  userId: String
+  signupEmail: String!
+  campaignName: String!
+  subscribed: Boolean!
+  """UUID Unsubscribe token"""
+  token: String!
+}
+
+input StatsTrackingInput {
+  views: [StatsTrackingViewEventInput!]!
+}
+
+input StatsTrackingViewEventInput {
+  object_id: String!
+  object_type: StatsTrackingViewType!
+  source: String
+  metadata: StatsTrackingViewEventMetadataInput
+}
+
+input StatsTrackingViewEventMetadataInput{
+  category: PhotoCategory
+}
+
+enum StatsTrackingViewType{
+  PHOTO
+  PROFILE
+}
+
+input EventTrackingInput {
+  actions: [EventTrackingActionInput!]!
+}
+
+input EventTrackingActionInput {
+  id: String!
+  action: EventTrackingActionType!
+  createdAt: String!
+  requestPath: String!
+  membershipTier:String!
+  data: String!
+}
+
+
+enum EventTrackingActionType{
+  PAGE_VIEWED
+  BUTTON_CLICKED
+}
+
+input LikeAndUnLikeInput {
+  clientMutationId: String
+
+  resourceId: ID!
+
+  resourceType:LikedResourceType!
+}
+
+input BatchLikeAndUnLikeInput {
+  list:[LikeAndUnLikeInput!]
+}
+
+type LikeAndUnlikePayload {
+  clientMutationId: String
+
+  result: Boolean
+}
+
+
+# === END schema partial from src/schemas/mutation.graphqls ===
+
+# === BEGIN schema partial from src/schemas/notification/grouped_notification.graphqls ===
+# names from https://github.com/500px/px-activity-item/blob/master/lib/px/activity_item/constants/constants.rb
+enum NotificationAction {
+  QUEST_NEW @deprecated
+
+  FOLLOW_USER
+
+  PHOTO_LIKE
+  PHOTO_COMMENT
+  PHOTO_COMMENT_MENTION
+
+  SELECTED_BY_EDITOR
+  REACHED_UPCOMING
+  REACHED_POPULAR
+
+  USER_INVITED_TO_GROUP
+  GROUP_DISCUSSION_CREATED
+  GROUP_DISCUSSION_COMMENT
+  GROUP_COMMENT_REPLY
+  GROUP_CONTENT_FLAGGED
+  GROUP_MENTION
+
+  PHOTO_ADDED_TO_GALLERY
+  GALLERY_SELECTED_BY_EDITOR
+
+  QUEST_STARTED
+  QUEST_LOSERS_SELECTED
+  QUEST_WINNERS_SELECTED
+  QUEST_7_DAY_UNLICENSED
+  PHOTO_SELECTED_FOR_SHORTLIST
+
+  LICENSING_UNDER_REVIEW
+  LICENSING_PENDING_MULTIPLE_PHOTOS
+  PHOTO_ACCEPTED_TO_LICENSING
+  LICENSING_DECLINED
+  LICENSING_MODEL_RELEASE_SIGNED
+  LICENSING_MODEL_RELEASE_REJECTED
+  LICENSING_RELEASE_REQUIRED
+  LICENSING_CHANGE_REQUIRED
+  LICENSING_SUGGEST
+  LICENSING_SUGGEST_MULTIPLE
+  LICENSING_CR_TWO_WEEKS
+  LICENSING_CR_THREE_MONTHS
+  LICENSING_CR_SIX_MONTHS
+  LICENSING_CR_REMAIN_TWO_WEEKS
+  LICENSING_CR_EXPIRING_USER
+  PURCHASED
+
+  EARNINGS_REQUESTED
+
+  PHOTOGRAPHER_FEATURED
+
+  RESOURCE_FEATURED
+
+  DOMAIN_CONNECTION_SUCCESS
+  DOMAIN_VERIFICATION_STARTED
+  DOMAIN_DNS_ERRORS_FOUND
+  DOMAIN_CONNECTION_FAILING
+  DOMAIN_CONNECTION_FAILED
+}
+
+"""
+GroupedNotification Resource
+"""
+type GroupedNotification implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  # actions: NotificationAction!
+  actions: [NotificationAction]
+
+  actors: [User] @complexity(value: 10)
+  items: [GroupedNotificationItem] @complexity(value: 10)
+
+  timestamp: String
+  read: Boolean
+}
+
+type GroupedNotificationItemPhotoComment {
+  comment: Comment @complexity(value: 10)
+  photo: Photo @complexity(value: 10)
+}
+
+type GroupedNotificationItemGalleryItem {
+  gallery: Gallery @complexity(value: 10)
+  photo: Photo @complexity(value: 10)
+}
+
+type GroupedNotificationItemPhotoQuest {
+  photo: Photo! @complexity(value: 10)
+  quest: Quest! @complexity(value: 10)
+}
+
+"""Slightly different type due to underlying request"""
+type GroupedNotificationItemQuestPhoto {
+  quest: Quest! @complexity(value: 10)
+  photo: Photo @complexity(value: 10)
+}
+
+union GroupedNotificationItem = Photo | User | Quest | Gallery | WorkshopResource | OtherResource | VideoResource | LivestreamResource | ArticleResource | GroupedNotificationItemPhotoComment | GroupedNotificationItemGalleryItem | GroupedNotificationItemPhotoQuest | GroupedNotificationItemQuestPhoto | CustomDomain
+
+type GroupedNotificationEdge {
+  # GroupedNotification is generated locally, use 0
+  node: GroupedNotification @complexity(value: 0)
+  cursor: String
+}
+
+type GroupedNotificationConnection {
+  edges: [GroupedNotificationEdge]
+  pageInfo: PageInfo
+
+  unreadCount: Int @deprecated(reason: "Please use `haveUnread`") @complexity(value: 10)
+  haveUnread: Boolean @complexity(value: 10)
+  unreadSince: String
+}
+
+# === END schema partial from src/schemas/notification/grouped_notification.graphqls ===
+
+# === BEGIN schema partial from src/schemas/notification/notification.graphqls ===
+type NotificationIcon {
+  src(size: UserAvatarResizeImageSize = SMALL): String!
+}
+
+type FollowInteraction {
+  legacyId: ID!
+  isFollowedByMe: Boolean!
+}
+
+type SubNotificationInfo {
+  groupedType: String!
+  startCursor: String!
+  endCursor: String!
+  totalSubCount: Int!
+  groupedTitle: String
+}
+
+union NotificationHeader = User | NotificationIcon
+
+union NotificationExtra = Photo | FollowInteraction
+
+type Notification implements Node {
+  id: ID!
+  legacyId: String!
+  type: NotificationAction!
+
+  """generated from action and links data"""
+  links: [String!]
+  headers: [NotificationHeader]!
+  content: String!
+  extras: [NotificationExtra]
+  createdAt: String!
+  read: Boolean!
+  grouped: Boolean!
+  subNotificationInfo: SubNotificationInfo
+}
+
+type NotificationConnection {
+  edges: [NotificationEdge]
+  pageInfo: PageInfo
+  haveUnread: Boolean @complexity(value: 10)
+}
+
+type NotificationEdge {
+  node: Notification
+  cursor: String
+}
+
+# === END schema partial from src/schemas/notification/notification.graphqls ===
+
+# === BEGIN schema partial from src/schemas/photo/liked_resource.graphqls ===
+"""
+likes,我的点赞
+"""
+union LikedResourceItem = Photo | Gallery | FeaturedBlog | Story | MoodGallery
+
+
+type LikedResourceItemEdge {
+    node: LikedResourceItem
+    cursor: String
+}
+
+type LikedResourceItemConnection {
+    edges: [LikedResourceItemEdge]
+    pageInfo: PageInfo
+    totalCount: Int
+    resourceType: LikedResourceType
+}
+
+enum LikedResourceType{
+    PHOTO
+    PHOTO_STORIES
+    MOOD_GALLERY
+    FEATURED_GALLERIES
+}
+
+enum LikeFilterType {
+    NSFW
+}
+
+input LikeSearchFilter {
+    key: LikeFilterType!
+    value: String!
+}
+
+# === END schema partial from src/schemas/photo/liked_resource.graphqls ===
+
+# === BEGIN schema partial from src/schemas/photo/photo.graphqls ===
+""" Photo Privacy Enum / 照片隐私枚举 """
+enum PhotoPrivacy {
+  """ 用户首页图 """
+  PROFILE
+  """ 公开图（可搜索但用户首页不可见) """
+  UNLISTED
+  """ 隐私图（不可搜索但用户首页不可见) """
+  LIMITED_ACCESS
+  """可见 包括用户首页图和公开图"""
+  VISIBLE
+  """PROFILE, UNLISTED and LIMITED_ACCESS"""
+  ALL
+}
+
+enum PhotoCategory {
+  ABSTRACT
+  AERIAL
+  ANIMALS
+  BLACK_AND_WHITE
+  BOUDOIR
+  CELEBRITIES
+  CITY_AND_ARCHITECTURE
+  COMMERCIAL
+  CONCERT
+  FAMILY
+  FASHION
+  FILM
+  FINE_ART
+  FOOD
+  JOURNALISM
+  LANDSCAPES
+  MACRO
+  NATURE
+  NIGHT
+  NUDE
+  PEOPLE
+  PERFORMING_ARTS
+  SPORT
+  STILL_LIFE
+  STREET
+  TRANSPORTATION
+  TRAVEL
+  UNDERWATER
+  URBAN_EXPLORATION
+  WEDDING
+  UNCATEGORIZED
+}
+
+"""
+Photo / 照片
+"""
+type Photo implements Node & Pulse {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  canonicalPath: String @complexity(value: 10)
+
+  name: String
+  description: String
+  category: PhotoCategory!
+  uploadedAt: String!
+
+  longitude: Float
+  latitude: Float
+  location: String
+
+  locationDetails: LocationDetails
+
+  width: Int!
+  height: Int!
+
+  takenAt: String
+  aperture: String
+  shutterSpeed: String
+  focalLength: String
+  iso: String
+  notSafeForWork: Boolean!
+  watermark: Boolean!
+  showExifData: Boolean!
+
+  privacy: PhotoPrivacy
+
+  camera: CameraInfo @complexity(value: 10) @deprecated(reason: "does not include GearBrand data, but used by mobile")
+  lens: LensInfo @complexity(value: 10) @deprecated(reason: "does not include GearBrand data, but used by mobile")
+
+  cameraGear: Camera @complexity(value: 10) @deprecated(reason: "breaks on UnverifiedCamera")
+  lensGear: Lens @complexity(value: 10) @deprecated(reason: "breaks on UnverifiedLens")
+
+  cameraOptional: CameraOption @complexity(value: 10)
+  lensOptional: LensOption @complexity(value: 10)
+
+  pulse: PhotoPulse @complexity(value: 10) @deprecated(reason: "please use `currentPulse`, `highestPulse`, and `highestPulseAchievedAt`")
+
+  """当前热度"""
+  currentPulse: Float @complexity(value: 10)
+
+  """最高热度"""
+  highestPulse: Float @complexity(value: 10)
+
+  """达到最高热度的时间戳"""
+  highestPulseAchievedAt: String @complexity(value: 10)
+
+  comments(first: Int = 10, after: String): CommentConnection @complexity(value: 10, multipliers: ["first"])
+
+  uploader: User!
+
+  # Only API call will be made, no need to use complexity multiplier
+  images(sizes: [Int!] = [4]): [PhotoResizeImage] @complexity(value: 10)
+
+  tags: [String!]! @complexity(value: 10)
+
+  likedByUsers(first: Int = 10, after: String): UserConnectionOnPhotoLikedByUsers @complexity(value: 10, multipliers: ["first"])
+  isLikedByMe: Boolean @complexity(value: 10)
+
+  inGalleries(first: Int = 10, after: String): GalleryConnection @complexity(value: 10)
+
+  licensing: LicensingPhoto @complexity(value: 10)
+
+  autoLicensing: AutoLicensingPhoto @complexity(value: 10)
+
+  """排序顺序 Editors > Popular > Upcoming > Fresh"""
+  contentStreams: [ContentStream!] @complexity(value: 10)
+
+  timesViewed: Int! @deprecated(reason: "Use `viewCount`.")
+
+  """图片浏览量"""
+  viewCount: Int!
+
+  inShortlist(questLegacyId: ID!): Boolean! @deprecated(reason: "Moved to PhotoEdge.")
+
+  quests: QuestInvolvement
+}
+
+type DiscoverCover {
+  title: String
+  cover: Photo @complexity(value: 10)
+}
+
+type PhotoEdge {
+  node: Photo @complexity(value: 10)
+  cursor: String
+
+  """当照片作为图库候选图时使用"""
+  licensingCandidateUpdatedAt: String @deprecated
+
+  # Quest Context
+  # questLegacyId can be skipped if PhotoEdge is a child of a quest.
+  inShortlist(questLegacyId: String): Boolean!
+
+  inQuest(questLegacyId: ID): Boolean!
+}
+
+type PhotoConnection {
+  edges: [PhotoEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+
+  licensingCandidatesUnViewCount(markAsViewed: Boolean = false): Int @complexity(value: 10)
+}
+
+type UserEdgeOnPhotoLikedByUsers {
+  node: User @complexity(value: 10)
+  cursor: String
+  likedAt: String
+}
+
+type UserConnectionOnPhotoLikedByUsers {
+  edges: [UserEdgeOnPhotoLikedByUsers]
+
+  pageInfo: PageInfo
+
+  totalCount: Int
+
+  isLikedByMe: Boolean @complexity(value: 10) @deprecated(reason: "Please use `Photo.isLikedByMe`")
+}
+
+type PhotoPublicInfoEdge {
+  """Global ID / 全局 ID"""
+  id: ID!
+
+  title: String!
+
+  # Only API call will be made, no need to use complexity multiplier
+  url(sizes: [Int!] = [4]): [PhotoResizeImage] @complexity(value: 10)
+
+  originUrl: String!
+
+  uploadedDate: Float!
+
+}
+
+type PhotoPublicDetailEdge {
+
+  """Global ID / 全局 ID"""
+  id: ID!
+
+  title: String!
+
+  # Only API call will be made, no need to use complexity multiplier
+  url(sizes: [Int!] = [4]): [PhotoResizeImage] @complexity(value: 10)
+
+  originUrl: String!
+
+  uploadedDate: Float!
+
+  description: String!
+
+  category: PhotoCategory!
+
+  tags: [String!]! @complexity(value: 10)
+
+  shootTime: Float!
+
+}
+
+type PhotoPublicInfoConnection {
+  edges: [PhotoPublicInfoEdge]
+  page: Int
+  size: Int
+  pages: Int
+  totalCount: Int
+}
+
+type Aggregate {
+  key: String
+  frequency: Float
+}
+
+type AggregateResponse {
+  aggregateType: String!
+  aggregates: [Aggregate]
+  photo: Photo
+}
+
+type PhotoAggregateResponse {
+  aggregateRes: AggregateResponse
+}
+
+type DownloadUrl {
+  downloadUrl: String
+}
+
+# === END schema partial from src/schemas/photo/photo.graphqls ===
+
+# === BEGIN schema partial from src/schemas/portfolios/folder.graphqls ===
+type Folder implements Node {
+  id: ID!
+  portfolioId: Int!
+  name: String!
+  description: String
+  coverPhoto: Photo
+  photos(first: Int = 10, after: String): PhotoConnection!
+  createdAt: String!
+  updatedAt: String
+}
+
+type GetMyFoldersByPhotoIdsResponse {
+  photoId: String!
+  folders: [Folder!]!
+}
+
+# === END schema partial from src/schemas/portfolios/folder.graphqls ===
+
+# === BEGIN schema partial from src/schemas/portfolios/portfolio.graphqls ===
+enum PortfolioStatus {
+  ONBOARDING
+  ACTIVE
+  INACTIVE
+}
+
+type PortfolioLocation {
+  city: String
+  country: String
+}
+
+type PortfolioSocialMedia {
+  twitter: String
+  instagram: String
+  facebook: String
+}
+
+type PortfolioCoverPhoto {
+  photo: Photo!
+}
+
+type PortfolioCoverAvatar {
+  avatar: UserAvatar!
+}
+
+type PortfolioCoverImage {
+  images(sizes: [Int!] = [4]): [PortfolioCoverResizeImage!]!
+}
+
+union PortfolioCover = PortfolioCoverPhoto | PortfolioCoverAvatar | PortfolioCoverImage
+
+enum PortfolioVisibility {
+  VISIBLE
+  HIDDEN
+}
+
+type PortfolioVisibilityOptions {
+  location: PortfolioVisibility!
+  pxProfile: PortfolioVisibility!
+  instagram: PortfolioVisibility!
+  facebook: PortfolioVisibility!
+  twitter: PortfolioVisibility!
+}
+
+enum PortfolioLegalType {
+  PX_PROVIDED
+  CUSTOM
+  HIDDEN
+}
+
+type PortfolioCustomLegalSettings {
+  url: String!
+}
+
+enum PortfolioBasicLegalType {
+  PX_PROVIDED
+  HIDDEN
+}
+
+type PortfolioBasicLegalSettings {
+  type: PortfolioBasicLegalType!
+}
+
+union PortfolioLegalSettings = PortfolioCustomLegalSettings | PortfolioBasicLegalSettings
+
+type Portfolio implements Node {
+  id: ID!
+  legacyId: String!
+  user: User!
+  userDisabled: Boolean!
+  status: PortfolioStatus!
+  title: String!
+  description: String!
+  deactivatedMessage: String
+  coverPhoto: PortfolioCover!
+  theme: Theme!
+  font: ThemeFont!
+  colour: ThemeColour!
+  appearance: ThemeAppearance!
+  termsOfUse: PortfolioLegalSettings!
+  privacyPolicy: PortfolioLegalSettings!
+  visibilityOptions: PortfolioVisibilityOptions!
+  createdAt: String!
+  updatedAt: String!
+  folders: [Folder]!
+  """google analytics tracking code"""
+  analyticsCode: String
+  coverImages(sizes: [Int!] = [4]): [PortfolioCoverResizeImage]
+  customDomain: CustomDomain
+  location: PortfolioLocation
+  socialMedia: PortfolioSocialMedia
+  email: String
+}
+
+# === END schema partial from src/schemas/portfolios/portfolio.graphqls ===
+
+# === BEGIN schema partial from src/schemas/portfolios/theme.graphqls ===
+enum ThemeAssetSize {
+  ORIGINAL
+}
+
+type ThemeAsset {
+  size: ThemeAssetSize
+  url: String!
+}
+
+enum ThemeFont {
+  INTER
+  ALEO
+  PT_SERIF
+}
+
+enum ThemeColour {
+  BORDER
+  ACCENT_ORANGE
+  ACCENT_GOLD
+  ACCENT_TEAL
+  ACCENT_BLUE
+  ACCENT_VIOLET
+  ACCENT_ASH
+  ACCENT_MONO
+}
+
+enum ThemeAppearance {
+  LIGHT
+  DARK
+}
+
+type Theme implements Node {
+  id: ID!
+  name: String!
+  description: String!
+  imageUrls(sizes: [ThemeAssetSize!] = [ORIGINAL]): [ThemeAsset!]!
+  defaultFont: ThemeFont!
+  defaultColour: ThemeColour!
+  defaultAppearance: ThemeAppearance!
+}
+
+# === END schema partial from src/schemas/portfolios/theme.graphqls ===
+
+# === BEGIN schema partial from src/schemas/portfolios/token.graphqls ===
+type PortfolioTemporaryToken {
+  value: String!
+}
+
+# === END schema partial from src/schemas/portfolios/token.graphqls ===
+
+# === BEGIN schema partial from src/schemas/query.graphqls ===
+enum SecurityTokenType {
+  PASSWORD
+  TFA_CODE
+}
+
+enum QuestFeedFilter {
+  ONGOING
+  ENDED
+  COMMUNITY
+  LICENSING
+}
+enum QuestLicensingPhotoCandidateFilter {
+  NOT_SUBMITTED
+  UNDER_REVIEW
+  CHANGE_REQUIRED
+  ACCEPTED
+  DECLINED
+  REMOVED
+  RELEASE_REQUIRED
+  DELETED
+}
+enum QuestPhotoUploadFromFilter {
+  COM
+  CN
+}
+
+enum StatsWindow {
+  LAST_SEVEN_DAYS
+  LAST_TWO_WEEKS
+  LAST_MONTH
+  LAST_THREE_MONTHS
+  LAST_SIX_MONTHS
+  LAST_YEAR
+}
+
+enum MyPhotosSort {
+  """Sorted by id desc, equivalent to created_at desc, but the ids are also desc"""
+  ID_DESC
+  """Sorted by created_at desc"""
+  CREATED_AT_DESC
+  """Sorted by view count desc, and then created_at desc"""
+  VIEW_COUNT_DESC
+  """Sorted by like count desc, and then created_at desc"""
+  LIKE_COUNT_DESC
+  """Sorted by comment & reply count desc, and then created_at desc"""
+  COMMENT_AND_REPLY_COUNT_DESC
+  """Sorted by highest pulse desc, and then created_at desc"""
+  HIGHEST_PULSE_DESC
+  """Sorted by created_at asc"""
+  CREATED_AT_ASC
+  """Sorted by view count asc, and then created_at asc"""
+  VIEW_COUNT_ASC
+  """Sorted by like count asc, and then created_at asc"""
+  LIKE_COUNT_ASC
+  """Sorted by comment & reply count asc, and then created_at asc"""
+  COMMENT_AND_REPLY_COUNT_ASC
+}
+
+enum LicensingSortType {
+  SUBMIT_DATE_ASC
+  SUBMIT_DATE_DESC
+  SOLD_TIMES_ASC
+  SOLD_TIMES_DESC
+  TOTAL_EARNINGS_ASC
+  TOTAL_EARNINGS_DESC
+  EXCLUSIVITY_ASC
+  EXCLUSIVITY_DESC
+}
+
+enum LikedPhotoSort {
+  LIKED_DATE_DESC
+  LIKED_DATE_ASC
+}
+
+enum MyGalleriesSort {
+  POSITION_ASC
+  PHOTO_ADDED_AT_DESC
+  CREATED_DATE_ASC
+  CREATED_DATE_DESC
+}
+
+enum GalleriesPrivacyType {
+  BOTH
+  PRIVATE
+  PUBLIC
+}
+
+enum SuggestPhotoSort {
+  SUGGEST_DATE_ASC
+  SUGGEST_DATE_DESC
+  VIEWS_ASC
+  VIEWS_DESC
+  LIKES_ASC
+  LIKES_DESC
+  COMMENTS_ASC
+  COMMENTS_DESC
+}
+
+enum WorkshopSort {
+  START_TIME_ASC
+  START_TIME_DESC
+}
+
+"""USER_LICENSING, QUEST_SUBMISSION"""
+enum ServiceName {
+  USER_PROFILE
+  GALLERY
+  QUEST_INSPIRATION
+  HOMEFEED
+}
+
+enum ResourceFilter {
+  UPCOMING
+}
+
+enum GearType {
+  CAMERA
+  LENS
+}
+
+"""查询主入口"""
+type Query {
+  """Single Resource Query by Global ID / 单个资源查询(使用全局ID)"""
+  node(id: ID!): Node @complexity(value: 10)
+
+  """Single Resource Query by Legacy DB ID / 单个资源查询(使用老资源ID)"""
+  nodeByLegacyId(resourceType: String!, legacyId: ID!): Node @complexity(value: 10)
+
+  """查询当前登录用户"""
+  me: User @complexity(value: 10)
+
+  userByUsername(username: String!): User @complexity(value: 10)
+
+  userSearch(
+    first: Int = 5
+    after: String
+    last: Int
+    before: String
+    search: String
+    filters: [UserSearchFilter!]
+    sort: UserSort = RELEVANCE
+  ): UserConnection @complexity(value: 10, multipliers: ["first"])
+
+  profileGroupsByUsername(username: String!): [Group] @complexity(value: 10)
+
+  """查询可以访问哪些功能"""
+  authorizedFeatures(
+    features: [AuthorizedFeature!]!
+  ) : [AuthorizedFeature!]! @complexity(value: 10, multipliers: ["features"])
+
+  """当前用户站内提醒"""
+  myGroupedNotifications(
+    last: Int
+    before: String
+  ) : GroupedNotificationConnection @complexity(value: 10, multipliers: ["last"])
+
+  """当前用户社区图列表页"""
+  myPhotos(
+    privacy: PhotoPrivacy
+    sort: MyPhotosSort = CREATED_AT_DESC
+    first: Int = 5
+    after: String
+  ) : PhotoConnection @complexity(value: 10, multipliers: ["first"])
+
+  """当前用户社区图列表页new"""
+  myPhotosV2(
+    privacy: PhotoPrivacy = ALL
+    sort: MyPhotosSort = CREATED_AT_DESC
+    first: Int = 5
+    after: String
+  ) : PhotoConnection @complexity(value: 10, multipliers: ["first"])
+
+  """Might not return exactly `first` number of photos in cases where some photos from the MS are null"""
+  likedPhotos(
+    first: Int = 5
+    after: String
+    sort: LikedPhotoSort = LIKED_DATE_DESC
+  ): PhotoConnection @complexity(value: 10, multipliers: ["first"])
+
+  pageLikedResource(
+    first: Int = 5
+    after: String
+    sort: LikedPhotoSort = LIKED_DATE_DESC
+    filter: LikedResourceType!
+    search: [LikeSearchFilter!]
+  ): LikedResourceItemConnection @complexity(value: 10, multipliers: ["first"])
+
+  userPhotos(
+    first: Int = 5
+    after: String
+    last: Int
+    before: String
+    photoLegacyId: String!
+  ): PhotoConnection @complexity(value: 10, multipliers: ["first"])
+
+  userPublicPhotos(
+    """
+    third client clientId;
+    """
+    clientId: String!
+    """
+    third client clientSecret;
+    """
+    clientSecret: String!
+    """
+    authorization_code.
+    """
+    token: String!
+    page: Int = 1
+    size: Int = 20
+    startUploadedDate: Float
+    endUploadedDate: Float
+  ): PhotoPublicInfoConnection @complexity(value: 10)
+
+  userPublicPhotoDetail(
+    """
+    third client clientId;
+    """
+    clientId: String!
+    """
+    third client clientSecret;
+    """
+    clientSecret: String!
+    """
+    authorization_code.
+    """
+    token: String!
+    photoId: String!
+  ): PhotoPublicDetailEdge
+
+  photos(
+    first: Int = 5
+    after: String
+    last: Int
+    before: String
+    serviceName: ServiceName!
+    serviceLegacyId: String!
+    inspirationGalleryId: ID
+    inclusive: Boolean = false
+    countPhotoView: Boolean = false
+  ): PhotoConnection @complexity(value: 10, multipliers: ["first"])
+
+  photoSearch(
+    first: Int = 5
+    after: String
+    last: Int
+    before: String
+    search: String
+    filters: [PhotoSearchFilter!]
+    sort: PhotoSort = RELEVANCE
+  ): PhotoConnection @complexity(value: 10, multipliers: ["first"])
+
+  photoDiscoverSearch (
+    first: Int = 5
+    after: String
+    last: Int
+    before: String
+    search: String
+    filters: [PhotoDiscoverSearchFilter!]
+    sort: PhotoDiscoverSort = NONE
+  ): PhotoConnection @complexity(value: 10, multipliers: ["first"])
+
+  gallerySearch(
+    first: Int = 5
+    after: String
+    last: Int
+    before: String
+    search: String
+    filters: [GallerySearchFilter!]
+    sort: GallerySort = RELEVANCE
+  ): GalleryConnection @complexity(value: 10, multipliers: ["first"])
+
+  myUnlicensedPhotos(
+    first: Int = 5
+    after: String
+    sort: PhotoSort = NEWEST
+  ) : PhotoConnection @complexity(value: 10, multipliers: ["first"])
+
+  """当前用户图库候选图列表页"""
+  myLicensingPhotoCandidates(
+    filter: LicensingPhotoCandidateFilter
+    first: Int = 5
+    after: String
+  ) : PhotoConnection @complexity(value: 10, multipliers: ["first"])
+
+  """当前用户图库候选图列表页-V2新版"""
+  myLicensingPhotoCandidatesV2(
+    filter: LicensingPhotoCandidateFilter
+    sort: SuggestPhotoSort=SUGGEST_DATE_ASC
+    first: Int = 5
+    after: String
+  ) : PhotoConnection @complexity(value: 10, multipliers: ["first"])
+
+  """当前用户图库图列表页"""
+  myLicensingPhotos(
+    status: LicensingPhotoStatus!
+    first: Int = 5
+    after: String
+  ) : LicensingPhotoConnection @complexity(value: 10, multipliers: ["first"])
+
+  """当前用户图库图列表页web"""
+  myLicensingPhotosV2(
+    sort: LicensingSortType
+    status: LicensingPhotoStatus!
+    first: Int = 5
+    after: String
+  ) : LicensingPhotoConnection @complexity(value: 10, multipliers: ["first"])
+
+  """用户通过token获取表单详情信息，用于model release签约"""
+  findModelReleaseInvitationByToken(token: String!): ModelReleaseMetadata @complexity(value: 10)@deprecated(reason: "Please use query in `findModelReleaseInvitationByToken2`")
+
+  """用户通过token获取表单详情信息，用于model release签约"""
+  findModelReleaseInvitationByTokenV2(token: String!): LicensingRelease @complexity(value: 10)
+
+  """当前用户肖像权/物权列表"""
+  myLicensingReleases(
+    first: Int = 10
+    after: String
+    filter: ReleaseType
+  ) : LicensingReleaseConnection @complexity(value: 10, multipliers: ["first"])
+
+  """查询大赛列表页"""
+  quests(
+    filter: QuestFeedFilter
+    locale: String
+    first: Int = 5
+    after: String
+  ) : QuestConnection @complexity(value: 10, multipliers: ["first"])
+
+  questInspirationPhotos(
+    questLegacyId: ID!
+    first: Int = 20
+    after: String
+  ) : PhotoConnection @complexity(value: 10, multipliers: ["first"]) @deprecated(reason: "Please use query in `Quest`")
+
+  questSubmittedPhotos(
+    questLegacyId: ID!
+    first: Int = 20
+    after: String
+    filter:QuestLicensingPhotoCandidateFilter
+  ) : PhotoConnection @complexity(value: 10, multipliers: ["first"]) @deprecated(reason: "Please use query in `Quest`")
+
+  myStats(
+    window: StatsWindow!
+  ) : MyStatsPayload @complexity(value: 0)
+
+  myGalleries(
+    sort: MyGalleriesSort = POSITION_ASC
+    """fuzzy gallery name to search"""
+    search: String
+    first: Int = 10
+    after: String
+    showNude: Boolean = true
+  ) : GalleryConnection @complexity(value: 10, multipliers: ["first"])
+
+  myGalleriesV2(
+    sort: MyGalleriesSort = POSITION_ASC
+    """fuzzy gallery name to search"""
+    search: String
+    first: Int = 10
+    after: String
+    showNude: Boolean = true
+    privacy: GalleriesPrivacyType = BOTH
+  ) : GalleryConnection @complexity(value: 10, multipliers: ["first"])
+
+  photoStories(
+    privacy: StoryPrivacy
+    sort: PhotoStorySort = CREATED_AT_DESC
+    first: Int = 10
+    after: String
+    ownerId: ID
+    filters: [StorySearchFilter]
+    search: String
+    realTime: Boolean = false
+    """是否传统分页"""
+    isByPage: Boolean = false
+  ) : PhotoStoryConnection @complexity(value: 10, multipliers: ["first"])
+
+  myRecommendGalleries(
+    first: Int = 3
+    after: String
+  ): RecommendGalleryConnection @complexity(value: 10, multipliers: ["first"])
+
+  """find a user's gallery pagable list"""
+  galleries(
+    """the user legacy id who own the these gallery"""
+    galleryOwnerLegacyId: ID!
+    sort: MyGalleriesSort = POSITION_ASC
+    """fuzzy gallery name to search"""
+    search: String
+    first: Int = 10
+    after: String
+    showNude: Boolean = false
+  ) : GalleryConnection @complexity(value: 10, multipliers: ["first"])
+
+  """get a gallery data by gallery legacy id"""
+  gallery(
+    galleryLegacyId: ID!
+  ): Gallery @deprecated(reason: "please use nodeByLegacyId instead")
+
+  """Public galleries accessed by a public slug and owner id - or - token"""
+  galleryByOwnerIdAndSlugOrToken(
+    ownerLegacyId: String
+    slug: String
+    token: String
+  ): Gallery
+
+  galleryByOwnerIdAndSlug(
+    ownerLegacyId: String!
+    slug: String!
+  ): Gallery @deprecated(reason: "use  galleryByOwnerIdAndSlugOrToken instead")
+
+  myGalleryIdsOfPhoto(
+    photoLegacyIds: [ID!]!
+  ) : [GallerysIdOfPhoto] @complexity(value: 10, multipliers: ["photoLegacyIds"])
+
+  productFeed(
+    period: SubscriptionPeriod!
+  ) : [ProductEdge!]! @complexity(value: 10)
+
+  """boss sale history list query"""
+  mySalesHistorys(
+    first: Int = 10
+    after: String
+    year: Int
+    source: SaleSource
+    territory: String
+    payoutStatus: PayoutStatus
+  ): SaleHistoryConnection @complexity(value: 10, multipliers: ["first"])
+
+  """boss payout history list query"""
+  myPayoutHistorys(
+    first: Int = 10
+    after: String
+  ): PayoutHistoryConnection @complexity(value: 10, multipliers: ["first"])
+
+  myPayoutHistorysV2(
+    first: Int = 10
+    after: String
+  ): PayoutHistoryConnection @complexity(value: 10, multipliers: ["first"])
+
+  myLicensingPhotoSaleDetail(
+    first: Int = 10
+    after: String
+    photoId: ID!
+  ): SaleDetailConnection @complexity(value: 10, multipliers: ["first"])
+
+  """boss my balance query"""
+  myBalance: MyBalance @complexity(value: 10)
+
+  isFirstFillTipalti: IsFirstFillTipaltiForm @complexity(value: 10)
+
+  myTipaltiIframeUrls: TipaltiIframeUrl @complexity(value: 10)
+
+  tipaltiPayable: TipaltiPayable @complexity(value: 10)
+
+  tipaltiSetup: TipaltiSetup @complexity(value: 10)
+
+  myAvailableFilterYear: [String] @complexity(value: 10)
+
+  myAvailableFilterSource(
+    year: Int
+  ): [MapEntry] @complexity(value: 10)
+
+  myAvailableFilterTerritory(
+    year: Int
+    source: SaleSource
+  ): [String] @complexity(value: 10)
+
+  myAvailableFilterPayoutStatus(
+    year: Int
+    source: SaleSource
+    territory: String
+  ): [MapEntry] @complexity(value: 10)
+
+  """my following user list for search username or full name"""
+  mySearchFollowingUsers(
+    first: Int = 10
+    after: String
+    searchText: String
+  ): UserConnection
+
+  """workshop resource hub section"""
+  resourceDiscoverSectionSearch(
+    first: Int = 10
+    after: String
+    discoverSectionType: DiscoverSectionType!
+    lat: Float
+    lon: Float
+    distance: Float
+  ): ResourceConnection
+
+  """workshop resource search"""
+  resourceSearch(
+    first: Int = 10
+    after: String
+    hasPrice: Boolean
+    title: String
+    userId: String
+    resourceType: WorkshopResourceType
+    formatType: WorkshopFormatType
+    sortedType: WorkshopSortedType
+    lat: Float
+    lon: Float
+    distance: Float
+  ): ResourceConnection
+
+  """workshop autocomplete """
+  resourceAutocomplete(
+    size: Int = 10
+    keywords: String
+  ): [ResourceAutocoplete]
+
+  """my following user list for new messenger"""
+  mySearchMessengerFriends(
+    first: Int = 10
+    after: String
+    searchText: String
+  ): UserConnection
+
+  """my inbox conversation list"""
+  myInboxConversation(
+    first: Int = 10
+    after: String
+  ): UserInboxConversationInfoConnection
+
+  """my inbox conversation list for search username or full name"""
+  mySearchInboxConversation(
+    first: Int = 10
+    after: String
+    searchText: String
+  ): UserInboxConversationInfoConnection
+
+  """get my stranger conversation list"""
+  myStrangerInboxConversation: UserInboxConversationInfoConnection
+
+  conversationMessage(
+    first: Int = 10
+    after: String
+    conversationId: String!
+  ): MessageConnection
+
+  getSocketMessageInfo(
+    id: String
+    sender: String
+    receiver: String
+    kind: String
+    read: Boolean
+    content: String
+    createdAt: String
+  ): Message
+
+  """get my stranger conversation total"""
+  myStrangerMesssageCnt: Int
+
+  isMessageBlock(blockId: String!): Boolean
+
+  """totalCount on the connection will always be null"""
+  myChatBlockedUsers(
+    first: Int = 20
+    after: String
+  ): UserConnection @complexity(value: 10, multipliers: ["first"])
+
+  isHomefeedNeedRecommend: Boolean @complexity(value: 10)
+
+  isActivityfeedNeedRecommend: Boolean @complexity(value: 10)
+
+  upcomingWorkshops(
+    sort: WorkshopSort = START_TIME_ASC
+    first: Int = 5
+    after: String
+    ownerUserLegacyId: Int!
+  ): WorkshopConnection @complexity(value: 10, multipliers: ["first"])
+
+  myHomefeeds(
+    first: Int = 5
+    after: String
+    recommendations: Boolean = true
+    excludeNude: Boolean = false
+  ): HomefeedConnection @complexity(value: 10, multipliers: ["first"])
+
+  myHomefeed(
+    first: Int = 5
+    after: String
+    excludeNude: Boolean = false
+  ): HomefeedItemConnection @complexity(value: 10, multipliers: ["first"])
+
+  featuredPhotographers(
+    first: Int = 5
+    after: String
+    ignoreDismissal: Boolean = false
+  ): FeaturedPhotographerConnection @complexity(value: 10, multipliers: ["first"])
+
+  """ memebership site promotion query"""
+  sitePromotion: SitePromotion @complexity(value: 10)
+
+  """Get web accessToken/用户登录获取web accessToken"""
+  webAccessToken(
+    captchaVersion: String
+    captchaResponse: String
+    """
+    The username of user to login, for google,facebook and apple login, the username is 'from_google','from_facebook' and 'from_apple'
+    """
+    username: String!
+    """
+    The password of user to login, for google,facebook and apple login, the password is the accessToken given by google,facebook and apple.
+    """
+    password: String!
+  ): WebAccessTokenResponse
+
+  """Get oauth2 accessToken/用户通过oauth2 登录获取accessToken"""
+  oauth2AccessToken(
+    """
+    The standard 'Basic access authentication' of clientId and secretId.
+
+    For example in Java:
+
+    String clientCert = "Basic " + Base64.getUrlEncoder().encodeToString((clientId + ":" + clientSecret).getBytes());
+    """
+    clientCert: String!
+    grantType: String = "password"
+    scope: String = "official"
+    """
+    The username of user to login, for google,facebook and apple login, the username is 'from_google','from_facebook' and 'from_apple'
+    """
+    username: String!
+    """
+    The password of user to login, for google,facebook and apple login, the password is the accessToken given by google,facebook and apple.
+    """
+    password: String!
+  ): AccessToken
+
+  """第三方产品 获取 500px oauth2 登录界面"""
+  oauth2LoginPage(
+    """
+    third client clientId;
+    """
+    clientId: String!
+    """
+    可选，登录授权后回调页面，不传则回调默认回调界面
+    """
+    callbackUrl: String
+    """
+    回调时，回传此字段.
+    """
+    state: String
+  ): LoginUrl
+
+  """获取第三方callback url with oauth2 code"""
+  oauth2GetCallBackUrl(
+    """
+    third client clientId;
+    """
+    clientId: String!
+    """
+    用户勾选授权资源code，like： 1,2
+    """
+    resourceAuth: String!
+    """
+    第三方回调页面，path里有值就传.
+    """
+    callbackUrl: String
+    """
+    回调时，回传此字段, path里有值就传.
+    """
+    state: String
+  ): CallbackUrl
+
+  """获取登录用户信息和第三方产品信息"""
+  oauth2LoginInfoAndClientInfo(
+    """
+    third client clientId;
+    """
+    clientId: String!
+  ): LoginInfoAndClientInfo
+
+  """After login， client with authorization_code get oauth2 accessToken and user public info/用户登录后第三方产品通过授权码获取accessToken和用户公开信息"""
+  oauth2AccessTokenByCode(
+    """
+    third client clientId;
+    """
+    clientId: String!
+    """
+    third client clientSecret;
+    """
+    clientSecret: String!
+    """
+    authorization_code.
+    """
+    code: String!
+  ): UserInfoAndToken
+
+    """get user public info by oauth2 access token/获取用户公开信息"""
+  oauth2UserPublicInfo(
+    """
+    third client clientId;
+    """
+    clientId: String!
+    """
+    third client clientSecret;
+    """
+    clientSecret: String!
+    """
+    authorization_code.
+    """
+    token: String!
+  ): UserPublicInfo
+
+
+  """
+    Get new accessToken by refreshToken/通过refreshToken刷新accessToken
+  """
+  oauth2RefreshAccessToken(
+    """
+    The standard 'Basic access authentication' of clientId and secretId.
+
+    For example in Java:
+
+    String clientCert = "Basic " + Base64.getUrlEncoder().encodeToString((clientId + ":" + clientSecret).getBytes());
+    """
+    clientCert: String!
+    """
+    The refresh token given by oauth2-server lastTime.
+    """
+    refreshToken: String!
+  ): AccessToken
+
+  editorChoicePhotos: [Photo] @complexity(value: 10)
+
+  bestGalleriesPhotos: [Photo] @complexity(value: 10)
+
+  questsPhotos: [Photo] @complexity(value: 10)
+
+  resourcePhotos: [Photo] @complexity(value: 10)
+
+  activityfeeds(
+    first: Int = 5
+    after: String
+    excludeNude: Boolean = false
+  ): ActivityfeedConnection @complexity(value: 10, multipliers: ["first"])
+
+  """
+  get the pageable data of newly added to a gallery since it was last published.
+  """
+  newlyAddedGalleryPhotos(
+    legacyGalleryId: ID!
+    first: Int = 10
+    after: String
+  ): PhotoConnectionForPhotosOnGallery @complexity(value: 10, multipliers: ["first"])
+
+  getResourceByLegacyId(
+    legacyId: ID!
+  ): Resource
+
+  """
+  Passing "filter: Upcoming" means only resources with a startTime in the future or null are returned.
+  """
+  getUserResources(
+    legacyId: ID!
+    first: Int = 20
+    after: String
+    filter: ResourceFilter
+  ): ResourceConnection
+
+  getResourceByUserIdAndSlug(
+    userId: String!
+    slug: String!
+  ): Resource
+
+  getUserDraftResourceCount: Int @complexity(value: 10)
+
+  listPortfolioThemes(sizes: [ThemeAssetSize!] = [ORIGINAL]): [Theme!]!
+
+  getPortfolioByUserId(userId: String!): Portfolio @deprecated(reason: "Please use getPortfolioById")
+
+  getPortfolioById(portfolioId: String!): Portfolio
+
+  getPortfolioByDomain(domain: String!): Portfolio
+
+  getFolderById(id: ID!): Folder
+
+  getMyFoldersByPhotoIds(photoIds: [String!]!): [GetMyFoldersByPhotoIdsResponse!]!
+
+  """
+  get the suggest keyword of uploaed photo
+  photoUrl and photoBase64Content can not be empty at the same time.
+  """
+  getPhotoKeywords(
+    """the id of uploaded photo"""
+    photoId: ID!
+    """the id of user who uploaded the photo"""
+    userId: ID!
+    """the url of photo with resize size (Optional, when photoUrl is empty, the photoBase64Content can't be null)"""
+    photoUrl: String
+    """
+    The photo content encoded with base64 (Optional, when photoBase64Content is empty, the photoUrl can't be null)
+    """
+    photoBase64Content: String
+    """the size of keywords list return"""
+    quantity: Int = 15
+  ): [Keyword]
+
+  getAiDetectionData(
+    """the id of uploaded photo"""
+    photoId: ID!
+    """the id of user who uploaded the photo"""
+    userId: ID!
+    """
+    The url of photo with resize size. (Optional, to specific the size of photo, skip the resized photo url generating).
+    """
+    photoUrl: String
+    """
+    (only for keyword) The photo content encoded with base64. (Optional, to specific photo content to be computed).
+    """
+    photoBase64Content: String
+    """the size of keywords list return"""
+    keywordsQuantity: Int = 15
+  ): LiveAiData!
+
+  """
+  batch get keywords for multiple photos and get the intersection collection and union collection of keyword.
+  """
+  batchGetPhotoKeywords(
+    """the list of photo information"""
+    photos: [PhotoPayload!]!
+    """the userId who own those photos"""
+    userId: ID!
+    """the number of intersection colletion size of keyword need to return."""
+    intersectionQuantity: Int = 15
+    """the number of union colletion size of keyword need to return."""
+    unionQuantity: Int = 30
+  ): BatchKeyword
+
+  getAiQualityData(
+    """the id of uploaded photo"""
+    photoIds: [ID!]!
+  ): [AiQualityData]!
+
+  getAiKeywordData(
+    """the  id of uploaded photo"""
+    photoIds: [ID!]!
+  ): [AiKeywordData]!
+
+  featuresCoverPhoto(
+    """if includeCovers is null or missing, all cover photos will be returned"""
+    includeCovers: [PhotoDiscoverSectionCoverType!]
+  ):[DiscoverCover] @complexity(value: 10)
+
+  categoriesCoverPhoto:[DiscoverCover] @complexity(value: 10)
+
+  """photo Discover section"""
+  photoDiscoverSectionSearch(
+    first: Int = 50
+    after: String
+    discoverSectionType: PhotoDiscoverSectionType!
+    followersCount: Int
+    personalizedCategories: Boolean = false
+    categories: [PhotoCategory!]
+  ): PhotoConnection
+
+  getCustomDomainByFQDN(fqdn: String!): CustomDomain
+
+  getCustomDomainByPortfolioId(portfolioId: String!): CustomDomain
+
+  getExploreFeed(first: Int = 10, after: String): ExploreConnection!
+
+  """to detect if a account of a user can be deleted."""
+  getCurrentUserAccountDeletable(legacyUserId: String!): UserAccountDeletable!
+
+  """to verify a password or TFA code is valid of a user."""
+  verifySecurityToken(legacyUserId: String! securityToken: String! securityTokenType: SecurityTokenType!): Boolean!
+
+  """get the user account status by email, to see if the account exist and return some data of the account."""
+  getUserAccountStatus(email:String!): UserAccountStatus!
+
+  getRemoteConfig(clientId: Int!, version: String): Config
+
+  """fetch hire locations by user id"""
+  getUserHireLocations(userId: String!): HireLocationsPayload
+
+  """fetch hire location by latitue and longitude"""
+  getHireLocations(latitude: Float!, longitude: Float!): HireLocationsPayload
+
+  """fetch location data by place id"""
+  getLocation(placeId: String!): Location
+
+  getGear(
+    type: GearType!,
+    """Use either model AND brand OR legacyId. If legacyId is provided, the model and brand are ignored"""
+    brand: String,
+    model: String,
+    legacyId: String
+  ): Gear
+
+  """ Get photos about search by aggregate """
+  photosAggregationSearch(
+    term: String
+    tag: String
+    geo: String
+    only: String
+    exclude: String
+    userId: Float
+    createdAfterDaysAgo: Int
+    wasFeaturedType: String
+    followersCount: String
+    sort: String
+    page: Int
+    rpp: Int
+    excludeNude: Boolean
+    mediaType: String
+    likedBy: String
+    category: Int
+    aggregate: String!
+    top: Int
+  ): PhotoAggregateResponse @complexity(value: 10, multipliers: ["first"])
+
+  """ Get photos search by tag """
+  photosLikeSearch(
+    term: String
+    terms: String
+    tag: String
+    geo: String
+    only: String
+    exclude: String
+    userId: Float
+    createdAfterDaysAgo: Int
+    wasFeaturedType: String
+    followersCount: String
+    sort: String
+    page: Int
+    rpp: Int
+    imageSize: String
+    excludeNude: Boolean!
+    mediaType: String
+    likedBy: String
+    category: Int
+    camera: String
+    lens: String
+  ): PhotoConnection @complexity(value: 10, multipliers: ["first"])
+
+  """for list of individual notifications, Try to use grouped param to pick out single or grouped notification to query"""
+  myNotifications(
+    first: Int = 5
+    after: String
+    grouped: Boolean = false
+  ): NotificationConnection
+
+  mySubNotifications(
+    first: Int = 5
+    after: String!
+    groupedType: String!
+    groupedEndCursor: String!
+  ): NotificationConnection
+
+  """Verify playstore purchase"""
+  verifyPlayStorePurchase(
+    packageName: String!
+    subscriptionId: String!
+    playstoreToken: String!
+  ): VerifyPlayStore
+
+  """This query includes internal photo view tracking. Try to use maximum once per photo query."""
+  photoByLegacyId(
+    photoId: String!,
+    countPhotoView: Boolean = true
+  ): Photo
+
+  getMembershipInfo(tier: MembershipTier): [MembershipInfo]
+
+  """
+  Get header images for Quest Overview with metadata. Data is defined in data_sources/quest/quest_header
+  When not in production env, we use a default photo id to avoid throwing errors. The photo meta data is wrong, but is right in production
+  """
+  questHeaderPhotos: [QuestHeaderPhoto]
+
+  getUserBlockList(first: Int, after: String): UserConnection
+
+  downloadUrlByPhotoId(
+    photoId: ID!
+    licensingDownload: Boolean = false
+  ): DownloadUrl
+
+  exploreMoodGallery(
+    first: Int
+    after: String
+  ): MoodGalleryConnection
+
+  moodGalleries(
+    status: MoodStatus = CREATED
+    sort: MoodGalleriesSort = ACTIVITY_DATE_DESC
+    page: Int = 1
+    size: Int = 20
+  ) : MoodGalleriesConnection @complexity(value: 20, multipliers: ["first"])
+
+  getMoodDetailById(moodId: ID!): MoodGallery
+
+  getMoodDetailBySlug(slug: String!): MoodGallery
+
+  addSpecificPhotosToMoodGallery(photoIds: String!): [MoodGalleryItem]
+
+  aiGeneratePhoto(uuid: String,keyWords: String!,photoNumber:Int!): [MoodGalleryItem]
+
+  aiGenerateMoodTitle(uuid: String!): String
+
+  getStoryDetailById(storyId: ID!): Story
+
+  getStoryDetailBySlug(slug: String!): Story
+
+  getRelateStoryByPhotoId(photoIds: [ID!]): [Story]
+
+  viewDataStat(
+    viewId:ID!,
+    filter: LikedResourceType!
+  ):LikedResourceItem
+}
+
+# === END schema partial from src/schemas/query.graphqls ===
+
+# === BEGIN schema partial from src/schemas/quest/campaign_signup.graphqls ===
+enum Campaign {
+  NFT
+}
+
+# === END schema partial from src/schemas/quest/campaign_signup.graphqls ===
+
+# === BEGIN schema partial from src/schemas/quest/quest.graphqls ===
+enum QuestStatus {
+  DRAFT
+  PUBLISHED
+  COMPLETED
+  DELETED
+}
+
+"""
+大赛
+"""
+type Quest implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  canonicalPath: String
+
+  status: QuestStatus
+
+  title: String
+  slug: String @deprecated(reason: "Use `canonicalPath`.")
+  brief: String
+  rules: String
+
+  tips: String
+  licensingDescription: String
+
+  licensing: Boolean
+
+  startsAt: String
+  endsAt: String
+  completedAt: String
+
+  prizeName: String
+  prizeDescription: String
+  prizeImageUrl: String
+
+  cover: Photo @complexity(value: 10)
+
+  judge: User @complexity(value: 10)
+  judgeBio: String
+
+  winnerPageUrl: String
+
+  """For both sponsored and branded quest / 赞助或者品牌大赛使用"""
+  sponsorName: String
+
+  """For both sponsored and branded quest, a logo under the quest title / 赞助或者品牌大赛使用, 赞助商商标(小)"""
+  sponsorLogoUrl: String
+
+  """For both sponsored and branded quest, a description of sponsor/brand / 赞助或者品牌大赛使用, 赞助商介绍"""
+  sponsorBlurb: String
+  brandBlurb: String
+
+  """For branded quest only, an image displayed with brand blurb / 品牌大赛专用，品牌配图"""
+  brandImageryUrl: String
+
+  """For branded quest only, an label of Action button / 品牌大赛专用，跳转按钮名"""
+  brandCtaLabel: String
+
+  """For branded quest only, a target url of Action button / 品牌大赛专用，跳转按钮URL"""
+  brandCtaUrl: String
+
+  geofenced: Boolean
+  isUserInGeofence: Boolean @complexity(value: 10)
+
+  winners: [Photo] @complexity(value: 10)
+
+  """ winners for muti topic quest """
+  multiTopicWinnerList:[QuestWinner]
+
+  multiTopic: Boolean
+
+  judgeList:[QuestJudge]
+
+  topics:[QuestTopic]
+
+  """Photos added to Quest inspiration internal gallery"""
+  inspirationPhotos(
+    first: Int = 20
+    after: String
+    last: Int
+    before: String
+  inspirationGalleryId: ID
+  ) : PhotoConnection @complexity(value: 10, multipliers: ["first"])
+
+  """Photos submitted to Quest"""
+  submittedPhotos(
+    first: Int = 20
+    after: String
+    last: Int
+    before: String
+    licensingFilter: QuestLicensingPhotoCandidateFilter
+    legacyPage: Int
+    questTopicId: ID
+  uploadFromFilter: QuestPhotoUploadFromFilter
+  ) : PhotoConnection @complexity(value: 10, multipliers: ["first"])
+
+  """my photos submitted to Quest"""
+  mySubmittedPhotos(
+    first: Int = 20
+    legacyPage: Int = 1
+    questTopicId: ID
+  ) : PhotoConnection @complexity(value: 10, multipliers: ["first"])
+
+  """Photos shortlisted in Quest"""
+  shortlistedPhotos(
+    first: Int = 20
+    after: String
+  questTopicId: ID
+  ) : PhotoConnection @complexity(value: 10, multipliers: ["first"])
+}
+
+type QuestWinner {
+  topic:QuestTopic
+  photo:Photo
+}
+
+type QuestTopic {
+  questTopicId: ID!
+  questId: ID!
+  inspirationGalleryId: ID
+  topicName: String!
+  mySubmittedCount: Int
+}
+
+type QuestJudge {
+  judge: User @complexity(value: 10)
+  judgeBio: String
+  judgeNotIn500px: Boolean!
+  personalUrl: String
+  judgeAvatar: String
+  judgeName: String
+}
+
+type QuestEdge {
+  node: Quest @complexity(value: 10)
+  cursor: String
+}
+
+type QuestConnection {
+  edges: [QuestEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+}
+
+type QuestInvolvement {
+  won(
+  first: Int = 5
+  after: String
+) : QuestConnection @complexity(value: 10, multipliers: ["first"])
+
+  participated(
+  first: Int = 5
+  after: String
+) : QuestConnection @complexity(value: 10, multipliers: ["first"])
+}
+
+type QuestHeaderImages {
+  android: String!
+  ios: String!
+  webDesktop: String!
+  webMobile: String!
+}
+
+type QuestHeaderPhoto {
+  photo: Photo!
+  imageUrl: QuestHeaderImages!
+  text: String!
+}
+
+# === END schema partial from src/schemas/quest/quest.graphqls ===
+
+# === BEGIN schema partial from src/schemas/relay.graphqls ===
+"""
+Base interface for all resources in Relay server spec
+"""
+interface Node {
+  id: ID!
+}
+
+"""
+Cursor-based pagination info in Relay server spec
+"""
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+  currentPageLegacy: Int
+  legacyTotalPages: Int
+}
+# === END schema partial from src/schemas/relay.graphqls ===
+
+# === BEGIN schema partial from src/schemas/resize/licensing_photo_resize_image.graphqls ===
+"""
+PhotoResizeImage / 切图后CDN图片资源
+"""
+type LicensingPhotoResizeImage implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  """图片尺寸代号"""
+  size: Int!
+  url: String!
+  format: String!
+}
+
+# === END schema partial from src/schemas/resize/licensing_photo_resize_image.graphqls ===
+
+# === BEGIN schema partial from src/schemas/resize/photo_resize_image.graphqls ===
+"""
+PhotoResizeImage / 切图后CDN图片资源
+"""
+type PhotoResizeImage implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  """图片尺寸代号"""
+  size: Int!
+  jpegUrl: String!
+  webpUrl: String!
+  url: String! @deprecated(reason: "please use jpegUrl or webpUrl")
+  format: String! @deprecated(reason: "please use jpegUrl or webpUrl to infer format")
+}
+
+# === END schema partial from src/schemas/resize/photo_resize_image.graphqls ===
+
+# === BEGIN schema partial from src/schemas/resize/portfolio_cover_resize_image.graphqls ===
+"""
+PortfolioCoverResizeImage / 切图后CDN图片资源
+"""
+type PortfolioCoverResizeImage implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  """图片尺寸代号"""
+  size: Int!
+  url: String!
+}
+# === END schema partial from src/schemas/resize/portfolio_cover_resize_image.graphqls ===
+
+# === BEGIN schema partial from src/schemas/resize/resource_cover_resize_image.graphqls ===
+"""
+ResourceCoverResizeImage / 切图后CDN图片资源
+"""
+type ResourceCoverResizeImage implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  """图片尺寸代号"""
+  size: Int!
+  url: String!
+}
+
+# === END schema partial from src/schemas/resize/resource_cover_resize_image.graphqls ===
+
+# === BEGIN schema partial from src/schemas/resize/user_avatar_resize_image.graphqls ===
+enum UserAvatarResizeImageSize {
+  TINY
+  SMALL
+  MEDIUM
+  LARGE
+  COVER
+}
+"""
+UserAvatarResizeImage / 用户头像切图后CDN图片资源
+"""
+type UserAvatarResizeImage implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  size: UserAvatarResizeImageSize!
+  url: String!
+}
+
+# === END schema partial from src/schemas/resize/user_avatar_resize_image.graphqls ===
+
+# === BEGIN schema partial from src/schemas/resources/resource.graphqls ===
+enum ResourceState {
+  DRAFT,
+  ACTIVE,
+  ENDED
+}
+
+enum ResourceType {
+  WORKSHOP,
+  ARTICLE,
+  LIVESTREAM,
+  VIDEO,
+  OTHER
+}
+
+enum ResourceScheduled {
+  SCHEDULED,
+  UNSCHEDULED
+}
+
+type Payment {
+  currency: String
+  price: Float
+}
+
+type Stats {
+  resourcePageViewCount: Int!
+  resourceLearnMoreClickCount: Int!
+}
+
+type WorkshopResource implements Node {
+  id: ID!
+  legacyId: String
+  title: String
+  description: String
+  payment: Payment
+  link: String
+  creator: User
+  cover: Photo
+  location: Location
+  state: ResourceState
+  startTime: String
+  timeZone: String
+  customResourceSlug: String
+  stats: Stats!
+  featureDate: String
+  images(sizes: [Int!] = [4]): [ResourceCoverResizeImage] @complexity(value: 10)
+}
+
+type OtherResource implements Node {
+  id: ID!
+  legacyId: String
+  title: String
+  description: String
+  payment: Payment
+  link: String
+  creator: User
+  cover: Photo
+  location: Location
+  state: ResourceState
+  startTime: String
+  timeZone: String
+  customResourceSlug: String
+  customResourceType: String
+  stats: Stats!
+  featureDate: String
+  images(sizes: [Int!] = [4]): [ResourceCoverResizeImage] @complexity(value: 10)
+}
+
+type VideoResource implements Node {
+  id: ID!
+  legacyId: String
+  title: String
+  description: String
+  payment: Payment
+  link: String
+  creator: User
+  cover: Photo
+  state: ResourceState
+  customResourceSlug: String
+  stats: Stats!
+  featureDate: String
+  images(sizes: [Int!] = [4]): [ResourceCoverResizeImage] @complexity(value: 10)
+}
+
+type LivestreamResource implements Node {
+  id: ID!
+  legacyId: String
+  title: String
+  description: String
+  payment: Payment
+  link: String
+  creator: User
+  cover: Photo
+  state: ResourceState
+  customResourceSlug: String
+  startTime: String
+  timeZone: String
+  stats: Stats!
+  featureDate: String
+  images(sizes: [Int!] = [4]): [ResourceCoverResizeImage] @complexity(value: 10)
+}
+
+type ArticleResource implements Node {
+  id: ID!
+  legacyId: String
+  title: String
+  description: String
+  payment: Payment
+  link: String
+  creator: User
+  cover: Photo
+  state: ResourceState
+  customResourceSlug: String
+  stats: Stats!
+  featureDate: String
+  images(sizes: [Int!] = [4]): [ResourceCoverResizeImage] @complexity(value: 10)
+}
+
+# Add types for each resource type once they're settled on to this union.
+union Resource = WorkshopResource | OtherResource | ArticleResource | LivestreamResource | VideoResource
+
+type ResourceEdge {
+  node: Resource
+  cursor: String
+}
+
+type ResourceConnection {
+  edges: [ResourceEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+}
+
+
+# === END schema partial from src/schemas/resources/resource.graphqls ===
+
+# === BEGIN schema partial from src/schemas/resume/resume.graphqls ===
+enum YearsExperienceEnum {
+  NOT_SET
+  LESS_THAN_ONE
+  ONE
+  TWO
+  THREE
+  FOUR
+  FIVE
+  SIX
+  SEVEN
+  EIGHT
+  NINE
+  TEN_PLUS
+}
+
+enum SpecialtyTitleEnum {
+  AERIAL
+  ARCHITECTURE
+  AUTOMOTIVE
+  EVENT
+  FASHION
+  FOOD
+  INTERIOR
+  LIFESTYLE
+  MATERNITY_NEWBORN
+  NATURE_LANDSCAPE
+  PETS_ANIMALS
+  PHOTOJOURNALISM
+  PORTRAIT_HEADSHOTS
+  SPORTS
+  STILL_LIFE_PRODUCT
+  URBAN
+  WEDDING
+  PANORAMA
+  REAL_ESTATE
+}
+
+type Specialty {
+  title: SpecialtyTitleEnum!
+  description: String
+  # Extract the photos from the gallery
+  photos: [Photo]!
+}
+
+type Resume implements Node {
+  id: ID!
+  legacyId: String!
+  about: String!
+  yearsExperience: YearsExperienceEnum!
+  testimonials: String
+  specialties: [Specialty!]!
+}
+
+# === END schema partial from src/schemas/resume/resume.graphqls ===
+
+# === BEGIN schema partial from src/schemas/scalars.graphqls ===
+scalar PaginationAmount
+
+# === END schema partial from src/schemas/scalars.graphqls ===
+
+# === BEGIN schema partial from src/schemas/search/galleries.graphqls ===
+enum GalleryFilterType {
+  STATUS
+  USER_STATUS
+  USER_ID
+  PRIVACY
+  NSFW
+  FEATURE_NAME
+  FEATURE_START_AT
+  FEATURE_END_AT
+  IS_EDITORS_CHOICE
+}
+
+input GallerySearchFilter {
+  key: GalleryFilterType!
+  value: String!
+}
+
+enum GallerySort {
+  """No sort"""
+  RELEVANCE
+  """sort by legacy id, desc"""
+  ID_DESC
+  """sort by time added to editors feature, and by id, desc"""
+  EDITORS_DESC
+}
+
+# === END schema partial from src/schemas/search/galleries.graphqls ===
+
+# === BEGIN schema partial from src/schemas/search/photo_discover.graphqls ===
+enum PhotoDiscoverFilterType {
+  FOLLOWERS_COUNT
+  CATEGORY
+  FEATURE_NAME
+  FEATURE_START_AT
+  FEATURE_END_AT
+  EXCLUDE_CATEGORY
+}
+
+input PhotoDiscoverSearchFilter {
+  key: PhotoDiscoverFilterType!
+  value: String!
+}
+
+enum PhotoDiscoverSort {
+  """Discover sorting is mostly internal"""
+  NONE
+  """Maps to rating in popular"""
+  POPULAR_PULSE
+  """Newest applied only to popular"""
+  POPULAR_NEWEST
+}
+
+# === END schema partial from src/schemas/search/photo_discover.graphqls ===
+
+# === BEGIN schema partial from src/schemas/search/photos.graphqls ===
+enum PhotoFilterType {
+  STATUS
+  USER_STATUS
+  USER_ID
+  PRIVACY
+  NSFW
+  CATEGORY
+  FEATURE_NAME
+  FEATURE_START_AT
+  FEATURE_END_AT
+  CAMERA_ID
+  LENS_ID
+  GEO_COORDINATES
+  LICENSING
+}
+
+input PhotoSearchFilter {
+  key: PhotoFilterType!
+  value: String!
+}
+
+enum PhotoSort {
+  """No sort"""
+  RELEVANCE
+  """Highest rating"""
+  PULSE
+  """Created at date"""
+  NEWEST
+}
+
+# === END schema partial from src/schemas/search/photos.graphqls ===
+
+# === BEGIN schema partial from src/schemas/search/users.graphqls ===
+enum UserFilterType {
+  """active by default"""
+  STATUS
+  """has a resume"""
+  AVAILABLE_FOR_HIRE
+  """specialties"""
+  SPECIALTIES
+  """latitude, longitude"""
+  HIRE_LOCATIONS
+}
+
+input UserSearchFilter {
+  key: UserFilterType!
+  value: String!
+}
+
+enum UserSort {
+  """No sort"""
+  RELEVANCE
+  """Most followers"""
+  MOST_POPULAR
+  """Most recent activity?"""
+  MOST_RECENT
+}
+
+# === END schema partial from src/schemas/search/users.graphqls ===
+
+# === BEGIN schema partial from src/schemas/search/workshop_search.graphqls ===
+enum WorkshopSortedType {
+  NEWEST
+  TRENDING
+  UPCOMING
+  NEAREST
+}
+
+enum WorkshopResourceType {
+  ARTICLE
+  LIVESTREAM
+  VIDEO
+  WORKSHOP
+  OTHER
+}
+
+enum WorkshopFormatType {
+  ONLINE
+  OFFLINE
+}
+
+enum DiscoverSectionType {
+  FEATURED_SECTION
+  TRENDING_SECTION
+	UPCOMING_SECTION
+	HAPPENING_NEAR_ME_SECTION
+	ARTICLES_SECTION
+	VIDEOS_SECTION
+	LIVESTREAM_SECTION
+	ONLINE_WORKSHOPS_SECTION
+	INPERSON_WORKSHOP_SECTION
+	ONLINE_OTHER_SECTION
+	INPERSON_OTHER_SECTION
+}
+
+type ResourceTitleAutocomplete implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+
+  text: String
+}
+
+type ResourceUserAutocomplete implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+
+  user: User
+}
+
+union ResourceAutocoplete = ResourceTitleAutocomplete | ResourceUserAutocomplete
+# === END schema partial from src/schemas/search/workshop_search.graphqls ===
+
+# === BEGIN schema partial from src/schemas/sitewide_settings/user_settings.graphqls ===
+type UserSettings {
+  locale: String!
+  show_nude: Boolean!
+  is_contactable: Boolean!
+  analytics_code: String
+  onboarding_categories: [String!]!
+}
+
+# === END schema partial from src/schemas/sitewide_settings/user_settings.graphqls ===
+
+# === BEGIN schema partial from src/schemas/stats/my_stats_payload.graphqls ===
+enum MyStatsHighlightsFilter {
+  PHOTO_UPLOAD_COUNT
+  PHOTO_VIEW_COUNT
+  PHOTO_LIKE_COUNT
+  PHOTO_AVERAGE_PULSE
+  USER_FOLLOWER_COUNT
+  USER_VIEW_COUNT
+}
+
+interface StatsHighlight  {
+  numberInCurrentWindow: Float
+  numberInPreviousWindow: Float
+}
+
+type StatsHighlightPhotoUploadCount implements StatsHighlight  {
+  numberInCurrentWindow: Float @complexity(value: 10)
+  numberInPreviousWindow: Float @complexity(value: 10)
+}
+
+type StatsHighlightUserFollowerCount implements StatsHighlight  {
+  numberInCurrentWindow: Float @complexity(value: 10)
+  numberInPreviousWindow: Float @complexity(value: 10)
+}
+
+type StatsHighlightPhotoViewCount implements StatsHighlight  {
+  numberInCurrentWindow: Float @complexity(value: 10)
+  numberInPreviousWindow: Float @complexity(value: 10)
+}
+
+type StatsHighlightPhotoLikeCount implements StatsHighlight  {
+  numberInCurrentWindow: Float @complexity(value: 10)
+  numberInPreviousWindow: Float @complexity(value: 10)
+}
+
+type StatsHighlightUserViewCount implements StatsHighlight  {
+  numberInCurrentWindow: Float @complexity(value: 10)
+  numberInPreviousWindow: Float @complexity(value: 10)
+}
+
+type StatsHighlightPhotoAveragePulse implements StatsHighlight  {
+  numberInCurrentWindow: Float @complexity(value: 10)
+  numberInPreviousWindow: Float @complexity(value: 10)
+}
+
+"""用户统计信息"""
+type MyStatsPayload {
+  lastUpdatedAt: String @complexity(value: 10)
+
+  # The array is generated locally, use 0
+  highlights(
+    filter: [MyStatsHighlightsFilter!] = [
+      PHOTO_UPLOAD_COUNT
+      PHOTO_VIEW_COUNT
+      PHOTO_LIKE_COUNT
+      PHOTO_AVERAGE_PULSE
+      USER_FOLLOWER_COUNT
+      USER_VIEW_COUNT
+    ]
+  ) : [StatsHighlight] @complexity(value: 0, multipliers: ["filter"])
+
+  photoStatsAggregations: [PhotoStatsAggregation] @complexity(value: 10)
+
+  userStatsAggregations: [UserStatsAggregation] @complexity(value: 10)
+
+  topPhotos(
+    sort: MyPhotosSort = HIGHEST_PULSE_DESC
+  ) : PhotoConnection @complexity(value: 20)
+
+  topGear(
+    type: TopGearType!
+  ): GearConnectionForTopLensOnMyStatsPayload @complexity(value: 50)
+}
+
+union Gear = Lens | Camera
+
+enum TopGearType {
+  CAMERA
+  LENS
+}
+
+type GearEdgeForTopLensOnMyStatsPayload {
+  node: Gear @complexity(value: 10)
+
+  cursor: String
+
+  photoUploadCount: Int
+  photoLikeCount: Int
+}
+
+type GearConnectionForTopLensOnMyStatsPayload {
+  edges: [GearEdgeForTopLensOnMyStatsPayload!]!
+
+  pageInfo: PageInfo
+
+  totalCount: Int
+}
+
+# === END schema partial from src/schemas/stats/my_stats_payload.graphqls ===
+
+# === BEGIN schema partial from src/schemas/stats/photo_stats_aggregation.graphqls ===
+"""图片统计指标"""
+interface PhotoStats {
+  viewCount: Int
+  likeCount: Int
+  commentAndReplyCount: Int
+
+  viewCountFromHomefeed: Int
+  viewCountFromDiscover: Int
+  viewCountFromProfile: Int
+  viewCountFromSearch: Int
+}
+
+"""
+Photo Stats in a given period of time / 特定时间窗口内的图片统计
+"""
+type PhotoStatsAggregation implements Node & PhotoStats {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  """inclusively / 起时时间点（包含）"""
+  from: String
+  """exclusively / 终止时间点（不包含）"""
+  to: String
+
+  viewCount: Int @complexity(value: 10)
+  likeCount: Int @complexity(value: 10)
+  commentAndReplyCount: Int @complexity(value: 10)
+
+  viewCountFromHomefeed: Int @complexity(value: 10)
+  viewCountFromDiscover: Int @complexity(value: 10)
+  viewCountFromProfile: Int @complexity(value: 10)
+  viewCountFromSearch: Int @complexity(value: 10)
+
+  photos(
+    first: Int = 10
+    after: String
+  ) : PhotoConnectionForPhotosOnPhotoStatsAggregation @complexity(value: 10, multipliers: ["first"])
+}
+
+type PhotoEdgeForPhotosOnPhotoStatsAggregation implements PhotoStats {
+  node: Photo @complexity(value: 10)
+
+  cursor: String
+
+  viewCount: Int @complexity(value: 10)
+  likeCount: Int @complexity(value: 10)
+  commentAndReplyCount: Int @complexity(value: 10)
+
+  viewCountFromHomefeed: Int @complexity(value: 10)
+  viewCountFromDiscover: Int @complexity(value: 10)
+  viewCountFromProfile: Int @complexity(value: 10)
+  viewCountFromSearch: Int @complexity(value: 10)
+}
+
+type PhotoConnectionForPhotosOnPhotoStatsAggregation {
+  edges: [PhotoEdgeForPhotosOnPhotoStatsAggregation!]!
+  pageInfo: PageInfo
+  totalCount: Int
+}
+
+type ViewStat implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  """总浏览数"""
+  totalViewCount: Int @complexity(value: 10)
+  """去重浏览数"""
+  uniqueViewCount: Int @complexity(value: 10)
+}
+
+# === END schema partial from src/schemas/stats/photo_stats_aggregation.graphqls ===
+
+# === BEGIN schema partial from src/schemas/stats/user_photo_stats_aggregation.graphqls ===
+"""
+Photo stats aggregation for a user.
+"""
+type UserPhotoAggregation {
+  """the like count of all photos of a specific user"""
+  likeCount: Int
+
+   """the view count of all photos of a specific user"""
+  viewCount: Int
+}
+# === END schema partial from src/schemas/stats/user_photo_stats_aggregation.graphqls ===
+
+# === BEGIN schema partial from src/schemas/stats/user_stats_aggregation.graphqls ===
+"""
+User Stats in a given period of time / 特定时间窗口内的用户统计
+"""
+type UserStatsAggregation implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  """inclusively / 起时时间点（包含）"""
+  from: String
+  """exclusively / 终止时间点（不包含）"""
+  to: String
+
+  """The total followerCount at the tailing edge of the aggregation window / 截止到统计窗口后沿的关注总数"""
+  totalFollowerCount: Int @deprecated(reason: "Bad performance and inaccurate total count.")
+
+  followerCount: Int
+
+  followedByUsers(
+    first: Int = 10
+    after: String
+  ) : UserConnection
+
+  unfollowerCount: Int
+
+  unfollowedByUsers(
+    first: Int = 10
+    after: String
+  ) : UserConnection
+}
+
+# === END schema partial from src/schemas/stats/user_stats_aggregation.graphqls ===
+
+# === BEGIN schema partial from src/schemas/story/story.graphqls ===
+"""
+Stroy / 照片故事
+"""
+type Story implements Node {
+    """Global ID / 全局 ID"""
+    id: ID!
+    """Resource Internal ID / 资源内部ID"""
+    legacyId: ID!
+
+    headline: String
+
+    fullStory: String
+
+    privacy: StoryPrivacy
+
+    photosInStory: [PhotoInStory]
+
+    createdBy: User
+
+    createdAt: String
+
+    publishDate: String
+
+    featureDate: String
+
+    """浏览量"""
+    viewCount: Int!
+
+    storyPulse:StoryPulse @complexity(value: 10)
+
+    """当前热度"""
+    currentPulse: Float @complexity(value: 10)
+
+    """最高热度"""
+    highestPulse: Float @complexity(value: 10)
+
+    """点赞数"""
+    likedByUsers(first: Int = 10, after: String): UserConnectionOnStoryLikedByUsers @complexity(value: 10)
+    isLikedByMe: Boolean @complexity(value: 10)
+
+    """排序顺序 Editors > Popular > Upcoming > Fresh"""
+    contentStreams: [ContentStream!] @complexity(value: 10)
+
+    """评论"""
+    comments(first: Int = 10, after: String): CommentConnection @complexity(value: 10, multipliers: ["first"])
+
+    """相似图"""
+    similarPhotos(first: Int = 4, after: String): PhotoConnection @complexity(value: 10)
+
+    """featured in these galleries"""
+    featureInGalleries(first: Int = 4, after: String): GalleryConnection @complexity(value: 10)
+
+    """前台detail详情链接"""
+    canonicalPath: String
+
+    notSafeForWork: Boolean
+
+}
+
+type PhotoInStory implements Node{
+    """Global ID / 全局 ID"""
+    id: ID!
+    """Resource Internal ID / 资源内部ID"""
+    legacyId: ID!
+    photoId: ID
+    photoInfo: Photo
+    """顺序"""
+    sort: Int
+}
+
+enum StoryPrivacy {
+    ALL
+    PUBLIC
+    DRAFT
+}
+
+type UserConnectionOnStoryLikedByUsers {
+    edges: [UserEdgeOnStoryLikedByUsers]
+    pageInfo: PageInfo
+    totalCount: Int
+}
+
+type UserEdgeOnStoryLikedByUsers {
+    node: User @complexity(value: 10)
+    cursor: String
+    likedAt: String
+}
+
+type PhotoStoryEdge {
+    node: Story @complexity(value: 10)
+    cursor: String
+}
+
+type PhotoStoryConnection {
+    edges: [PhotoStoryEdge]
+    pageInfo: PageInfo
+    totalCount: Int
+}
+
+enum PhotoStorySort {
+    ID_DESC
+    CREATED_AT_ASC
+    CREATED_AT_DESC
+    VIEW_COUNT_ASC
+    VIEW_COUNT_DESC
+    LIKE_COUNT_ASC
+    LIKE_COUNT_DESC
+    COMMENT_AND_REPLY_COUNT_ASC
+    COMMENT_AND_REPLY_COUNT_DESC
+    """支持 admin"""
+    NAME_ASC
+    NAME_DESC
+    TITLE_ASC
+    TITLE_DESC
+    DATE_FEATURED_ASC
+    DATE_FEATURED_DESC
+    DATE_PUBLISH_ASC
+    DATE_PUBLISH_DESC
+}
+
+input CreateStoryInput {
+    """创建story时不需要传，修改时需传"""
+    storyId: ID
+    headline: String!
+    description: String
+    """story类型"""
+    privacy: StoryPrivacy
+    items: [StoryItemInput]
+}
+
+type CreateStoryPayload {
+    """Newly created resource of Story / 新创建Story资源"""
+    story: Story
+}
+
+input StoryItemInput {
+    photoId: ID
+    """照片排序"""
+    sort: Int
+}
+
+input StorySearchFilter {
+    key: StoryFilterType
+    value: Boolean
+}
+
+enum StoryFilterType {
+    FEATURE
+    IS_NSFW
+}
+
+input DeleteStoryInput {
+    storyIds: [ID!]
+}
+
+type DeleteStoryPayload {
+    clientMutationId: String
+}
+
+input UpdateStoryPrivacyInput {
+    storyIds: [ID!]
+    privacy: StoryPrivacy!
+}
+
+type UpdateStoryPrivacyPayload {
+    clientMutationId: String
+}
+
+# === END schema partial from src/schemas/story/story.graphqls ===
+
+# === BEGIN schema partial from src/schemas/subscriptions/subscription_channel.graphqls ===
+enum SubscriptionChannelName {
+  LIKE
+  FAVOURITE
+  UPCOMING
+  POPULAR
+  EDITORS_CHOICE
+  CHAT
+  CHAT_MESSAGE
+  COMMENT
+  COMMENT_MENTION
+  CRITIQUE_REQUEST
+  FOLLOW
+  PHOTO_UPLOAD
+  BUY_PHOTO
+  NEWSLETTER
+  ACCOUNT_UPDATES
+  WEEKEND_DIGEST
+  GROUP_DISCUSSION
+  GROUP_DISCUSSION_CREATED
+  GROUP_COMMENT_REPLY
+  GROUP_JOINED
+  GROUP_INVITE
+  GROUP_CONTENT_FLAGGED
+  QUEST_UPDATES
+  GALLERY_YOUR_PHOTO_ADDED
+  GALLERY_EDITORS_CHOICE
+  LICENSING_NEWS
+  COMMENTS
+  YOUR_PHOTO
+  LICENSING
+  MARKETING_AND_PROMOTION
+}
+
+type SubscriptionChannel {
+  """Push and Email notification subscription settings"""
+  name: SubscriptionChannelName!
+  pushEnabled: Boolean!
+  emailEnabled: Boolean!
+}
+
+input SubscriptionChannelInput {
+  """
+  Can't use type as input, hence the duplication
+  Push and Email notification subscription settings
+  """
+  name: SubscriptionChannelName!
+  pushEnabled: Boolean
+  emailEnabled: Boolean
+}
+
+input UpdateUserSubscriptionsInput {
+  """Partial or complete list of channel settings"""
+  channels: [SubscriptionChannelInput!]!
+  token: String
+}
+
+type UpdateUserSubscriptionsPayload {
+  userSetting: UserSetting!
+}
+
+type UpdateUserSubscriptionsV2Payload {
+  subscriptionChannels: [SubscriptionChannel!]
+}
+
+input UpdateAllUserSubscriptionsInput {
+  """Set all email or push notifications"""
+  email: Boolean
+  push: Boolean
+  token: String
+}
+
+type UpdateAllUserSubscriptionsPayload {
+  userSetting: UserSetting!
+}
+
+type UpdateAllUserSubscriptionsV2Payload {
+  subscriptionChannels: [SubscriptionChannel!]
+}
+
+# === END schema partial from src/schemas/subscriptions/subscription_channel.graphqls ===
+
+# === BEGIN schema partial from src/schemas/user_center/oauth2.graphqls ===
+type AccessToken {
+  """access token"""
+  accessToken: String!
+
+  """token type default is bearer"""
+  tokenType: String!
+
+  """refresh token"""
+  refreshToken: String!
+
+  """access token expires in (seconds)"""
+  expiresIn: Int!
+
+  """access token access scope"""
+  scope: String!
+}
+
+type LoginUrl {
+  """500px login page"""
+  loginUrl: String!
+}
+
+type CallbackUrl {
+  """third client callback page"""
+  callbackUrl: String!
+}
+
+type UserInfoAndToken {
+  """500px user openid"""
+  userId: String!
+
+  """500px user access token"""
+  accessToken: String!
+
+  """500px user nick name"""
+  nickName: String!
+
+  """500px user avatar"""
+  avatar: UserAvatar
+
+  """500px user email"""
+  email: String!
+}
+
+type ReourceEdge {
+
+  code: String!
+
+  name: String!
+
+  enname: String!
+
+  """true optional, false default checked"""
+  optional: String!
+
+}
+
+type LoginInfoAndClientInfo {
+
+  """If true, query oauth2GetCallBackUrl  """
+  isAuthenticated: Boolean!
+
+  """login or not """
+  isLogin: Boolean!
+
+  """user displayName"""
+  displayName: String!
+
+  """third client clientId"""
+  clientId: String!
+
+  """third client name"""
+  name: String!
+
+  """third client name"""
+  resources: [ReourceEdge]
+}
+
+# === END schema partial from src/schemas/user_center/oauth2.graphqls ===
+
+# === BEGIN schema partial from src/schemas/user_center/user.graphqls ===
+enum UserType {
+  BASIC
+  STORE
+  ADMIN
+  AMBASSADOR
+  VCG
+  PARTNER
+  MODERATOR
+  VERIFIED
+  ALUMNUS
+}
+
+"""
+User / 用户
+"""
+type User implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  active: Int!
+  username: String!
+  firstName: String
+  lastName: String
+  city: String
+  country: String
+
+  type: UserType!
+
+  registeredAt: String!
+
+  canonicalPath: String @deprecated(reason: "Use canonicalPathV2. This uses the old Profile format: /<username>. canonicalPathV2 is properly formed /p/<username>")
+  canonicalPathV2: String
+
+  displayName: String!
+  displayLocation: String
+
+  avatar: UserAvatar
+
+  """[Private] Contact Info / 联系信息"""
+  contact: UserContact
+
+  userProfile: PersonalAndProfile
+  socialMedia: SocialMedia
+  socialMediaItems(providers: [SocialMediaEnum]): [SocialMediaItem]
+  equipment: UserEquipment
+  userSetting: UserSetting
+
+  followedBy: FollowedByUsers
+  following: FollowingUsers
+  followedByUsers(first: Int, after: String): UserConnectionOnUserFollowedByUsers @complexity(value: 10, multipliers: ["first"]) @deprecated(reason: "use type FollowedByUsers on type User")
+  followingUsers(first: Int, after: String): UserConnectionOnUserFollowingUsers @deprecated(reason: "use type FollowingUsers on type User")
+
+  """Membership Info / 会员信息"""
+  membership: Membership @complexity(value: 10)
+
+  licensing: LicensingContributor @complexity(value: 10)
+
+  settings: UserSettings
+
+  extended: UserExtended @complexity(value: 10)
+
+  profileTabs: ProfileTabs
+
+  photos(privacy: PhotoPrivacy, excludeNude: Boolean = false, sort: MyPhotosSort = CREATED_AT_DESC, first: Int = 10, after: String) : PhotoConnection @complexity(value: 10, multipliers: ["first"])
+
+  gdprAcceptanceTimestamp: String
+
+  coverPhotoUrl: String
+
+  """the photo status aggregation of the user"""
+  photoStats: UserPhotoAggregation
+
+  licensingStats:LicensingPhotoStats
+
+  licensingPhotos(
+  status: LicensingPhotoStatus!
+  first: Int = 5
+  after: String
+  ) : LicensingPhotoConnection @complexity(value: 10, multipliers: ["first"])
+
+  photoStories(
+    first: Int = 10
+    after: String
+  ): PhotoStoryConnection @complexity(value: 10, multipliers: ["first"])
+
+  portfolio: Portfolio
+
+  recentVotes(first: Int = 10): [Int!]!
+
+  resume: Resume
+  hireLocations: [HireLocation]
+
+  quests: QuestInvolvement
+
+  badges: [UserBadge]
+
+  hasUnreadNotifications: Boolean
+
+  isBlockedByMe: Boolean
+
+  havePassword: Boolean
+}
+
+type UserEdge {
+  node: User @complexity(value: 10)
+  cursor: String
+}
+
+type UserConnection {
+  edges: [UserEdge]
+
+  pageInfo: PageInfo
+
+  totalCount: Int
+}
+
+type UserEdgeOnUserFollowedByUsers {
+  node: User @complexity(value: 10)
+  cursor: String
+  followedAt: String
+}
+
+type UserConnectionOnUserFollowedByUsers {
+  edges: [UserEdgeOnUserFollowedByUsers]
+
+  pageInfo: PageInfo
+
+  """Same value as totalCount on type FollowedByUsers. Do not query for both."""
+  totalCount: Int @complexity(value: 10)
+
+  isFollowedByMe: Boolean @complexity(value: 10) @deprecated(reason: "use type FollowedByUsers on type User")
+}
+
+type UserEdgeOnUserFollowingUsers {
+  node: User
+  cursor: String
+  followedAt: String
+}
+
+type UserConnectionOnUserFollowingUsers {
+  edges: [UserEdgeOnUserFollowingUsers]
+
+  pageInfo: PageInfo
+
+  """Same value as totalCount on type FollowingUsers. Do not query for both."""
+  totalCount: Int @complexity(value: 10)
+
+  isFollowingMe: Boolean @complexity(value: 10) @deprecated(reason: "use type FollowingUsers on type User")
+}
+
+type FollowedByUsers {
+  followedByUsers(first: Int, after: String): UserConnectionOnUserFollowedByUsers
+
+  isFollowedByMe: Boolean
+
+  totalCount: Int
+}
+
+type FollowingUsers {
+  followingUsers(first: Int, after: String): UserConnectionOnUserFollowingUsers
+
+  isFollowingMe: Boolean
+
+  totalCount: Int
+}
+
+"""
+SimpleUser / 用户注册返回信息
+"""
+type SimpleUser implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  username: String!
+  email: String!
+  newUser: Boolean!
+}
+
+"""
+SimpleUserWithToken / 用户注册返回信息,包含token.
+"""
+type SimpleUserWithToken implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  username: String!
+  email: String!
+  newUser: Boolean!
+  jwtToken: String!
+  csrfToken: String!
+}
+
+"""
+if a user account can be delete.
+"""
+type UserAccountDeletable {
+  legacyUserId: ID!
+  deletable: Boolean!
+}
+
+"""
+The status of the user account.
+"""
+type UserAccountStatus {
+  exist: Boolean!
+  legacyId: ID
+  email: String
+  active: Int
+}
+
+"""
+oauth2 user public info.
+"""
+type UserPublicInfo {
+  """500px user openid"""
+  userId: String!
+
+  """500px user nick name"""
+  nickName: String!
+
+  """500px user avatar"""
+  avatar: UserAvatar
+
+  """500px user email"""
+  email: String!
+}
+
+type UserBadge {
+  badge: String!
+}
+
+union WebAccessTokenResponse = WebAccessToken | WebAccessTokenError
+
+type WebAccessToken {
+  """access token"""
+  accessToken: String!
+
+  """access token expires in (seconds)"""
+  accessTokenExpiresIn: Int!
+
+  """csrf token"""
+  csrfToken: String!
+
+  """csrf token expires in (seconds)"""
+  csrfTokenExpiresIn: Int!
+}
+
+type WebAccessTokenError {
+  errorCode: String
+
+  errorMessage: String
+
+  status: Int
+}
+
+# === END schema partial from src/schemas/user_center/user.graphqls ===
+
+# === BEGIN schema partial from src/schemas/user_center/user_contact.graphqls ===
+"""
+UserContact Resource
+"""
+type UserContact implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  """已验证过的邮箱"""
+  email: String
+  """尚未验证过的邮箱"""
+  unverifiedEmail: String
+
+  """已验证过的手机号码"""
+  phone: String @complexity(value: 10)
+  """已验证过的手机号码归属国"""
+  phoneCountry: String @complexity(value: 10)
+}
+
+# === END schema partial from src/schemas/user_center/user_contact.graphqls ===
+
+# === BEGIN schema partial from src/schemas/user_profile/personal_and_profile.graphqls ===
+enum UserSexEnum {
+  GENDER_NOT_SPECIFIED
+  MALE
+  FEMALE
+}
+
+"""
+HireLocation
+"""
+type HireLocation {
+  latitude: Float!
+  longitude: Float!
+  city: String
+  administrativeZone1: String
+  country: String
+  displayName: String
+}
+
+"""Contains userLegacyId because its a generic response"""
+type HireLocationsResponse {
+  userId: String!
+  latitude: Float!
+  longitude: Float!
+  city: String
+  administrativeZone1: String
+  country: String
+  displayName: String
+}
+
+type HireLocationsPayload {
+  hireLocations: [HireLocationsResponse!]!
+}
+
+"""
+PersonalAndProfile Resource
+"""
+type PersonalAndProfile implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  username: String!
+
+  email: String!
+
+  firstname: String
+
+  lastname: String
+
+  birthday: String
+
+  about: String
+
+  city: String
+
+  state: String
+
+  country: String
+
+  sex: UserSexEnum
+
+  auth: Auth
+
+  havePassword: Boolean
+}
+
+type Auth implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+  twitter: Boolean,
+  facebook: Boolean,
+  googleOauth2: Boolean
+}
+
+# === END schema partial from src/schemas/user_profile/personal_and_profile.graphqls ===
+
+# === BEGIN schema partial from src/schemas/user_profile/profile_tabs.graphqls ===
+enum TabEnum {
+  PHOTOS
+  GALLERIES
+  GROUPS
+  LICENSING
+  RESOURCES
+  RESUME
+  ABOUT
+  STORIES
+}
+
+type Tab {
+  name: TabEnum!
+  visible: Boolean!
+  count: Int!
+}
+
+type ProfileTabs {
+  tabs: [Tab!]!
+}
+
+# === END schema partial from src/schemas/user_profile/profile_tabs.graphqls ===
+
+# === BEGIN schema partial from src/schemas/user_profile/social_media.graphqls ===
+"""
+SocialMedia Resource
+"""
+type SocialMedia implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+  website: String
+  twitter: String
+  instagram: String
+  facebook: String
+}
+
+enum SocialMediaEnum {
+  twitter
+  instagram
+  facebookpage
+  website
+  portfolioSite
+}
+
+type SocialMediaItem implements Node {
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+  name: SocialMediaEnum!
+  value: String
+  visible: Boolean!
+}
+
+
+#
+#type SocialMediaEdge {
+#  node: SocialMedia @complexity(value: 10)
+#  cursor: String
+#}
+#
+#type SocialMediaConnection {
+#  edges: [SocialMediaEdge]
+#  pageInfo: PageInfo
+#  totalCount: Int
+#}
+#
+#input CreateSocialMediaInput {
+#  clientMutationId: String
+#
+#  fieldName: String
+#  anotherField: SocialMediaAnotherField
+#}
+#
+#type CreateSocialMediaPayload {
+#  clientMutationId: String
+#
+#  """Newly created resource of SocialMedia / 新创建SocialMedia资源"""
+#  socialMedia: SocialMedia
+#}
+#
+#input UpdateSocialMediaInput {
+#  clientMutationId: String
+#
+#  legacyId: ID!
+#
+#  fieldName: String
+#  anotherField: SocialMediaAnotherField
+#}
+#
+#type UpdateSocialMediaPayload {
+#  clientMutationId: String
+#
+#  """SocialMedia after update / 修改后的SocialMedia资源"""
+#  socialMedia: SocialMedia
+#}
+#
+#input DeleteSocialMediaInput {
+#  clientMutationId: String
+#
+#  legacyId: ID!
+#}
+#
+#type DeleteSocialMediaPayload {
+#  clientMutationId: String
+#}
+#
+########################################
+## For mutation.graphqls
+########################################
+#
+#type Mutation {
+#  """创建SocialMedia资源"""
+#  createSocialMedia(input: CreateSocialMediaInput): CreateSocialMediaPayload
+#
+#  """更新SocialMedia信息"""
+#  updateSocialMedia(input: UpdateSocialMediaInput): UpdateSocialMediaPayload
+#
+#  """删除SocialMedia"""
+#  deleteSocialMedia(input: DeleteSocialMediaInput!): DeleteSocialMediaPayload!
+#}
+
+# === END schema partial from src/schemas/user_profile/social_media.graphqls ===
+
+# === BEGIN schema partial from src/schemas/user_profile/tos_acceptance.graphqls ===
+"""
+TosAcceptance Resource
+"""
+type TosAcceptance implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+  documentName: String
+  signingTimestamp: String
+  ip: String
+}
+
+# === END schema partial from src/schemas/user_profile/tos_acceptance.graphqls ===
+
+# === BEGIN schema partial from src/schemas/user_profile/user_equipment.graphqls ===
+"""
+UserEquipment Resource
+"""
+type UserEquipment implements Node{
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+  camera: [String]
+  lens: [String]
+  misc: [String]
+}
+
+#type UserEquipmentEdge {
+#  node: UserEquipment @complexity(value: 10)
+#  cursor: String
+#}
+#
+#type UserEquipmentConnection {
+#  edges: [UserEquipmentEdge]
+#  pageInfo: PageInfo
+#  totalCount: Int
+#}
+#
+#input CreateUserEquipmentInput {
+#  clientMutationId: String
+#
+#  fieldName: String
+#  anotherField: UserEquipmentAnotherField
+#}
+#
+#type CreateUserEquipmentPayload {
+#  clientMutationId: String
+#
+#  """Newly created resource of UserEquipment / 新创建UserEquipment资源"""
+#  userEquipment: UserEquipment
+#}
+#
+#input UpdateUserEquipmentInput {
+#  clientMutationId: String
+#
+#  legacyId: ID!
+#
+#  fieldName: String
+#  anotherField: UserEquipmentAnotherField
+#}
+#
+#type UpdateUserEquipmentPayload {
+#  clientMutationId: String
+#
+#  """UserEquipment after update / 修改后的UserEquipment资源"""
+#  userEquipment: UserEquipment
+#}
+#
+#input DeleteUserEquipmentInput {
+#  clientMutationId: String
+#
+#  legacyId: ID!
+#}
+#
+#type DeleteUserEquipmentPayload {
+#  clientMutationId: String
+#}
+#
+########################################
+## For mutation.graphqls
+########################################
+#
+#type Mutation {
+#  """创建UserEquipment资源"""
+#  createUserEquipment(input: CreateUserEquipmentInput): CreateUserEquipmentPayload
+#
+#  """更新UserEquipment信息"""
+#  updateUserEquipment(input: UpdateUserEquipmentInput): UpdateUserEquipmentPayload
+#
+#  """删除UserEquipment"""
+#  deleteUserEquipment(input: DeleteUserEquipmentInput!): DeleteUserEquipmentPayload!
+#}
+
+# === END schema partial from src/schemas/user_profile/user_equipment.graphqls ===
+
+# === BEGIN schema partial from src/schemas/user_profile/user_extended.graphqls ===
+
+"""
+UserSetting Resource
+"""
+type UserExtended implements Node{
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  """ 是否启用二元验证，默认false"""
+  tfaEnabled: Boolean!
+  """ 封面图片ID."""
+  coverPhotoId: ID
+  """封面照片上传时间."""
+  coverUploadedAt: String
+  """onboarding step that user is at / 用户所在的入职步骤"""
+  onboardingStep: String
+}
+# === END schema partial from src/schemas/user_profile/user_extended.graphqls ===
+
+# === BEGIN schema partial from src/schemas/user_profile/user_profile_modify.graphqls ===
+input PersonalAndProfileInput {
+  username: String
+
+  email: String
+
+  firstname: String
+
+  lastname: String
+
+  birthday: String
+
+  about: String
+
+  city: String
+
+  state: String
+
+  country: String
+
+  sex: UserSexEnum
+
+  isDirectThrows: Boolean
+}
+
+input HireLocationInput {
+  latitude: Float!
+  longitude: Float!
+  city: String
+  administrativeZone1: String
+  country: String
+  displayName: String
+}
+
+input UserEquipmentInput{
+  camera: [String]
+  lens: [String]
+  misc: [String]
+}
+
+input SocialMediaInput {
+  website: String
+  twitter: String
+  instagram: String
+  facebook: String
+}
+
+input SocialMediaItemInput {
+  name: SocialMediaEnum!
+  value: String
+  visible: Boolean!
+}
+
+input UserSettingInput {
+  locale: UserLocaleEnum
+  """show adult picture / 是否查看成人图片，default true."""
+  showNude: Boolean
+  """是否可联系."""
+  isContactable: Boolean
+  """付费用户可以使用google的跟踪码."""
+  analyticsCode: String
+  onboardingCategories: String
+  """真实姓名是否可见"""
+  firstnameVisible: Boolean
+  locationVisible: Boolean
+}
+
+input UserPhoneContactInput {
+  """已验证过的手机号码"""
+  phone: String
+  """已验证过的手机号码归属国"""
+  phoneCountry: String
+}
+
+# === END schema partial from src/schemas/user_profile/user_profile_modify.graphqls ===
+
+# === BEGIN schema partial from src/schemas/user_profile/user_setting.graphqls ===
+enum UserLocaleEnum {
+  EN
+  ZH_CN
+  PT_BR
+  TR
+  RU
+  KO
+  IT
+  fr
+  ES
+  DE
+  JA
+}
+
+"""
+UserSetting Resource
+"""
+type UserSetting implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  locale: UserLocaleEnum!
+  """show adult picture / 是否查看成人图片，default true."""
+  showNude: Boolean!
+  """是否可联系."""
+  isContactable: Boolean!
+  """付费用户可以使用google的跟踪码."""
+  analyticsCode: String
+  onboardingCategories: String
+  """email and push notification subscriptions"""
+  subscriptionChannels: [SubscriptionChannel!]!
+  firstnameVisible: Boolean
+  locationVisible: Boolean
+}
+
+# === END schema partial from src/schemas/user_profile/user_setting.graphqls ===
+
+# === BEGIN schema partial from src/schemas/workshop/workshop.graphqls ===
+"""
+Workshop / 用户课程
+"""
+type Workshop implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  """Workshop title / 课程名称"""
+  title: String
+
+  """Workshop start time / 课程开始时间"""
+  startTime: String
+
+  """Workshop time zone / 课程开始时间的时区"""
+  timeZone: String
+
+  """Workshop price currentcy / 课程价格的币种"""
+  currency: String
+
+  """Workshop price / 课程价格"""
+  price: Float
+
+  """Workshop url link / 课程链接"""
+  url: String
+
+  """Workshop creator / 课程创建者"""
+  creator: User @complexity(value: 10)
+
+  """Workshop cover photo / 课程头图"""
+  cover: Photo @complexity(value: 10)
+
+  """Workshop location / 课程地点"""
+  location: Location@complexity(value: 10)
+
+  disabled: Boolean
+
+}
+
+type WorkshopEdge {
+  node: Workshop @complexity(value: 10)
+  cursor: String
+}
+
+type WorkshopConnection {
+  edges: [WorkshopEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+}
+
+# === END schema partial from src/schemas/workshop/workshop.graphqls ===

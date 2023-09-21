@@ -1,0 +1,42 @@
+"""
+FeaturedBlog / 推荐博客
+"""
+type FeaturedBlog implements Node {
+    """Global ID / 全局 ID"""
+    id: ID!
+
+    blog: Blog
+
+}
+
+type Blog implements Node {
+    """Global ID / 全局 ID"""
+    id: ID!
+    """Resource Internal ID / 资源内部ID"""
+    legacyId: ID!
+
+    title: String
+
+    blogContent: String
+
+    photo: Photo
+
+    """单位：s"""
+    readingTime: Int
+
+    createdAt: String!
+
+    isLikedByMe: Boolean @complexity(value: 10)
+}
+
+type FeaturedBlogEdge {
+    node: FeaturedBlog @complexity(value: 10)
+    cursor: String
+}
+
+type FeaturedBlogConnection {
+    edges: [FeaturedBlogEdge]
+    pageInfo: PageInfo
+    totalCount: Int
+    enabled: Boolean
+}

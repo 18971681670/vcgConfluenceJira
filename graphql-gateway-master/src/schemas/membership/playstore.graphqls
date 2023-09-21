@@ -1,0 +1,5 @@
+type VerifyPlayStore {
+  isVerified: Boolean!
+  errorCode: String
+  message: String
+}

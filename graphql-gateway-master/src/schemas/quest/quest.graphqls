@@ -1,0 +1,171 @@
+enum QuestStatus {
+  DRAFT
+  PUBLISHED
+  COMPLETED
+  DELETED
+}
+
+"""
+大赛
+"""
+type Quest implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  canonicalPath: String
+
+  status: QuestStatus
+
+  title: String
+  slug: String @deprecated(reason: "Use `canonicalPath`.")
+  brief: String
+  rules: String
+
+  tips: String
+  licensingDescription: String
+
+  licensing: Boolean
+
+  startsAt: String
+  endsAt: String
+  completedAt: String
+
+  prizeName: String
+  prizeDescription: String
+  prizeImageUrl: String
+
+  cover: Photo @complexity(value: 10)
+
+  judge: User @complexity(value: 10)
+  judgeBio: String
+
+  winnerPageUrl: String
+
+  """For both sponsored and branded quest / 赞助或者品牌大赛使用"""
+  sponsorName: String
+
+  """For both sponsored and branded quest, a logo under the quest title / 赞助或者品牌大赛使用, 赞助商商标(小)"""
+  sponsorLogoUrl: String
+
+  """For both sponsored and branded quest, a description of sponsor/brand / 赞助或者品牌大赛使用, 赞助商介绍"""
+  sponsorBlurb: String
+  brandBlurb: String
+
+  """For branded quest only, an image displayed with brand blurb / 品牌大赛专用，品牌配图"""
+  brandImageryUrl: String
+
+  """For branded quest only, an label of Action button / 品牌大赛专用，跳转按钮名"""
+  brandCtaLabel: String
+
+  """For branded quest only, a target url of Action button / 品牌大赛专用，跳转按钮URL"""
+  brandCtaUrl: String
+
+  geofenced: Boolean
+  isUserInGeofence: Boolean @complexity(value: 10)
+
+  winners: [Photo] @complexity(value: 10)
+
+  """ winners for muti topic quest """
+  multiTopicWinnerList:[QuestWinner]
+
+  multiTopic: Boolean
+
+  judgeList:[QuestJudge]
+
+  topics:[QuestTopic]
+
+  """Photos added to Quest inspiration internal gallery"""
+  inspirationPhotos(
+    first: Int = 20
+    after: String
+    last: Int
+    before: String
+  inspirationGalleryId: ID
+  ) : PhotoConnection @complexity(value: 10, multipliers: ["first"])
+
+  """Photos submitted to Quest"""
+  submittedPhotos(
+    first: Int = 20
+    after: String
+    last: Int
+    before: String
+    licensingFilter: QuestLicensingPhotoCandidateFilter
+    legacyPage: Int
+    questTopicId: ID
+  uploadFromFilter: QuestPhotoUploadFromFilter
+  ) : PhotoConnection @complexity(value: 10, multipliers: ["first"])
+
+  """my photos submitted to Quest"""
+  mySubmittedPhotos(
+    first: Int = 20
+    legacyPage: Int = 1
+    questTopicId: ID
+  ) : PhotoConnection @complexity(value: 10, multipliers: ["first"])
+
+  """Photos shortlisted in Quest"""
+  shortlistedPhotos(
+    first: Int = 20
+    after: String
+  questTopicId: ID
+  ) : PhotoConnection @complexity(value: 10, multipliers: ["first"])
+}
+
+type QuestWinner {
+  topic:QuestTopic
+  photo:Photo
+}
+
+type QuestTopic {
+  questTopicId: ID!
+  questId: ID!
+  inspirationGalleryId: ID
+  topicName: String!
+  mySubmittedCount: Int
+}
+
+type QuestJudge {
+  judge: User @complexity(value: 10)
+  judgeBio: String
+  judgeNotIn500px: Boolean!
+  personalUrl: String
+  judgeAvatar: String
+  judgeName: String
+}
+
+type QuestEdge {
+  node: Quest @complexity(value: 10)
+  cursor: String
+}
+
+type QuestConnection {
+  edges: [QuestEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+}
+
+type QuestInvolvement {
+  won(
+  first: Int = 5
+  after: String
+) : QuestConnection @complexity(value: 10, multipliers: ["first"])
+
+  participated(
+  first: Int = 5
+  after: String
+) : QuestConnection @complexity(value: 10, multipliers: ["first"])
+}
+
+type QuestHeaderImages {
+  android: String!
+  ios: String!
+  webDesktop: String!
+  webMobile: String!
+}
+
+type QuestHeaderPhoto {
+  photo: Photo!
+  imageUrl: QuestHeaderImages!
+  text: String!
+}

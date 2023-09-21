@@ -1,0 +1,153 @@
+type UserInboxConversationInfo implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  conversationId: String
+
+  isFriend: Boolean
+
+  toUser: User @complexity(value: 10)
+
+  unreadCount: Int
+
+  lastlyMessage: String
+
+  lastlyMessageTime: String
+}
+
+type UserInboxConversationInfoEdge {
+  node: UserInboxConversationInfo @complexity(value: 10)
+}
+
+type UserInboxConversationInfoConnection {
+  edges: [UserInboxConversationInfoEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+}
+
+type TextMessage {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+  
+  sender: User @complexity(value: 10)
+
+  recevier: User @complexity(value: 10)
+
+  messageType: String
+
+  content: String
+
+  read: Boolean
+
+  createdAt: String
+}
+
+type PhotoMessage {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+  
+  sender: User @complexity(value: 10)
+
+  recevier: User @complexity(value: 10)
+
+  messageType: String
+
+  photo: Photo @complexity(value: 10)
+
+  read: Boolean
+
+  createdAt: String
+}
+
+type GalleryMessage {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+  
+  sender: User @complexity(value: 10)
+
+  recevier: User @complexity(value: 10)
+
+  messageType: String
+
+  gallery: Gallery @complexity(value: 10)
+
+  read: Boolean
+
+  createdAt: String
+}
+
+type UserprofileMessage {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+  
+  sender: User @complexity(value: 10)
+
+  recevier: User @complexity(value: 10)
+
+  messageType: String
+  
+  profile: User @complexity(value: 10)
+
+  read: Boolean
+
+  createdAt: String
+}
+
+type QuestMessage {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+  
+  sender: User @complexity(value: 10)
+
+  recevier: User @complexity(value: 10)
+
+  messageType: String
+
+  quest: Quest @complexity(value: 10)
+
+  read: Boolean
+
+  createdAt: String
+}
+
+type ResourceMessage {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+  
+  sender: User @complexity(value: 10)
+
+  recevier: User @complexity(value: 10)
+
+  messageType: String
+
+  resource: Resource @complexity(value: 10)
+
+  read: Boolean
+
+  createdAt: String
+}
+
+union Message = TextMessage | PhotoMessage | GalleryMessage | UserprofileMessage | QuestMessage | ResourceMessage
+
+type MessageEdge {
+  node: Message @complexity(value: 10)
+}
+
+type MessageConnection {
+  edges: [MessageEdge]
+  pageInfo: PageInfo
+}

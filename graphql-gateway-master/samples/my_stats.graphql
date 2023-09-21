@@ -1,0 +1,68 @@
+query MyStats($window: StatsWindow!) {
+  myStats(window: $window) {
+    lastUpdatedAt
+
+    highlights(filter:[
+      PHOTO_UPLOAD_COUNT
+      USER_FOLLOWER_COUNT
+      PHOTO_VIEW_COUNT
+      USER_VIEW_COUNT
+      PHOTO_AVERAGE_PULSE
+    ]) {
+      __typename
+      numberInCurrentWindow
+      numberInPreviousWindow
+    }
+
+    photoStatsAggregations {
+      id
+      from
+      to
+      likeCount
+      viewCount
+      commentAndReplyCount
+    }
+
+    userStatsAggregations {
+      id
+      from
+      to
+      followerCount
+    }
+
+    topPhotos {
+      edges {
+        node {
+          canonicalPath
+          name
+          pulse {
+            highest
+          }
+        }
+      }
+    }
+
+    topGear(type: LENS) {
+      edges {
+        node {
+          ... on Lens {
+	          displayName
+  	        canonicalPath
+          }
+          ... on Camera {
+	          displayName
+  	        canonicalPath
+          }
+        }
+        photoLikeCount
+        photoUploadCount
+      }
+    }
+  }
+}
+
+# variables
+# {"window": "LAST_SEVEN_DAYS"}
+
+# headers
+# {"x-500px-user-id": 13161989}

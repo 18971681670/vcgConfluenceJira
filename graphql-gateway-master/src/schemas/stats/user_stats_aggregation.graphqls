@@ -1,0 +1,31 @@
+"""
+User Stats in a given period of time / 特定时间窗口内的用户统计
+"""
+type UserStatsAggregation implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  """inclusively / 起时时间点（包含）"""
+  from: String
+  """exclusively / 终止时间点（不包含）"""
+  to: String
+
+  """The total followerCount at the tailing edge of the aggregation window / 截止到统计窗口后沿的关注总数"""
+  totalFollowerCount: Int @deprecated(reason: "Bad performance and inaccurate total count.")
+
+  followerCount: Int
+
+  followedByUsers(
+    first: Int = 10
+    after: String
+  ) : UserConnection
+
+  unfollowerCount: Int
+
+  unfollowedByUsers(
+    first: Int = 10
+    after: String
+  ) : UserConnection
+}

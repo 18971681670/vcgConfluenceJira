@@ -1,0 +1,40 @@
+"""
+LicensingContributor / 图库供稿人
+"""
+type LicensingContributor implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  """If contract has been signed / 是否已签约"""
+  signed: Boolean!
+
+  """Contract Signing Timestamp / 签约时间"""
+  signedAt: String
+
+  """Community user linked / 相关社区用户"""
+  user: User @complexity(value: 10)
+
+  initAutoLicensingSetting: Boolean
+
+  autoLicensingSetting: AutoLicensingSetting
+}
+
+type LicensingContributorEdge {
+  node: LicensingContributor
+  cursor: String
+}
+
+type LicensingContributorConnection {
+  edges: [LicensingContributorEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+}
+
+enum AutoLicensingSetting {
+  DISABLED
+  LATER
+  ENABLED_NOT_EXCLUSIVELY
+  ENABLED_EXCLUSIVELY
+}

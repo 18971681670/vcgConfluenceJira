@@ -1,0 +1,20 @@
+enum TabEnum {
+  PHOTOS
+  GALLERIES
+  GROUPS
+  LICENSING
+  RESOURCES
+  RESUME
+  ABOUT
+  STORIES
+}
+
+type Tab {
+  name: TabEnum!
+  visible: Boolean!
+  count: Int!
+}
+
+type ProfileTabs {
+  tabs: [Tab!]!
+}

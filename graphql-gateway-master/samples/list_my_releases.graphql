@@ -1,0 +1,12 @@
+query {
+  myLicensingReleases(first:100) {
+    edges {
+      node {
+        filename
+        downloadLink
+        __typename
+      }
+    }
+    totalCount
+  }
+}

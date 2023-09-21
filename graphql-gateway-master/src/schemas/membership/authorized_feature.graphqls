@@ -1,0 +1,79 @@
+enum AuthorizedFeature {
+  #############################
+  #### Membership features ####
+  #############################
+
+  """Can access Workshops in User Profile"""
+  WORKSHOPS
+
+  """Can access My Stats"""
+  STATS
+
+  """Can user User-based GA tracking"""
+  GA_TRACKING
+
+  """Can access Services in User Profile"""
+  SERVICES
+
+  """Can access Pro Profile tabs in User Profile"""
+  PRO_PROFILE
+
+  """Can access Photo Slideshows"""
+  SLIDESHOWS
+
+  """Can access My Likes"""
+  LIKES_HISOTRY
+
+  """Can enjoy the website without Ads"""
+  AD_FREE
+
+  """Can post links in photo description"""
+  LINK_POSTING
+
+  ######################################################
+  #### Rollouts defined in Admin rollout controller ####
+  ######################################################
+
+  """New uploader/manager/licensing in web-client-v2"""
+  NEW_UPLOADER
+
+  """New landing page (web-client-v2) for users who are not authorized to access Stats"""
+  NEW_STATS_LANDING
+
+  """New stats charts (web-client-v2) for users who are authorized to access Stats"""
+  NEW_STATS_CHARTS
+
+   """New licensing manager (web-client-v2) for users who are authorized to access"""
+  NEW_LICENSING_MANAGER
+
+  """New quests (web-client-v2) for users who are authorized"""
+  NEW_QUESTS
+
+  BLUESNAP_PHASE1
+
+  NEW_HOMEFEED
+
+  NEW_ACTIVITY_FEED
+
+  RESOURCE_HUB
+
+  PORTFOLIO
+
+  NEW_MESSENGER
+
+  NFT_PRELAUNCH
+
+  AUTO_LICENSING
+
+  ANDROID_MEMBERSHIP_PROMOTION
+
+  EXPLORE_FEED
+
+  ANDROID_NEW_EMAIL_VERIFICATION
+
+  AMPLITUDE_TRACKING
+
+  AUTO_UPLOADER_TAGGING
+
+  CONTENT_FEED_V1
+}

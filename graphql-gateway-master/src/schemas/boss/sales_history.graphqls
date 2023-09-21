@@ -1,0 +1,44 @@
+"""
+Photo Sale History Resource
+"""
+enum SaleSource {
+  GETTY_IMAGES
+  VCG
+  OTHER
+  CONNECT_SALES
+}
+
+enum PayoutStatus {
+  AVAILABLE_REQUEST
+  REQUESTED
+  PAID
+}
+
+type SaleHistory implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  photoId: ID!
+  photoThumbnailUrl: String
+  saleDate: String
+  source: String
+  salesTerritory: String
+  exclusived: String
+  sharePercentage: Float
+  earning: Float
+  payStatus: String
+}
+
+type SaleHistoryEdge {
+  node: SaleHistory @complexity(value: 10)
+  cursor: String
+}
+
+type SaleHistoryConnection {
+  edges: [SaleHistoryEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+  totalSum: Float
+}

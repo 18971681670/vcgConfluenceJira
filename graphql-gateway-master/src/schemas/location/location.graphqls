@@ -1,0 +1,54 @@
+"""
+Location / 位置信息
+"""
+type Location implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  """Location place id / 位置 id(google id)"""
+  placeId: String
+
+  """Location address / 位置的地址"""
+  locality: String
+
+  """Location sub address 1 / 位置详细地址1"""
+  administrativeArea1: String
+
+  """Location sub address 2 / 位置详细地址2"""
+  administrativeArea2: String
+
+  """Location sub address 3 / 位置详细地址2"""
+  administrativeArea3: String
+
+  """Location sub address 4 / 位置详细地址2"""
+  administrativeArea4: String
+
+  """Location country / 位置所属国家"""
+  country: String
+
+  """Location country code /位置所属国家编号"""
+  countryCode: String
+
+  """Location latitude / 位置纬度"""
+  latitude: Float
+
+  """Location longitude / 位置经度"""
+  longitude: Float
+
+  """Location address fomatted / 位置格式化信息"""
+  formattedAddress: String
+}
+
+
+type LocationDetails {
+
+  county: [String]
+
+  state: [String]
+
+  city: [String]
+
+  country: [String]
+}

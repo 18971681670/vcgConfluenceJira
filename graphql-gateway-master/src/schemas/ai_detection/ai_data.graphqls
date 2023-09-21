@@ -1,0 +1,129 @@
+"""The data of live eai detection"""
+type LiveAiData {
+    keywords: [Keyword!]
+    categories: [Category!]
+    title: String
+}
+
+
+
+"""
+图片的keyword/The keyword of photo from EAI
+"""
+type Keyword {
+    """the keyword of photo"""
+    keyword: String!
+    """the probability of the keyword"""
+    probability: Float!
+}
+
+"""
+批量获取的图片的keyword/The data of multiple photo keyword from EAI
+"""
+type BatchKeyword {
+    """
+    多张图片的keyword交集/The intersection of keyword in multiple photos.
+    """
+    intersection: [Keyword]
+    """
+    多张图片的keyword并集/The union collection of keyword in multiple photos.
+    """
+    union: [Keyword]!
+}
+
+"""
+图片自动分类结果/The result of auto category detection.
+"""
+type Category {
+    """The category of photo"""
+    category: String!
+    """The probability of photo category detection result"""
+    probability: Float!
+}
+
+"""
+the payload of photo information for batch get photo keyword.
+"""
+input PhotoPayload {
+    """photo id"""
+    id: ID!
+    """the url of photo"""
+    url: String!
+}
+
+type AiQualityData {
+    photoId: ID!
+    keywords: KeywordAiData!
+    licensing: LicensingAiData!
+    aesthetic: AestheticAiData!
+    copyright: CopyrightAiData!
+    nsfw: NsfwAiData!
+    title: TitleAiData!
+    human: HumanAiData!
+    qualityTier: QualityTierData!
+}
+
+type AiKeywordData {
+    photoId: ID!
+    keywords: KeywordAiData!
+}
+
+type KeywordAiData {
+    result: [String]
+    status: AiDataStatusType!
+}
+
+type LicensingAiData {
+    result: AiDataResultType!
+    status: AiDataStatusType!
+}
+
+type AestheticAiData {
+    result: AiDataResultType!
+    status: AiDataStatusType!
+}
+
+type CopyrightAiData {
+    result: AiDataResultType!
+    status: AiDataStatusType!
+}
+
+type NsfwAiData {
+    result: AiDataResultType!
+    status: AiDataStatusType!
+}
+
+type TitleAiData {
+    result: String
+    status: AiDataStatusType!
+}
+
+type HumanAiData {
+    result: Boolean!
+    status: AiDataStatusType!
+}
+
+type QualityTierData {
+    result: QualityTierType!
+    status: AiDataStatusType!
+}
+
+enum AiDataResultType {
+    PASS
+    FAIL
+    NA
+}
+
+enum QualityTierType {
+    GREAT
+    GOOD
+    MAYBE
+    NOT_MEET
+    NA
+}
+
+enum AiDataStatusType {
+    IN_PROGRESS
+    DONE
+    ERROR
+}

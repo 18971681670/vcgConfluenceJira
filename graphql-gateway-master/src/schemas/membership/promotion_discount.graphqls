@@ -1,0 +1,38 @@
+enum PromotionType {
+  """全站优惠活动"""
+  SITE_PROMOTION
+  """初次购买优惠"""
+  INTRO_PRICING
+  """特定优惠码活动"""
+  PROMO_CODE
+}
+
+"""
+Product discount info in a promotion / 优惠活动对具体某个产品的折扣
+"""
+type PromotionDiscount implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  """Price after discount / 优惠后的产品价格"""
+  priceInCents: Int!
+
+  """Percent discount"""
+  percent: Int!
+
+  code: String
+  type: PromotionType
+}
+
+type PromotionDiscountEdge {
+  node: PromotionDiscount @complexity(value: 10)
+  cursor: String
+}
+
+type PromotionDiscountConnection {
+  edges: [PromotionDiscountEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+}

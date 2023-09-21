@@ -1,0 +1,33 @@
+"""
+likes,我的点赞
+"""
+union LikedResourceItem = Photo | Gallery | FeaturedBlog | Story | MoodGallery
+
+
+type LikedResourceItemEdge {
+    node: LikedResourceItem
+    cursor: String
+}
+
+type LikedResourceItemConnection {
+    edges: [LikedResourceItemEdge]
+    pageInfo: PageInfo
+    totalCount: Int
+    resourceType: LikedResourceType
+}
+
+enum LikedResourceType{
+    PHOTO
+    PHOTO_STORIES
+    MOOD_GALLERY
+    FEATURED_GALLERIES
+}
+
+enum LikeFilterType {
+    NSFW
+}
+
+input LikeSearchFilter {
+    key: LikeFilterType!
+    value: String!
+}

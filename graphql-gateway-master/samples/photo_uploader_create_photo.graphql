@@ -1,0 +1,23 @@
+mutation CreatePhoto($privacy: PhotoPrivacy = PROFILE){
+  createPhoto(input: {autoPublish: false, privacy: $privacy}) {
+    photo {
+      legacyId
+      privacy
+      name
+    }
+
+    keywordKey
+
+    directUpload {
+      url
+      fields
+    }
+
+    licensingContributor {
+      signed
+    }
+  }
+}
+
+# headers
+# {"x-500px-user-id": 22156121}

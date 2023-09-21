@@ -1,0 +1,27 @@
+mutation AddPhotosToGallery(
+  $photoIds: [ID!]!
+  $galleryId: ID!
+) {
+  addPhotosToGallery(input: {
+    photoLegacyIds: $photoIds
+    galleryLegacyId: $galleryId
+  }) {
+    clientMutationId
+    gallery {
+      photos {
+        edges {
+          node {
+            legacyId
+            name
+          }
+        }
+      }
+    }
+  }
+}
+
+# variables
+# {"galleryId": 1000000031, "photoId": 1000000674}
+
+# headers
+# {"x-500px-user-id": 1000000093}

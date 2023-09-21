@@ -1,0 +1,146 @@
+query QuestDetail (
+  $questId: ID!
+  $coverPhotoImageSizes: [Int!]
+  $winnerPhotoImageSizes: [Int!]
+  $inspirationPhotoImageSizes: [Int!]
+  $submissionPhotoImageSizes: [Int!]
+) {
+
+  quest: nodeByLegacyId(resourceType: "Quest", legacyId: $questId) {
+    ... on Quest {
+      legacyId
+      title
+      brief
+      rules
+
+      licensing
+
+      startsAt
+      endsAt
+      completedAt
+
+      prizeName
+      prizeDescription
+      prizeImageUrl
+
+      judge {
+        displayName
+        canonicalPath
+        followedByUsers {
+          totalCount
+        }
+      }
+      judgeBio
+
+      sponsorName
+      sponsorLogoUrl
+      sponsorBlurb
+
+      brandImageryUrl
+      brandCtaUrl
+      brandCtaLabel
+
+      geofenced
+      isUserInGeofence
+
+      status
+
+      cover {
+        ...CoverPhotoWithAttribution
+      }
+
+      winners {
+        name
+        canonicalPath
+
+        comments {
+          commentsAndRepliesTotalCount
+        }
+
+        likedByUsers {
+          totalCount
+          isLikedByMe
+        }
+
+        uploader {
+          displayName
+          canonicalPath
+
+          followedByUsers {
+            isFollowedByMe
+          }
+
+          avatar {
+            images {
+              size
+              url
+            }
+          }
+        }
+
+        images(sizes: $winnerPhotoImageSizes) {
+          size
+          url
+        }
+
+      }
+
+      inspirationPhotos {
+        edges {
+          node {
+            ... on Photo {
+              legacyId
+              images(sizes: $inspirationPhotoImageSizes) {
+                size
+                url
+              }
+            }
+          }
+        }
+
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+      }
+
+      submittedPhotos {
+        edges {
+          node {
+            ... on Photo {
+              legacyId
+              images(sizes: $submissionPhotoImageSizes) {
+                size
+                url
+              }
+            }
+          }
+        }
+
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+      }
+    }
+  }
+}
+
+fragment CoverPhotoWithAttribution on Photo {
+  legacyId
+  canonicalPath
+
+  uploader {
+    legacyId
+    canonicalPath
+
+    displayName
+  }
+
+  images(sizes: $coverPhotoImageSizes) {
+    size
+    url
+  }
+}
+
+# {"questId": 447, "coverPhotoImageSizes": [32, 34], "winnerPhotoImageSizes": [2000], "inspirationPhotoImageSizes": [32, 34], "submissionPhotoImageSizes": [32, 34]}

@@ -1,0 +1,26 @@
+
+type SaleDetail implements Node {
+    """Global ID / 全局 ID"""
+    id: ID!
+    """Resource Internal ID / 资源内部ID"""
+    legacyId: ID!
+
+    photoId: ID!
+    saleDate: String
+    source: String
+    sharePercentage: String
+    earning: Float
+    payStatus: String
+}
+
+type SaleDetailEdge {
+    node: SaleDetail @complexity(value: 10)
+    cursor: String
+}
+
+type SaleDetailConnection {
+    edges: [SaleDetailEdge]
+    pageInfo: PageInfo
+    totalCount: Int
+    totalEarnings: Float
+}

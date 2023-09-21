@@ -1,0 +1,15 @@
+fragment followButtonState on User {
+  followedByUsers {
+    isFollowedByMe
+  }
+}
+
+mutation FollowUser($userId: ID!) {
+  followUser(input: {
+    userLegacyId: $userId
+  }) {
+    followee {
+      ...followButtonState
+    }
+  }
+}

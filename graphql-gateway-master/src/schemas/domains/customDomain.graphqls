@@ -1,0 +1,36 @@
+enum CustomDomainStatus {
+  INACTIVE
+  ACTIVE
+  PENDING
+}
+
+enum ValidationRecordStatus {
+  PENDING
+  MISSING
+  INCORRECT
+  VALIDATED
+}
+
+type ValidationRecord {
+  host: String!
+  type: String!
+  data: String!
+  status: ValidationRecordStatus!
+}
+
+type CustomDomain implements Node {
+  id: ID!
+  legacyId: String!
+  fqdn: String!
+  status: CustomDomainStatus!
+  validationSet: [ValidationRecord!]!
+  resourceId: String!
+  invalidationDate: String
+}
+
+type ValidationToken {
+  token: String!
+  ownerId: String!
+  parentId: String!
+  resourceId: String!
+}

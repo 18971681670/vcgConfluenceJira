@@ -1,0 +1,9 @@
+*.graphqls @gjcpopo @zhuhelei @berserkker @500px/eng-leads @lucasmarcelli
+src/schemas/* @gjcpopo @zhuhelei @berserkker @500px/eng-leads @lucasmarcelli
+
+deployment/* @500px/devops
+.travis.yml @500px/devops
+local-dev/* @500px/devops
+
+scripts/* @lucasmarcelli @500px/devops @500px/eng-leads
+package.json @lucasmarcelli @500px/devops @500px/eng-leads

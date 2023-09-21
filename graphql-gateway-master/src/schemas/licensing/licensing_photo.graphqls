@@ -1,0 +1,188 @@
+enum LicensingPhotoStatus {
+  UNDER_REVIEW
+  CHANGE_REQUIRED
+  ACCEPTED
+  DECLINED
+  REMOVED
+  RELEASE_REQUIRED
+  """老数据 迁移过来的状态 新平台数据不显示 原来的状态值0."""
+  LEGACY_PHOTO
+  """ 老数据 迁移过来的状态 新平台数据不显示 原来的状态值10. """
+  RIGHTS_MANAGED
+  """ 老数据 迁移过来的状态 新平台数据不显示 原来的状态值9. """
+  PRESUBMITTED
+  """ 老数据 """
+  DELETED
+  ALL
+  ARCHIVE
+  ARCHIVE_PENDING
+}
+
+
+enum LicensingPhotoCandidateFilter {
+  NOT_SUBMITTED
+  SUGGESTED
+}
+
+enum LicensingCollection{
+  CORE
+  PRIME
+  CORE_EDITORIAL
+  PRIME_EDITORIAL
+}
+
+enum LicensingOrientation{
+  SQUARE
+  PORTRAIT
+  LANDSCAPE
+}
+
+enum LicensingPhotoRemovedByType{
+  UPLOADER
+  ADMINISTRATOR
+}
+
+enum LicensingPhotoFeedbackCode {
+  """ 编辑输入 """
+  EDITOR_INPUT
+
+  """ change require code """
+  QUALITY_ISSUE
+  WATERMARK_BORDER_ISSUE
+  MODEL_RELEASE_REQUIRED
+  PROPERTY_RELEASE_REQUIRED
+  PERMISSION_REQUIRED
+  COPYRIGHT_IP_ISSUE
+
+  TAG_ISSUE
+  SIGNED_MODEL_RELEASE_REQUIRED
+  CONTACT_INFORMATION_ISSUE
+  FILE_SIZE_ISSUE
+
+  """ decline code """
+  SEXUALLY_EXPLICIT
+  INAPPROPRIATE_CONTENT
+  SIMILAR_IMAGE_FOUND
+  NO_MODEL_RELEASE_AND_NOT_SUITABLE_FOR_EDITORIAL
+  NOT_SUITABLE_FOR_EDITORIAL
+  EDITORIAL_INTEGRITY_ISSUE
+  LIMITED_VALUE
+  OUT_OF_FOCUS
+  COPRIGHT_IP_ISSUE
+  GENERAL_TECHNICAL_ISSUE
+  MODEL_RELEASE_INVITATION_REJECTED
+}
+
+"""
+LicensingPhoto Resource
+"""
+type LicensingPhoto implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  """Caption / 标题"""
+  caption: String
+
+  """description / 描述"""
+  description: String
+
+  """关键词"""
+  keywords: [String]!
+
+  width: Int!
+  height: Int!
+
+  """独家授权"""
+  exclusiveUsage: Boolean!
+
+  collection: LicensingCollection
+  fileName: String
+
+  latitude: Float
+  longitude: Float
+  location: String
+
+  aperture: String
+  shutterSpeed: String
+  focalLength: String
+  iso: String
+  camera: String
+  lens: String
+
+  orientation: LicensingOrientation
+
+  status: LicensingPhotoStatus!
+
+  takenAt: String
+  submittedAt: String!
+  updatedAt: String
+  createdAt: String
+  acceptedAt: String
+  removedAt: String
+  removedBy: LicensingPhotoRemovedByType
+
+  reuploaded: Boolean!
+  modelReleaseChanged: Boolean!
+  propertyReleaseChanged: Boolean!
+
+  gettyId: ID
+  vcgId: ID
+
+  images(sizes: [Int!] = [4]): [LicensingPhotoResizeImage] @complexity(value: 10)
+
+  downloadLink: String
+
+  modelReleases: [LicensingRelease] @complexity(value: 10)
+
+  propertyReleases: [LicensingRelease] @complexity(value: 10)
+
+  feedbacks: [LicensingPhotoFeedback!]
+
+  feedbacksV2: [LicensingPhotoFeedback!]
+
+  uploader: User! @complexity(value: 10)
+
+  canonicalPath: String @complexity(value: 10)
+
+  photo: Photo @complexity(value: 10)
+
+  resubmit: Boolean!
+
+  soldTimes: Int
+
+  totalEarnings: Float
+
+  privacy: PhotoPrivacy
+
+  photoStatus: Int
+}
+
+type LicensingPhotoEdge {
+  node: LicensingPhoto @complexity(value: 10)
+  cursor: String
+}
+
+type LicensingPhotoConnection {
+  edges: [LicensingPhotoEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+  unViewCount(markAsViewed: Boolean = false): Int @complexity(value: 10)
+}
+
+type LicensingPhotoFeedback {
+  code: LicensingPhotoFeedbackCode!
+  title: String!
+  message: String!
+}
+
+type LicensingPhotoStats {
+  totalUnderReview: Int
+  totalChangesRequired: Int
+  totalAccepted: Int
+  totalRemoved: Int
+  totalReleaseRequired: Int
+  totalDeleted: Int
+  totalDeclined: Int
+}

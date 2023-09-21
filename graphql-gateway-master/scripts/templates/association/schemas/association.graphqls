@@ -1,0 +1,54 @@
+
+# ------------------------------------------
+# Please update src/schemas/__MICROSERVICE_SNAKECASE__/__RESOURCE_TYPE_SNAKECASE__.graphqls
+# using the following content
+# ------------------------------------------
+
+type __RESOURCE_TYPE_PASCALCASE__ {
+  # Any existing quries in the schema...
+
+  __PREFIXED_ASSOCIATED_RESOURCE_TYPE_CAMELCASE_PLURALIZED__(
+    first: Int = 10
+    after: String
+  ) : __ASSOCIATED_RESOURCE_TYPE_PASCALCASE__Connection @complexity(value: 10, multipliers: ["first"])
+}
+
+input Add__PREFIXED_ASSOCIATED_RESOURCE_TYPE_PASCALCASE__To__RESOURCE_TYPE_PASCALCASE__Input {
+  clientMutationId: String
+
+  __RESOURCE_TYPE_CAMELCASE__LegacyId: ID!
+  __ASSOCIATED_RESOURCE_TYPE_CAMELCASE__LegacyId: ID!
+}
+
+type Add__PREFIXED_ASSOCIATED_RESOURCE_TYPE_PASCALCASE__To__RESOURCE_TYPE_PASCALCASE__Payload {
+  clientMutationId: String
+
+  __RESOURCE_TYPE_CAMELCASE__: __RESOURCE_TYPE_PASCALCASE__
+  __ASSOCIATED_RESOURCE_TYPE_CAMELCASE__: __ASSOCIATED_RESOURCE_TYPE_PASCALCASE__
+}
+
+input Remove__PREFIXED_ASSOCIATED_RESOURCE_TYPE_PASCALCASE__From__RESOURCE_TYPE_PASCALCASE__Input {
+  clientMutationId: String
+
+  __RESOURCE_TYPE_CAMELCASE__LegacyId: ID!
+  __ASSOCIATED_RESOURCE_TYPE_CAMELCASE__LegacyId: ID!
+}
+
+type Remove__PREFIXED_ASSOCIATED_RESOURCE_TYPE_PASCALCASE__From__RESOURCE_TYPE_PASCALCASE__Payload {
+  clientMutationId: String
+
+  __RESOURCE_TYPE_CAMELCASE__: __RESOURCE_TYPE_PASCALCASE__
+  __ASSOCIATED_RESOURCE_TYPE_CAMELCASE__: __ASSOCIATED_RESOURCE_TYPE_PASCALCASE__
+}
+
+# ------------------------------------------
+# Please update src/schemas/mutation.graphqls
+# using the following content
+# ------------------------------------------
+
+type Mutation {
+  add__PREFIXED_ASSOCIATED_RESOURCE_TYPE_PASCALCASE__To__RESOURCE_TYPE_PASCALCASE__(input: Add__PREFIXED_ASSOCIATED_RESOURCE_TYPE_PASCALCASE__To__RESOURCE_TYPE_PASCALCASE__Input!) : Add__PREFIXED_ASSOCIATED_RESOURCE_TYPE_PASCALCASE__To__RESOURCE_TYPE_PASCALCASE__Payload!
+
+  remove__PREFIXED_ASSOCIATED_RESOURCE_TYPE_PASCALCASE__From__RESOURCE_TYPE_PASCALCASE__(input: Remove__PREFIXED_ASSOCIATED_RESOURCE_TYPE_PASCALCASE__From__RESOURCE_TYPE_PASCALCASE__Input!) : Remove__PREFIXED_ASSOCIATED_RESOURCE_TYPE_PASCALCASE__From__RESOURCE_TYPE_PASCALCASE__Payload!
+}
+

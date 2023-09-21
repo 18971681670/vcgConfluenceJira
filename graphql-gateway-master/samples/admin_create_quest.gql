@@ -1,0 +1,10 @@
+mutation CreateQuest($input: CreateQuestInput!) {
+  createQuest(input: $input) {
+    clientMutationId
+    quest {
+      id
+      legacyId
+      title
+    }
+  }
+}

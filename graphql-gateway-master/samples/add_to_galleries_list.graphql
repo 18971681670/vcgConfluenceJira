@@ -1,0 +1,28 @@
+query AddToGalleriesList($photoIds: [ID!]) {
+  myGalleries(
+    sort: PHOTO_ADDED_AT_DESC
+  ) {
+      edges {
+      node {
+        canonicalPath
+        privacy
+        legacyId
+        id
+        photos {
+          containsPhotos(photoLegacyIds: $photoIds)
+        }
+      }
+    }
+    totalCount
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}
+
+# variables
+# {"photoIds": [1000000674, 1000000673]}
+
+# headers
+# {"x-500px-user-id": 1000000093}

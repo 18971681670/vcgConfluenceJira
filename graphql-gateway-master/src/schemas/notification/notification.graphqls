@@ -1,0 +1,47 @@
+type NotificationIcon {
+  src(size: UserAvatarResizeImageSize = SMALL): String!
+}
+
+type FollowInteraction {
+  legacyId: ID!
+  isFollowedByMe: Boolean!
+}
+
+type SubNotificationInfo {
+  groupedType: String!
+  startCursor: String!
+  endCursor: String!
+  totalSubCount: Int!
+  groupedTitle: String
+}
+
+union NotificationHeader = User | NotificationIcon
+
+union NotificationExtra = Photo | FollowInteraction
+
+type Notification implements Node {
+  id: ID!
+  legacyId: String!
+  type: NotificationAction!
+
+  """generated from action and links data"""
+  links: [String!]
+  headers: [NotificationHeader]!
+  content: String!
+  extras: [NotificationExtra]
+  createdAt: String!
+  read: Boolean!
+  grouped: Boolean!
+  subNotificationInfo: SubNotificationInfo
+}
+
+type NotificationConnection {
+  edges: [NotificationEdge]
+  pageInfo: PageInfo
+  haveUnread: Boolean @complexity(value: 10)
+}
+
+type NotificationEdge {
+  node: Notification
+  cursor: String
+}

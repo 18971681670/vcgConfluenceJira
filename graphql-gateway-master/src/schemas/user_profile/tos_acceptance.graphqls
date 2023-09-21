@@ -1,0 +1,12 @@
+"""
+TosAcceptance Resource
+"""
+type TosAcceptance implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+  documentName: String
+  signingTimestamp: String
+  ip: String
+}

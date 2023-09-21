@@ -1,0 +1,167 @@
+"""
+Stroy / 照片故事
+"""
+type Story implements Node {
+    """Global ID / 全局 ID"""
+    id: ID!
+    """Resource Internal ID / 资源内部ID"""
+    legacyId: ID!
+
+    headline: String
+
+    fullStory: String
+
+    privacy: StoryPrivacy
+
+    photosInStory: [PhotoInStory]
+
+    createdBy: User
+
+    createdAt: String
+
+    publishDate: String
+
+    featureDate: String
+
+    """浏览量"""
+    viewCount: Int!
+
+    storyPulse:StoryPulse @complexity(value: 10)
+
+    """当前热度"""
+    currentPulse: Float @complexity(value: 10)
+
+    """最高热度"""
+    highestPulse: Float @complexity(value: 10)
+
+    """点赞数"""
+    likedByUsers(first: Int = 10, after: String): UserConnectionOnStoryLikedByUsers @complexity(value: 10)
+    isLikedByMe: Boolean @complexity(value: 10)
+
+    """排序顺序 Editors > Popular > Upcoming > Fresh"""
+    contentStreams: [ContentStream!] @complexity(value: 10)
+
+    """评论"""
+    comments(first: Int = 10, after: String): CommentConnection @complexity(value: 10, multipliers: ["first"])
+
+    """相似图"""
+    similarPhotos(first: Int = 4, after: String): PhotoConnection @complexity(value: 10)
+
+    """featured in these galleries"""
+    featureInGalleries(first: Int = 4, after: String): GalleryConnection @complexity(value: 10)
+
+    """前台detail详情链接"""
+    canonicalPath: String
+
+    notSafeForWork: Boolean
+
+}
+
+type PhotoInStory implements Node{
+    """Global ID / 全局 ID"""
+    id: ID!
+    """Resource Internal ID / 资源内部ID"""
+    legacyId: ID!
+    photoId: ID
+    photoInfo: Photo
+    """顺序"""
+    sort: Int
+}
+
+enum StoryPrivacy {
+    ALL
+    PUBLIC
+    DRAFT
+}
+
+type UserConnectionOnStoryLikedByUsers {
+    edges: [UserEdgeOnStoryLikedByUsers]
+    pageInfo: PageInfo
+    totalCount: Int
+}
+
+type UserEdgeOnStoryLikedByUsers {
+    node: User @complexity(value: 10)
+    cursor: String
+    likedAt: String
+}
+
+type PhotoStoryEdge {
+    node: Story @complexity(value: 10)
+    cursor: String
+}
+
+type PhotoStoryConnection {
+    edges: [PhotoStoryEdge]
+    pageInfo: PageInfo
+    totalCount: Int
+}
+
+enum PhotoStorySort {
+    ID_DESC
+    CREATED_AT_ASC
+    CREATED_AT_DESC
+    VIEW_COUNT_ASC
+    VIEW_COUNT_DESC
+    LIKE_COUNT_ASC
+    LIKE_COUNT_DESC
+    COMMENT_AND_REPLY_COUNT_ASC
+    COMMENT_AND_REPLY_COUNT_DESC
+    """支持 admin"""
+    NAME_ASC
+    NAME_DESC
+    TITLE_ASC
+    TITLE_DESC
+    DATE_FEATURED_ASC
+    DATE_FEATURED_DESC
+    DATE_PUBLISH_ASC
+    DATE_PUBLISH_DESC
+}
+
+input CreateStoryInput {
+    """创建story时不需要传，修改时需传"""
+    storyId: ID
+    headline: String!
+    description: String
+    """story类型"""
+    privacy: StoryPrivacy
+    items: [StoryItemInput]
+}
+
+type CreateStoryPayload {
+    """Newly created resource of Story / 新创建Story资源"""
+    story: Story
+}
+
+input StoryItemInput {
+    photoId: ID
+    """照片排序"""
+    sort: Int
+}
+
+input StorySearchFilter {
+    key: StoryFilterType
+    value: Boolean
+}
+
+enum StoryFilterType {
+    FEATURE
+    IS_NSFW
+}
+
+input DeleteStoryInput {
+    storyIds: [ID!]
+}
+
+type DeleteStoryPayload {
+    clientMutationId: String
+}
+
+input UpdateStoryPrivacyInput {
+    storyIds: [ID!]
+    privacy: StoryPrivacy!
+}
+
+type UpdateStoryPrivacyPayload {
+    clientMutationId: String
+}

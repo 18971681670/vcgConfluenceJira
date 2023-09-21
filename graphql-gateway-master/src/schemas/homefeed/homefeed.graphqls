@@ -1,0 +1,45 @@
+"""
+Homefeed / 内容流
+"""
+type Homefeed implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """event  ID / 事件ID"""
+  eventId: String
+
+  """event Type / 事件类型"""
+  eventType: String
+
+  """ 创建时间"""
+  createdAt: String
+
+  """ 对象类型"""
+  objectType: String
+
+  """资料"""
+  objects: [Node]
+}
+
+type HomefeedEdge {
+  node: Homefeed
+  cursor: String
+}
+
+type HomefeedConnection {
+  edges: [HomefeedEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+}
+
+union HomefeedItem = Photo | Gallery
+
+type HomefeedItemEdge {
+  node: HomefeedItem
+  cursor: String
+}
+
+type HomefeedItemConnection {
+  edges: [HomefeedItemEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+}

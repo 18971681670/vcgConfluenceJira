@@ -1,0 +1,34 @@
+name: graphql-gateway
+roleName: eks-us-east-1-graphql-gateway
+
+resources:
+  requests:
+    memory: "512Mi"
+    cpu: "500m"
+  limits:
+    memory: "768Mi"
+
+container:
+  port: 4000
+
+hpa:
+  enabled: true
+  threshold: 60
+
+pdb:
+  enabled: true
+
+service:
+  discovery: "true"
+  enabled: true
+  port: 80
+
+livenessProbe:
+  initialDelaySeconds: 15
+
+readinessProbe:
+  initialDelaySeconds: 15
+  periodSeconds: 2
+
+datadog:
+  enabled: false

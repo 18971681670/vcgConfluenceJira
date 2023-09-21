@@ -1,0 +1,7 @@
+mutation LikePhoto($photoId: ID!) {
+  likePhoto(input: {photoLegacyId: $photoId}) {
+    clientMutationId
+  }
+}
+
+# {"photoId": 1000000683}

@@ -1,0 +1,19 @@
+"""
+UserContact Resource
+"""
+type UserContact implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  """已验证过的邮箱"""
+  email: String
+  """尚未验证过的邮箱"""
+  unverifiedEmail: String
+
+  """已验证过的手机号码"""
+  phone: String @complexity(value: 10)
+  """已验证过的手机号码归属国"""
+  phoneCountry: String @complexity(value: 10)
+}

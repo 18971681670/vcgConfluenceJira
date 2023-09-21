@@ -1,0 +1,25 @@
+env:
+  es6: true
+  node: true
+extends: google
+globals:
+  Atomics: readonly
+  SharedArrayBuffer: readonly
+parserOptions:
+  ecmaVersion: 2018
+  sourceType: module
+rules:
+  max-len:
+    - error
+    - code: 3000
+  no-unused-vars:
+    - error
+    - varsIgnorePattern: logger|^_
+  graphql/template-strings:
+    - error
+    - env: 'literal'
+      schemaJsonFilepath:  './output/schema.json'
+  multiline-comment-style:
+    - error
+plugins:
+  - graphql

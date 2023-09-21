@@ -1,0 +1,15 @@
+type Folder implements Node {
+  id: ID!
+  portfolioId: Int!
+  name: String!
+  description: String
+  coverPhoto: Photo
+  photos(first: Int = 10, after: String): PhotoConnection!
+  createdAt: String!
+  updatedAt: String
+}
+
+type GetMyFoldersByPhotoIdsResponse {
+  photoId: String!
+  folders: [Folder!]!
+}

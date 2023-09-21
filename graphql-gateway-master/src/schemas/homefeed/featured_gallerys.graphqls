@@ -1,0 +1,21 @@
+"""
+FeaturedGallery / 推荐相册
+"""
+type FeaturedGallery implements Node {
+    """Global ID / 全局 ID"""
+    id: ID!
+
+    gallery: Gallery
+
+}
+
+type FeaturedGalleryEdge {
+    node: FeaturedGallery @complexity(value: 10)
+    cursor: String
+}
+
+type FeaturedGalleryConnection {
+    edges: [FeaturedGalleryEdge]
+    pageInfo: PageInfo
+    totalCount: Int
+}

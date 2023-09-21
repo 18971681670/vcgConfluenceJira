@@ -1,0 +1,8 @@
+ingress:
+  securityGroupIds:
+    - "sg-0191a56a92d275433"
+
+hpa:
+  min: 2
+  max: 64
+  threshold: 60

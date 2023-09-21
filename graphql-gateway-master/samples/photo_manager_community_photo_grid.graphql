@@ -1,0 +1,29 @@
+query CommunityPhotoManagerGrid(
+    $privacy: PhotoPrivacy,
+    $photoGridSizes: [Int!] = [4],
+    $pageSize: Int,
+    $cursor: String) {
+
+  myPhotos(privacy: $privacy, first: $pageSize, after: $cursor) {
+    edges {
+      node {
+        ...PhotoGridItem
+      }
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+
+}
+
+fragment PhotoGridItem on Photo {
+  legacyId
+  width
+  height
+  images(sizes: $photoGridSizes) {
+    size
+    url
+  }
+}

@@ -1,0 +1,76 @@
+enum UserSexEnum {
+  GENDER_NOT_SPECIFIED
+  MALE
+  FEMALE
+}
+
+"""
+HireLocation
+"""
+type HireLocation {
+  latitude: Float!
+  longitude: Float!
+  city: String
+  administrativeZone1: String
+  country: String
+  displayName: String
+}
+
+"""Contains userLegacyId because its a generic response"""
+type HireLocationsResponse {
+  userId: String!
+  latitude: Float!
+  longitude: Float!
+  city: String
+  administrativeZone1: String
+  country: String
+  displayName: String
+}
+
+type HireLocationsPayload {
+  hireLocations: [HireLocationsResponse!]!
+}
+
+"""
+PersonalAndProfile Resource
+"""
+type PersonalAndProfile implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  username: String!
+
+  email: String!
+
+  firstname: String
+
+  lastname: String
+
+  birthday: String
+
+  about: String
+
+  city: String
+
+  state: String
+
+  country: String
+
+  sex: UserSexEnum
+
+  auth: Auth
+
+  havePassword: Boolean
+}
+
+type Auth implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+  twitter: Boolean,
+  facebook: Boolean,
+  googleOauth2: Boolean
+}

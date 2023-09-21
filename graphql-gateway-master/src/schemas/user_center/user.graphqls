@@ -1,0 +1,260 @@
+enum UserType {
+  BASIC
+  STORE
+  ADMIN
+  AMBASSADOR
+  VCG
+  PARTNER
+  MODERATOR
+  VERIFIED
+  ALUMNUS
+}
+
+"""
+User / 用户
+"""
+type User implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  active: Int!
+  username: String!
+  firstName: String
+  lastName: String
+  city: String
+  country: String
+
+  type: UserType!
+
+  registeredAt: String!
+
+  canonicalPath: String @deprecated(reason: "Use canonicalPathV2. This uses the old Profile format: /<username>. canonicalPathV2 is properly formed /p/<username>")
+  canonicalPathV2: String
+
+  displayName: String!
+  displayLocation: String
+
+  avatar: UserAvatar
+
+  """[Private] Contact Info / 联系信息"""
+  contact: UserContact
+
+  userProfile: PersonalAndProfile
+  socialMedia: SocialMedia
+  socialMediaItems(providers: [SocialMediaEnum]): [SocialMediaItem]
+  equipment: UserEquipment
+  userSetting: UserSetting
+
+  followedBy: FollowedByUsers
+  following: FollowingUsers
+  followedByUsers(first: Int, after: String): UserConnectionOnUserFollowedByUsers @complexity(value: 10, multipliers: ["first"]) @deprecated(reason: "use type FollowedByUsers on type User")
+  followingUsers(first: Int, after: String): UserConnectionOnUserFollowingUsers @deprecated(reason: "use type FollowingUsers on type User")
+
+  """Membership Info / 会员信息"""
+  membership: Membership @complexity(value: 10)
+
+  licensing: LicensingContributor @complexity(value: 10)
+
+  settings: UserSettings
+
+  extended: UserExtended @complexity(value: 10)
+
+  profileTabs: ProfileTabs
+
+  photos(privacy: PhotoPrivacy, excludeNude: Boolean = false, sort: MyPhotosSort = CREATED_AT_DESC, first: Int = 10, after: String) : PhotoConnection @complexity(value: 10, multipliers: ["first"])
+
+  gdprAcceptanceTimestamp: String
+
+  coverPhotoUrl: String
+
+  """the photo status aggregation of the user"""
+  photoStats: UserPhotoAggregation
+
+  licensingStats:LicensingPhotoStats
+
+  licensingPhotos(
+  status: LicensingPhotoStatus!
+  first: Int = 5
+  after: String
+  ) : LicensingPhotoConnection @complexity(value: 10, multipliers: ["first"])
+
+  photoStories(
+    first: Int = 10
+    after: String
+  ): PhotoStoryConnection @complexity(value: 10, multipliers: ["first"])
+
+  portfolio: Portfolio
+
+  recentVotes(first: Int = 10): [Int!]!
+
+  resume: Resume
+  hireLocations: [HireLocation]
+
+  quests: QuestInvolvement
+
+  badges: [UserBadge]
+
+  hasUnreadNotifications: Boolean
+
+  isBlockedByMe: Boolean
+
+  havePassword: Boolean
+}
+
+type UserEdge {
+  node: User @complexity(value: 10)
+  cursor: String
+}
+
+type UserConnection {
+  edges: [UserEdge]
+
+  pageInfo: PageInfo
+
+  totalCount: Int
+}
+
+type UserEdgeOnUserFollowedByUsers {
+  node: User @complexity(value: 10)
+  cursor: String
+  followedAt: String
+}
+
+type UserConnectionOnUserFollowedByUsers {
+  edges: [UserEdgeOnUserFollowedByUsers]
+
+  pageInfo: PageInfo
+
+  """Same value as totalCount on type FollowedByUsers. Do not query for both."""
+  totalCount: Int @complexity(value: 10)
+
+  isFollowedByMe: Boolean @complexity(value: 10) @deprecated(reason: "use type FollowedByUsers on type User")
+}
+
+type UserEdgeOnUserFollowingUsers {
+  node: User
+  cursor: String
+  followedAt: String
+}
+
+type UserConnectionOnUserFollowingUsers {
+  edges: [UserEdgeOnUserFollowingUsers]
+
+  pageInfo: PageInfo
+
+  """Same value as totalCount on type FollowingUsers. Do not query for both."""
+  totalCount: Int @complexity(value: 10)
+
+  isFollowingMe: Boolean @complexity(value: 10) @deprecated(reason: "use type FollowingUsers on type User")
+}
+
+type FollowedByUsers {
+  followedByUsers(first: Int, after: String): UserConnectionOnUserFollowedByUsers
+
+  isFollowedByMe: Boolean
+
+  totalCount: Int
+}
+
+type FollowingUsers {
+  followingUsers(first: Int, after: String): UserConnectionOnUserFollowingUsers
+
+  isFollowingMe: Boolean
+
+  totalCount: Int
+}
+
+"""
+SimpleUser / 用户注册返回信息
+"""
+type SimpleUser implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  username: String!
+  email: String!
+  newUser: Boolean!
+}
+
+"""
+SimpleUserWithToken / 用户注册返回信息,包含token.
+"""
+type SimpleUserWithToken implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  username: String!
+  email: String!
+  newUser: Boolean!
+  jwtToken: String!
+  csrfToken: String!
+}
+
+"""
+if a user account can be delete.
+"""
+type UserAccountDeletable {
+  legacyUserId: ID!
+  deletable: Boolean!
+}
+
+"""
+The status of the user account.
+"""
+type UserAccountStatus {
+  exist: Boolean!
+  legacyId: ID
+  email: String
+  active: Int
+}
+
+"""
+oauth2 user public info.
+"""
+type UserPublicInfo {
+  """500px user openid"""
+  userId: String!
+
+  """500px user nick name"""
+  nickName: String!
+
+  """500px user avatar"""
+  avatar: UserAvatar
+
+  """500px user email"""
+  email: String!
+}
+
+type UserBadge {
+  badge: String!
+}
+
+union WebAccessTokenResponse = WebAccessToken | WebAccessTokenError
+
+type WebAccessToken {
+  """access token"""
+  accessToken: String!
+
+  """access token expires in (seconds)"""
+  accessTokenExpiresIn: Int!
+
+  """csrf token"""
+  csrfToken: String!
+
+  """csrf token expires in (seconds)"""
+  csrfTokenExpiresIn: Int!
+}
+
+type WebAccessTokenError {
+  errorCode: String
+
+  errorMessage: String
+
+  status: Int
+}

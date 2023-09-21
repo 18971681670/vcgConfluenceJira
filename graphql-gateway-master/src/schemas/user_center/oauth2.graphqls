@@ -1,0 +1,77 @@
+type AccessToken {
+  """access token"""
+  accessToken: String!
+
+  """token type default is bearer"""
+  tokenType: String!
+
+  """refresh token"""
+  refreshToken: String!
+
+  """access token expires in (seconds)"""
+  expiresIn: Int!
+
+  """access token access scope"""
+  scope: String!
+}
+
+type LoginUrl {
+  """500px login page"""
+  loginUrl: String!
+}
+
+type CallbackUrl {
+  """third client callback page"""
+  callbackUrl: String!
+}
+
+type UserInfoAndToken {
+  """500px user openid"""
+  userId: String!
+
+  """500px user access token"""
+  accessToken: String!
+
+  """500px user nick name"""
+  nickName: String!
+
+  """500px user avatar"""
+  avatar: UserAvatar
+
+  """500px user email"""
+  email: String!
+}
+
+type ReourceEdge {
+
+  code: String!
+
+  name: String!
+
+  enname: String!
+
+  """true optional, false default checked"""
+  optional: String!
+
+}
+
+type LoginInfoAndClientInfo {
+
+  """If true, query oauth2GetCallBackUrl  """
+  isAuthenticated: Boolean!
+
+  """login or not """
+  isLogin: Boolean!
+
+  """user displayName"""
+  displayName: String!
+
+  """third client clientId"""
+  clientId: String!
+
+  """third client name"""
+  name: String!
+
+  """third client name"""
+  resources: [ReourceEdge]
+}

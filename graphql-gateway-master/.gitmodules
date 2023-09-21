@@ -1,0 +1,3 @@
+[submodule "clients/web-client-v2"]
+	path = clients/web-client-v2
+	url = https://github.com/500px/web-client-v2.git

@@ -1,0 +1,36 @@
+enum UserLocaleEnum {
+  EN
+  ZH_CN
+  PT_BR
+  TR
+  RU
+  KO
+  IT
+  fr
+  ES
+  DE
+  JA
+}
+
+"""
+UserSetting Resource
+"""
+type UserSetting implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  locale: UserLocaleEnum!
+  """show adult picture / 是否查看成人图片，default true."""
+  showNude: Boolean!
+  """是否可联系."""
+  isContactable: Boolean!
+  """付费用户可以使用google的跟踪码."""
+  analyticsCode: String
+  onboardingCategories: String
+  """email and push notification subscriptions"""
+  subscriptionChannels: [SubscriptionChannel!]!
+  firstnameVisible: Boolean
+  locationVisible: Boolean
+}

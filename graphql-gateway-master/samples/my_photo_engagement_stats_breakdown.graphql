@@ -1,0 +1,28 @@
+query MyPhotoEngagementStatsBreakdown($id: ID!) {
+  node(id: $id) {
+    ... on PhotoStatsAggregation {
+      from
+      to
+      photos {
+        edges {
+          node {
+            name
+            images(sizes: [4]) {
+              url
+            }
+          }
+
+          viewCount
+          likeCount
+          commentAndReplyCount
+        }
+      }
+    }
+  }
+}
+
+# variables
+# {"id": "dXJpOm5vZGU6UGhvdG9TdGF0c0FnZ3JlZ2F0aW9uOjEzMTYxOTg5LS0tMjAxOS0xMS0wOFQwMDowMDowMFotLS0yMDE5LTExLTA5VDAwOjAwOjAwWg=="}
+
+# headers
+# {"x-500px-user-id": 13161989}

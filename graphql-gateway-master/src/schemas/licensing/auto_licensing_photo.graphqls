@@ -1,0 +1,21 @@
+enum AutoLicensingStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  CANCELLED
+  REMOVED
+}
+
+"""
+AutoLicensingPhoto Resource
+"""
+type AutoLicensingPhoto implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  status: AutoLicensingStatus!
+
+  exclusiveUsage: Boolean!
+}

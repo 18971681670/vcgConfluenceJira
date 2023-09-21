@@ -1,0 +1,78 @@
+enum SubscriptionChannelName {
+  LIKE
+  FAVOURITE
+  UPCOMING
+  POPULAR
+  EDITORS_CHOICE
+  CHAT
+  CHAT_MESSAGE
+  COMMENT
+  COMMENT_MENTION
+  CRITIQUE_REQUEST
+  FOLLOW
+  PHOTO_UPLOAD
+  BUY_PHOTO
+  NEWSLETTER
+  ACCOUNT_UPDATES
+  WEEKEND_DIGEST
+  GROUP_DISCUSSION
+  GROUP_DISCUSSION_CREATED
+  GROUP_COMMENT_REPLY
+  GROUP_JOINED
+  GROUP_INVITE
+  GROUP_CONTENT_FLAGGED
+  QUEST_UPDATES
+  GALLERY_YOUR_PHOTO_ADDED
+  GALLERY_EDITORS_CHOICE
+  LICENSING_NEWS
+  COMMENTS
+  YOUR_PHOTO
+  LICENSING
+  MARKETING_AND_PROMOTION
+}
+
+type SubscriptionChannel {
+  """Push and Email notification subscription settings"""
+  name: SubscriptionChannelName!
+  pushEnabled: Boolean!
+  emailEnabled: Boolean!
+}
+
+input SubscriptionChannelInput {
+  """
+  Can't use type as input, hence the duplication
+  Push and Email notification subscription settings
+  """
+  name: SubscriptionChannelName!
+  pushEnabled: Boolean
+  emailEnabled: Boolean
+}
+
+input UpdateUserSubscriptionsInput {
+  """Partial or complete list of channel settings"""
+  channels: [SubscriptionChannelInput!]!
+  token: String
+}
+
+type UpdateUserSubscriptionsPayload {
+  userSetting: UserSetting!
+}
+
+type UpdateUserSubscriptionsV2Payload {
+  subscriptionChannels: [SubscriptionChannel!]
+}
+
+input UpdateAllUserSubscriptionsInput {
+  """Set all email or push notifications"""
+  email: Boolean
+  push: Boolean
+  token: String
+}
+
+type UpdateAllUserSubscriptionsPayload {
+  userSetting: UserSetting!
+}
+
+type UpdateAllUserSubscriptionsV2Payload {
+  subscriptionChannels: [SubscriptionChannel!]
+}

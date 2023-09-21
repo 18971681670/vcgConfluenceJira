@@ -1,0 +1,78 @@
+"""
+UserEquipment Resource
+"""
+type UserEquipment implements Node{
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+  camera: [String]
+  lens: [String]
+  misc: [String]
+}
+
+#type UserEquipmentEdge {
+#  node: UserEquipment @complexity(value: 10)
+#  cursor: String
+#}
+#
+#type UserEquipmentConnection {
+#  edges: [UserEquipmentEdge]
+#  pageInfo: PageInfo
+#  totalCount: Int
+#}
+#
+#input CreateUserEquipmentInput {
+#  clientMutationId: String
+#
+#  fieldName: String
+#  anotherField: UserEquipmentAnotherField
+#}
+#
+#type CreateUserEquipmentPayload {
+#  clientMutationId: String
+#
+#  """Newly created resource of UserEquipment / 新创建UserEquipment资源"""
+#  userEquipment: UserEquipment
+#}
+#
+#input UpdateUserEquipmentInput {
+#  clientMutationId: String
+#
+#  legacyId: ID!
+#
+#  fieldName: String
+#  anotherField: UserEquipmentAnotherField
+#}
+#
+#type UpdateUserEquipmentPayload {
+#  clientMutationId: String
+#
+#  """UserEquipment after update / 修改后的UserEquipment资源"""
+#  userEquipment: UserEquipment
+#}
+#
+#input DeleteUserEquipmentInput {
+#  clientMutationId: String
+#
+#  legacyId: ID!
+#}
+#
+#type DeleteUserEquipmentPayload {
+#  clientMutationId: String
+#}
+#
+########################################
+## For mutation.graphqls
+########################################
+#
+#type Mutation {
+#  """创建UserEquipment资源"""
+#  createUserEquipment(input: CreateUserEquipmentInput): CreateUserEquipmentPayload
+#
+#  """更新UserEquipment信息"""
+#  updateUserEquipment(input: UpdateUserEquipmentInput): UpdateUserEquipmentPayload
+#
+#  """删除UserEquipment"""
+#  deleteUserEquipment(input: DeleteUserEquipmentInput!): DeleteUserEquipmentPayload!
+#}

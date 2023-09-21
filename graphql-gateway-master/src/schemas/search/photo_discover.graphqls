@@ -1,0 +1,22 @@
+enum PhotoDiscoverFilterType {
+  FOLLOWERS_COUNT
+  CATEGORY
+  FEATURE_NAME
+  FEATURE_START_AT
+  FEATURE_END_AT
+  EXCLUDE_CATEGORY
+}
+
+input PhotoDiscoverSearchFilter {
+  key: PhotoDiscoverFilterType!
+  value: String!
+}
+
+enum PhotoDiscoverSort {
+  """Discover sorting is mostly internal"""
+  NONE
+  """Maps to rating in popular"""
+  POPULAR_PULSE
+  """Newest applied only to popular"""
+  POPULAR_NEWEST
+}

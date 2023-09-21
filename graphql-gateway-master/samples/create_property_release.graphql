@@ -1,0 +1,25 @@
+mutation CreatePropertyRelease (
+  $filename: String!
+) {
+  createPropertyRelease(
+    input: {
+      filename: $filename
+    }
+  ) {
+    propertyRelease {
+      legacyId
+      filename
+    }
+
+    directUpload {
+      url
+      fields
+    }
+  }
+}
+
+# variables
+# {"filename": "John_Smith.pdf"}
+
+# headers
+# {"x-500px-user-id": 22156121}

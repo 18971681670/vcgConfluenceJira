@@ -1,0 +1,1551 @@
+type Mutation {
+  markMyGroupedNotificationsAsRead(input: MarkMyGroupedNotificationsAsReadInput): MarkMyGroupedNotificationsAsReadPayload
+
+  """修改用户基本信息"""
+  updateUser(input: UpdateUserInput): UpdateUserPayload
+
+  """申请修改用户联系方式(需验证)"""
+  updateUserContact(input: UpdateUserContactInput): UpdateUserContactPayload
+
+  """验证用户联系方式"""
+  verifyUserContact(input: VerifyUserContactInput): VerifyUserContactPayload
+
+  """Email and push notification subscriptions"""
+  updateUserSubscriptions(input: UpdateUserSubscriptionsInput!): UpdateUserSubscriptionsPayload @deprecated(reason: "Use UpdateUserSubscriptionsPayloadV2")
+
+  """Set all Email and Push notifications at once"""
+  updateAllUserSubscriptions(input: UpdateAllUserSubscriptionsInput!): UpdateAllUserSubscriptionsPayload @deprecated(reason: "Use updateAllUserSubscriptionsV2")
+
+  """Email and push notification subscriptions"""
+  updateUserSubscriptionsV2(input: UpdateUserSubscriptionsInput!): UpdateUserSubscriptionsV2Payload
+
+  """Set all Email and Push notifications at once"""
+  updateAllUserSubscriptionsV2(input: UpdateAllUserSubscriptionsInput!): UpdateAllUserSubscriptionsV2Payload
+
+  """创建照片资源"""
+  createPhoto(input: CreatePhotoInput): CreatePhotoPayload
+
+  """发布照片信息"""
+  publishPhoto(input: PublishPhotoInput): PublishPhotoPayload
+
+  """更新照片信息"""
+  updatePhoto(input: UpdatePhotoInput): UpdatePhotoPayload
+
+  """删除照片"""
+  deletePhoto(input: DeletePhotoInput!): DeletePhotoPayload!
+
+  """创建Gallery资源"""
+  createGallery(input: CreateGalleryInput!): CreateGalleryPayload!
+
+  createStory(input: CreateStoryInput!): CreateStoryPayload!
+
+  deleteStory(input: DeleteStoryInput!): DeleteStoryPayload!
+
+  updateStoryPrivacy(input: UpdateStoryPrivacyInput!): UpdateStoryPrivacyPayload!
+
+  """更新Gallery信息"""
+  updateGallery(input: UpdateGalleryInput!): UpdateGalleryPayload!
+
+  """删除Gallery"""
+  deleteGallery(input: DeleteGalleryInput!): DeleteGalleryPayload!
+
+  """图库签约"""
+  createLicensingContributor(input: CreateLicensingContributorInput): CreateLicensingContributorPayload
+
+  updateAutoLicensingSetting(input: AutoLicensingSettingInput!): AutoLicensingSettingPayload
+
+  cancelAutoLicensingPhoto(input: CancelAutoLicensingPhotoInput!): CancelAutoLicensingPhotoPayload
+
+  """提交照片到大赛"""
+  addPhotoToQuest(input: AddPhotoToQuestInput): AddPhotoToQuestPayload
+  removePhotoFromQuest(input: RemovePhotoFromQuestInput): RemovePhotoFromQuestPayload!
+
+  """Quest shortlist"""
+  addPhotoToShortlist(input: AddPhotoToShortlistInput): AddPhotoToShortlistPayload!
+  removePhotoFromShortlist(input: RemovePhotoFromShortlistInput): RemovePhotoFromShortlistPayload!
+
+  """批量更新图库照片信息"""
+  bulkUpdateLicensingPhotos(input: BulkUpdateLicensingPhotosInput): BulkUpdateLicensingPhotosPayload
+
+  """批量从图库删除照片"""
+  bulkDeleteLicensingPhotos(input: BulkDeleteLicensingPhotosInput): BulkDeleteLicensingPhotosPayload
+
+  """创建肖像权许可"""
+  createModelRelease(input: CreateModelReleaseInput): CreateModelReleasePayload
+  activateModelRelease(input: ActivateModelReleaseInput): ActivateModelReleasePayload
+
+  """创建数字肖像权许可邀请"""
+  createModelReleaseInvitation(input: CreateModelReleaseInvitationInput): CreateModelReleaseInvitationPayload
+
+  """创建物权授许可"""
+  createPropertyRelease(input: CreatePropertyReleaseInput): CreatePropertyReleasePayload
+  activatePropertyRelease(input: ActivatePropertyReleaseInput): ActivatePropertyReleasePayload
+
+  """Re-upload a photo qualified for Licensing, on top of existing community photo / 重新上传专供图库使用的大图"""
+  reuploadPhotoForLicensing(input: ReuploadPhotoForLicensingInput): ReuploadPhotoForLicensingPayload
+
+  rejectModelReleaseInvitation(input: RejectModelReleaseInvitationInput): RejectModelReleaseInvitationPayload
+  permissionModelReleaseInvitation(input: PermissionModelReleaseInvitationInput): PermissionModelReleaseInvitationPayload
+
+  followUser(input: FollowUserInput): FollowUserPayload
+  unfollowUser(input: UnfollowUserInput): UnfollowUserPayload
+
+  likePhoto(input: LikePhotoInput): LikePhotoPayload
+  unlikePhoto(input: UnlikePhotoInput): UnlikePhotoPayload
+
+  likeResource(input: LikeAndUnLikeInput): LikeAndUnlikePayload
+  unlikeResource(input: LikeAndUnLikeInput): LikeAndUnlikePayload
+  batchSaveLiked(input: BatchLikeAndUnLikeInput):  Boolean
+
+  addPhotoToGallery(input: AddPhotoToGalleryInput!) : AddPhotoToGalleryPayload! @deprecated(reason: "please use addPhotosToGallery instead")
+
+  addPhotosToGallery(input: AddPhotosToGalleryInput!) : AddPhotosToGalleryPayload!
+  addGalleryPhotosToGallery(input: AddGalleryPhotosToGalleryInput!) : AddGalleryPhotosToGalleryPayload!
+  removePhotoFromGallery(input: RemovePhotoFromGalleryInput!) : RemovePhotoFromGalleryPayload!
+  batchRemovePhotosFromGallery(input: BatchRemovePhotoFromGalleryInput!) : BatchRemovePhotoFromGalleryPayload!
+
+  """生成Keyword Service的请求参数"""
+  signPhotoKeywordReqeuest(input: SignPhotoKeywordInput!): SignPhotoKeywordPayload!
+
+  """删除用户头像"""
+  deleteAvatar(input: DeleteAvatarInput!) : DeleteAvatarPayload!
+
+  """用户提现申请"""
+  userRequestPayout: RequestPayoutPayload
+
+  """添加照片评论"""
+  addCommentOnPhoto(input: PhotoCommentInput!) : CommentPayLoad!
+
+  """添加评论回复"""
+  addCommentOnComment(input: ReplyCommentInput!) : CommentPayLoad!
+
+  """delete a comment by community user."""
+  deleteComment(input: DeleteCommentInput!): DeleteCommentPayLoad!
+
+  """添加story评论"""
+  addCommentOnStory(input: PhotoCommentInput!) : CommentPayLoad!
+
+  """添加story评论回复"""
+  addCommentOnStoryComment(input: ReplyCommentInput!) : CommentPayLoad!
+
+  """report a comment to review."""
+  flagComment(input: FlagCommentInput!): FlagCommentPayload!
+
+  """添加图片到编辑推荐(管理员)"""
+  editorsChoice(input: EditorsChoiceInput): EditorsChoicePayload
+
+  """从编辑推荐移除图片(管理员)"""
+  uneditorsChoice(input: UneditorsChoiceInput): UneditorsChoicePayload
+
+  """设置图片为敏感图片(管理员)"""
+  updatePhotoNsfw(input: UpdatePhotoNsfwInput): UpdatePhotoNsfwPayload
+
+  """设置图片为私有(管理员)"""
+  updatePhotoPrivacy(input: UpdatePhotoPrivacyInput): UpdatePhotoPrivacyPayload
+
+  """修改licensing的privacy"""
+  updateLicensingPrivacy(input: UpdateLicensingPrivacyInput): UpdatePhotoPrivacyPayload
+
+  """修改图片类别(管理员)"""
+  updatePhotoCategory(input: UpdatePhotoCategorizeInput): UpdatePhotoCategorizePayload
+
+  """
+    注销oauth2 access token
+
+    revoke a oauth2 accessToken, and all the clients with same clientId of that user will be revoked
+  """
+  oauth2Revoke(
+    """The accessToken given by oauth2-server last time"""
+    input: String!
+  ): String
+
+  """关闭FeaturedPhotographer显示"""
+  disableFeaturedPhotographer: String
+
+  """打开FeaturedPhotographer显示"""
+  enabledFeaturedPhotographer: String
+  """register a uer from web appliction"""
+  webUserRegister(input: UserRegistryInput!): UserRegistryPayloadWithToken
+
+  """register a uer from mobile applictions"""
+  mobileUserRegister(input: UserRegistryInput!): UserRegistryPayload
+
+  """rearrange the order of gallery in the gallery list"""
+  rearrangeGallery(input: GalleryRearrangeInput!): GalleryRearrangePayload
+
+  """rearrange the order of photo in a gallery"""
+  rearrangeGalleryPhoto(input: GalleryPhotoRearrangeInput!): GalleryPhotoRearrangePayload
+
+  """Report user"""
+  flagUser(input: FlagUserInput!): FlagUserPayload
+
+  """Report gallery"""
+  flagGallery(input: FlagGalleryInput!): FlagGalleryPayload
+
+  """Report photo"""
+  flagPhoto(input: FlagPhotoInput!): FlagPhotoPayload
+
+  """Report groupPost"""
+  flagGroupPost(input: FlagGroupPostInput!): FlagGroupPostPayload
+
+  """Report resource"""
+  flagResource(input: FlagResourceInput!): FlagResourcePayload
+
+  """update a gallery's external url and button name (just for admin user)"""
+  updateGalleryExternalUrl(input: UpdateGalleryExternalUrlInput!): UpdateGalleryExternalUrlPayload
+
+  """publish a gallery"""
+  publishGallery(input: PublishGalleryInput!): PublishGalleryPayload
+
+  removePhotographer(input: RemovePhotographerInput!): RemovePhotographerPayload
+
+  addPhotographer(input: AddPhotographerInput!): AddPhotographerPayload
+
+    """upload Presigned ResourceCover"""
+  uploadPresignedResourceCover: UploadPresignedPayload
+
+  """Create workshop"""
+  createResource(input: ResourceObj!): Resource
+
+  """Create & Publish workshop"""
+  createAndPublishResource(input: ResourceObj!): Resource
+
+  """Update workshop"""
+  updateResource(input: ResourceObj!): Resource
+
+  """Update & Publish workshop"""
+  updateAndPublishResource(input: ResourceObj!): Resource
+
+  """Publish resource """
+  publishResource(input: String!): Resource
+
+  """Unpublish resource """
+  unpublishResource(input: String!): Resource
+
+  """Feature a resource"""
+  featureResource(input: FeatureResourceInput!): FeatureResourcePayload
+
+  """Unfeature a resource"""
+  unfeatureResource(input: UnfeatureResourceInput!): UnfeatureResourcePayload
+
+  """Delete resources """
+  deleteResources(input: [String!]!): DeletedIds
+
+  """feature a gallery"""
+  featureGallery(input: FeatureGalleryInput!): FeatureGalleryPayload
+
+  """unfeature a gallery"""
+  unfeatureGallery(input: FeatureGalleryInput!): FeatureGalleryPayload
+
+  """upload Presigned Portfolio Cover"""
+  uploadPresignedPortfolioCover: UploadPresignedPayload
+  """make a relationship"""
+  makeMessengerRelation(receiver: String!): UserInboxConversationInfo
+
+  """send text message"""
+  sendTextMessage(receiver: String!, message: String!): Message
+
+  """send photo message"""
+  sendPhotoMessage(receiver: String!, photoId: String!): Message
+
+  """send profile message"""
+  sendProfileMessage(receiver: String!, profileId: String!): Message
+
+  """send gallery message"""
+  sendGalleryMessage(receiver: String!, galleryId: String!): Message
+
+   """send quest message"""
+  sendQuestMessage(receiver: String!, questId: String!): Message
+
+   """send resource message"""
+  sendResourceMessage(receiver: String!, resourceId: String!): Message
+
+  """delete user inbox conversation, but don't delete message"""
+  deleteInboxConversation(toUserIds: String!): String
+
+  """block messenger of user"""
+  blockMessageUser(blockId: String!): String
+
+  """cancel block messenger user"""
+  cancelBlockMessageUser(blockId: String!): String
+
+  createPortfolio(userId: String!, title: String!, description: String!, themeName: String!, email: String): PortfolioPayload!
+
+  updatePortfolio(portfolioId: String!, input: UpdatePortfolioInput!): Portfolio
+
+  deletePortfolio(portfolioId: String!): PortfolioPayload!
+
+  saveAndPublishPortfolio(portfolioId: String!): Portfolio
+
+  saveAndExitPortfolio(portfolioId: String!): Portfolio
+
+  activatePortfolio(portfolioId: String!): Portfolio
+
+  deactivatePortfolio(portfolioId: String!, deactivatedMessage: String): Portfolio
+
+  reorderFoldersInPortfolio(portfolioId: String!, folderId: String!, afterId: String): Portfolio
+
+  createFolder(portfolioId: String!, name: String!, description: String, coverPhotoId: String): FolderPayload!
+
+  updateFolderDetails(id: ID!, name: String, description: String, coverPhotoId: String): Folder
+
+  deleteFolder(id: ID!): FolderPayload!
+
+  addPhotosToFolder(input: FolderPhotoInput!, id: ID!): AddPhotoFolderPayload
+
+  reorderPhotoInFolder(id: ID!, photoId: String!, afterId: String): Folder
+
+  removePhotosFromFolder(input: FolderPhotoInput!, id: ID!): Folder
+
+  createPortfolioTemporaryToken: PortfolioTemporaryToken!
+
+  sendPortfolioContact(input: SendPortfolioContactInput!): SendPortfolioContactPayload!
+
+  createCustomDomain(input: CustomDomainInput!): CustomDomainPayload
+
+  createCustomDomainForHover(input: CustomDomainInput!): CustomDomainPayload
+
+  submitDomainForVerification(legacyId: String!): CustomDomainPayload
+
+  deleteCustomDomain(legacyId: String!): CustomDomainPayload
+
+  createCustomDomainValidationToken(portfolioId: String!): CreateValidationTokenPayload
+
+  # Creates a resume
+  createResume(input: CreateResumeInput!): ResumePayload
+  # Single update mutation for entire resume
+  updateResume(input: UpdateResumeInput!): ResumePayload
+  # Delete a resume
+  deleteResume(legacyId: String!): DeleteResumePayload
+
+  # Create/Update Hire Location
+  createUpdateLocationsForHire(userId: String!, input: [HireLocationInput]): HireLocationsPayload
+
+  # Create/Update Remote Config
+  createUpdateRemoteConfig(clientId: Int!, input: RemoteConfigInput!): Config
+
+  # Create/Update blacklist only in Remote Config.
+  createUpdateBlacklist(clientId: Int!, input: BlacklistInput!): Config
+
+  deleteUserAccount(input: FeedbackInput!, legacyUserId: String!): AccountDeletionPayload!
+
+  deactivateUserAccount(legacyUserId: String!, clientMutationId: String): AccountDeactivatePayload!
+
+  """request a password reset(forgot password)"""
+  requestPasswordReset(input: PasswordResetRequestIput!): PasswordResetRequestPayload!
+
+  """verify the code when user click the link in the password reset email"""
+  verifyPaswwordReset(verifyCode: String!, clientMutationId: String): PasswordResetVerifyPayload!
+
+  """do the reset password"""
+  resetPassword(verifyCode:String!, password: String!, clientMutationId:String): PasswordResetPayload!
+
+  """for a login user to change its passwrod"""
+  changePassword(input: ChangePasswordInput!):Boolean!
+
+  """
+  To request to activate a user's account.
+  Send a account activate email to user.
+  redirect: Optional, a relative URI to add as a query param to the activation link.
+  origin: Optional, represents the original location where activation was triggered.
+  newEmail: Optional, the new email if user want change the email address to receive the activation email.
+  """
+  requestActivateAccount(redirect:String, origin:String, newEmail:String): Boolean!
+
+  """
+  To complete the user account activation after a user click the activation email.
+  legacyUserId: Required, the id of user.
+  code: Required, the verify code contains in the comfirm link in the activation email.
+  """
+  completeActivateAccount(legacyUserId:String!, code:String!): Boolean!
+
+  """
+  To request a change a user's email.
+  """
+  requestChangeEmail(newEmail:String!):String!
+
+  """
+  To complete the email changing request.
+  legacyUserId: Required, the id of user.
+  code: Required, the verify code contains in the comfirm link in the activation email.
+  """
+  completeChangeEmail(legacyUserId:String!, code:String!):Boolean!
+
+  """set user onboardingStep"""
+  setUserOnboardingStep(legacyUserId:String!, onboardingStep: onboardingStepEnum!): onboardingStepEnum!
+
+  """
+  confirm the email of user account when click the link with path "account/confirm" in the email.
+  """
+  completeEmailConfirmation(legacyUserId:String!, code:String!):Boolean!
+
+  """Subscribe to an email campaign"""
+  subscribeToCampaign(signupEmail: String!, campaignName: Campaign!): CampaignSignupPayload
+
+  """Unsubscribe from an email campaign"""
+  unsubscribeFromCampaign(token: String!): CampaignSignupPayload
+
+  """
+  Send reactivation email to a deactivated user
+  Returns false if both inputs are missing. Otherwise returns true or an error.
+  Send either email OR username. Email gets used if both are sent.
+  """
+  sendReactivation(email: String, username: String):Boolean!
+
+  """Send stats tracking for stats dashboard"""
+  sendStatsTracking(input: StatsTrackingInput!): Boolean!
+
+  batchTracking(input: EventTrackingInput!): Boolean!
+
+  userBlock(userLegacyId: ID!): Boolean!
+
+  userUnblock(userLegacyId: ID!): Boolean!
+
+  dismissSuggestPhoto(photoId: ID!): Boolean!
+
+  verifyIOSAppStorePurchase(input: VerifyPlayStoreInput!): VerifyPlayStore
+
+  """
+  saveAsDraft: isPublish=false, saveAndPublish: isPublish=true
+  """
+  saveMood(input: MoodGalleryInput!, isPublish: Boolean = false, isOverrideLastMood: Boolean = false): MoodGalleryPayload
+
+  changeMoodToArchive(moodIds: [ID!]): Boolean
+
+  featureStory(storyId: ID!): Story
+
+  unFeatureStory(storyId: ID!): Story
+
+  """use param 'storyIds' if it's available"""
+  increaseStoryViewCount(storyIds: [ID!], slugs:[String]): Boolean
+
+}
+
+input VerifyPlayStoreInput {
+  receiptData: String
+}
+
+input ChangePasswordInput {
+  """the old password a user want to change"""
+  currentPassword: String!,
+  """the new password to change"""
+  password: String!,
+}
+
+input CreateResumeInput {
+  about: String!
+  yearsExperience: YearsExperienceEnum!
+  testimonials: String
+  specialties: [SpecialtyCreateInput!]
+  hireLocations: [HireLocationInput]
+}
+
+input UpdateResumeInput {
+  about: String!
+  yearsExperience: YearsExperienceEnum!
+  testimonials: String
+  # Pass a list of the titles of the ones to delete
+  deleteSpecialties: [SpecialtyTitleEnum]
+  addSpecialties: [SpecialtyCreateInput]
+  updateSpecialties: [SpecialtyUpdateInput]
+  hireLocations: [HireLocationInput]
+}
+
+input SpecialtyCreateInput {
+  title: SpecialtyTitleEnum!
+  description: String
+  # Photo legacy ids, at least one required
+  photos: [String!]!
+}
+
+input SpecialtyUpdateInput {
+  title: SpecialtyTitleEnum!
+  description: String
+  # Legacy ids of the photos
+  addPhotos: [String]
+  deletePhotos: [String]
+}
+
+input RemoteConfigInput {
+  timestamp: Int,
+  lastSupportedAndroidVersion: Int,
+  updateBannerMinVersion: Int,
+  updateBannerMaxVersion: Int,
+  unsupportedAndroidVersionMessage: String,
+  emailVerificationCutOffTimestamp: Int,
+  addToBlacklist: [String]!,
+  removeFromBlacklist: [String]!
+}
+
+input BlacklistInput {
+  addToBlacklist: [String]!,
+  removeFromBlacklist: [String]!
+}
+
+type ResumePayload {
+  resume: Resume
+  hireLocations: [HireLocationsResponse!]
+}
+
+type DeleteResumePayload {
+  id: ID!
+}
+
+input CustomDomainInput {
+  fqdn: String!  # testphotography.com
+  validationToken: String
+  portfolioId: String!
+}
+
+type CustomDomainPayload {
+  customDomain: CustomDomain
+}
+
+type CreateValidationTokenPayload {
+  token: ValidationToken
+}
+
+input FolderPhotoInput {
+  photoIds: [String!]!
+}
+
+type AddPhotoFolderPayload {
+  folder: Folder!
+  addedPhotos: [Photo]!
+}
+
+type PortfolioPayload {
+  portfolio: Portfolio
+}
+
+type FolderPayload {
+  folder: Folder
+}
+
+type DeletedIds {
+  deletedIds: [String]
+}
+
+input LocationObj {
+  placeId: String!
+  locality: String
+  administrativeArea1: String
+  administrativeArea2: String
+  administrativeArea3: String
+  administrativeArea4: String
+  country: String!
+  countryCode: String!
+  latitude: String
+  longitude: String
+  formattedAddress: String!
+}
+
+type  UploadPresignedPayload {
+  clientMutationId: String
+
+  """Upload info / 上传信息"""
+  directUpload: MediaDirectUpload
+
+  """图片练市路径"""
+  objectName: String!
+}
+
+"""Create and Update"""
+input ResourceObj {
+  legacyId: String
+  title: String!
+  description: String
+  currency: String
+  price: String
+  url: String
+  coverPhotoId: String!
+  coverObjectName: String
+  locationId: String
+  location: LocationObj
+  resourceState: ResourceState
+  startTime: String
+  timeZone: String
+  resourceType: ResourceType!
+  customResourceSlug: String
+  customResourceType: String
+}
+
+input FlagCommentInput {
+  clientMutationId: String
+  commentLegacyId: ID!
+  commentOwnerLegacyUserId: ID!
+}
+
+type FlagCommentPayload {
+  clientMutationId: String
+}
+
+input DeleteCommentInput {
+  clientMutationId: String
+  commentLegacyId: ID!
+  photoOwnerLegacyUserId: ID!
+}
+
+type DeleteCommentPayLoad {
+  clientMutationId: String
+}
+
+input PhotoCommentInput {
+  clientMutationId: String
+  """被评论的 photo id(the photo id which be commented)"""
+  photoLegacyId: ID!
+  """照片所有者ID(the user id who own the photo)"""
+  userLegacyId: ID!
+  """评论内容（the comment content body）"""
+  commentContent: String!
+}
+
+input ReplyCommentInput {
+  clientMutationId: String
+  """被回复的评论ID(comment legacyId which been replied)"""
+  commentLegacyId: ID!
+  """照片所有者ID(the user id who own the photo)"""
+  userLegacyId: ID!
+  """评论内容（the comment content body）"""
+  commentContent: String!
+  """被评论的 photo id(the photo id which be commented)"""
+  photoLegacyId: ID!
+}
+
+type CommentPayLoad {
+  clientMutationId: String
+  comment: Comment!
+}
+
+input ProfileTabInput {
+  name: TabEnum!
+  visible: Boolean!
+}
+
+input UpdateUserInput {
+  clientMutationId: String
+
+  legacyId: ID!
+  userProfile: PersonalAndProfileInput
+  # Deprecated, please use socialMediaTab
+  socialMedia: SocialMediaInput
+  # You must send all social media tabs
+  socialMediaItems: [SocialMediaItemInput!]
+  equipment: UserEquipmentInput
+  userSetting: UserSettingInput
+  contact: UserPhoneContactInput
+  # You must send all profile tabs
+  profileTabs: [ProfileTabInput!]
+
+  username: String
+  firstName: String
+  lastName: String
+
+  """TOS Acceptance. Can only be set once. Returned as gdprAcceptanceTimestamp on User"""
+  gdpr: Boolean
+
+  hireLocations: [HireLocationInput!]
+}
+
+type UpdateUserPayload {
+  clientMutationId: String
+
+  user: User
+}
+
+input UpdateUserContactInput {
+  clientMutationId: String
+
+  legacyId: ID!
+
+  """新的邮件"""
+  unverifiedEmail: String
+}
+
+type UpdateUserContactPayload {
+  clientMutationId: String
+
+  """由于需要验证，现有的联系信息并不会被覆盖"""
+  userContact: UserContact
+}
+
+input VerifyUserContactInput {
+  clientMutationId: String
+
+  """邮件验证码"""
+  emailVerificationCode: String
+
+  """短信验证码"""
+  unverifiedPhone: String
+  """新的手机号"""
+  phoneVerificationCode: String
+}
+
+type VerifyUserContactPayload {
+  clientMutationId: String
+
+  userContact: UserContact
+}
+
+type MediaDirectUpload {
+  """S3 direct upload URL / S3直传URL"""
+  url: String!
+  """S3 direct upload fields as JSON / S3直传字段(JSON格式)"""
+  fields: String!
+}
+
+input CreatePhotoInput {
+  clientMutationId: String
+  """照片隐私设置"""
+  privacy: PhotoPrivacy
+  """是否在S3直传完成后自动发布"""
+  autoPublish: Boolean
+}
+
+type CreatePhotoPayload {
+  clientMutationId: String
+
+  """New photo / 新创建图片资源"""
+  photo: Photo
+
+  """Upload info / 上传信息"""
+  directUpload: MediaDirectUpload
+
+  """Access key to Keyword API / 自动关键词API密钥"""
+  keywordKey: String!
+
+  """Uploader's licensing info / 上传者签约状态"""
+  licensingContributor: LicensingContributor
+}
+
+input CreateLicensingContributorInput {
+  clientMutationId: String
+}
+
+type CreateLicensingContributorPayload {
+  clientMutationId: String
+
+  licensingContributor: LicensingContributor
+}
+
+input AutoLicensingSettingInput {
+  autoLicensingSetting: AutoLicensingSetting!
+}
+
+type AutoLicensingSettingPayload {
+  licensingContributor: LicensingContributor
+}
+
+input CancelAutoLicensingPhotoInput {
+  legacyId: ID!
+}
+
+type CancelAutoLicensingPhotoPayload {
+  autoLicensingPhoto: AutoLicensingPhoto
+}
+
+input PublishPhotoInput {
+  clientMutationId: String
+
+  legacyId: ID!
+
+  name: String
+  description: String
+  category: PhotoCategory
+
+  longitude: Float
+  latitude: Float
+  location: String
+
+  # EXIF info overwritting
+  takenAt: String
+  aperture: String
+  shutterSpeed: String
+  focalLength: String
+  iso: String
+  lens: String
+  camera: String
+  width: Int!
+  height: Int!
+
+  notSafeForWork: Boolean
+  watermark: Boolean
+  showExifData: Boolean
+
+  privacy: PhotoPrivacy
+
+  tags: [String!]
+
+  createLicensingPhoto: CreateLicensingPhotoInput
+}
+
+type PublishPhotoPayload {
+  clientMutationId: String
+
+  """Photo after update / 发布后的图片资源"""
+  photo: Photo
+}
+
+input UpdatePhotoInput {
+  clientMutationId: String
+
+  legacyId: ID!
+
+  name: String
+  description: String
+  category: PhotoCategory
+
+  longitude: Float
+  latitude: Float
+  location: String
+
+  # EXIF info overwritting
+  takenAt: String
+  aperture: String
+  shutterSpeed: String
+  focalLength: String
+  iso: String
+  lens: String
+  camera: String
+
+  notSafeForWork: Boolean
+  watermark: Boolean
+  showExifData: Boolean
+
+  privacy: PhotoPrivacy
+
+  tags: [String!]
+
+  """是否在S3直传完成后自动发布"""
+  autoPublish: Boolean
+
+  createLicensingPhotoInput: CreateLicensingPhotoInput
+}
+
+type UpdatePhotoPayload {
+  clientMutationId: String
+
+  """Photo after update / 修改后的图片资源"""
+  photo: Photo
+}
+
+input DeletePhotoInput {
+  clientMutationId: String
+
+  legacyId: ID!
+}
+
+type DeletePhotoPayload {
+  clientMutationId: String
+}
+
+input AddPhotoToQuestInput {
+  clientMutationId: String
+
+  """Photo to submit / 待提交的照片"""
+  photoLegacyId: ID!
+  questLegacyId: ID!
+  questTopicLegacyId: ID
+}
+
+type AddPhotoToQuestPayload {
+  clientMutationId: String
+  photo: Photo
+  quest: Quest
+}
+
+input RemovePhotoFromQuestInput {
+  clientMutationId: String
+
+  """Photo to remove"""
+  photoLegacyId: ID!
+  questLegacyId: ID!
+}
+
+type RemovePhotoFromQuestPayload {
+  clientMutationId: String
+  photo: Photo
+  quest: Quest
+}
+
+input AddPhotoToShortlistInput {
+  clientMutationId: String
+
+  """Photo to submit / 待提交的照片"""
+  photoLegacyId: ID!
+  questLegacyId: ID!
+}
+
+type AddPhotoToShortlistPayload {
+  clientMutationId: String
+  photo: Photo
+  quest: Quest
+}
+
+input RemovePhotoFromShortlistInput {
+  clientMutationId: String
+
+  """Photo to remove"""
+  photoLegacyId: ID!
+  questLegacyId: ID!
+}
+
+type RemovePhotoFromShortlistPayload {
+  clientMutationId: String
+  photo: Photo
+  quest: Quest
+}
+
+input FollowUserInput {
+  clientMutationId: String
+
+  userLegacyId: ID!
+}
+
+type FollowUserPayload {
+  clientMutationId: String
+
+  me: User
+  followee: User
+}
+
+input UnfollowUserInput {
+  clientMutationId: String
+
+  userLegacyId: ID!
+}
+
+type UnfollowUserPayload {
+  clientMutationId: String
+
+  me: User
+  followee: User
+}
+
+input LikePhotoInput {
+  clientMutationId: String
+
+  photoLegacyId: ID!
+}
+
+type LikePhotoPayload {
+  clientMutationId: String
+
+  photo: Photo
+}
+
+input UnlikePhotoInput {
+  clientMutationId: String
+
+  photoLegacyId: ID!
+}
+
+type UnlikePhotoPayload {
+  clientMutationId: String
+
+  photo: Photo
+}
+
+input AddPhotoToGalleryInput {
+  clientMutationId: String
+
+  galleryLegacyId: ID!
+  photoLegacyId: ID!
+}
+
+type AddPhotoToGalleryPayload {
+  clientMutationId: String
+
+  gallery: Gallery
+  photo: Photo
+}
+
+input AddPhotosToGalleryInput {
+  clientMutationId: String
+
+  galleryLegacyId: ID!
+  photoLegacyIds: [ID!]!
+}
+
+type AddPhotosToGalleryPayload {
+  clientMutationId: String
+
+  gallery: Gallery
+  photos: [Photo]
+}
+
+input AddGalleryPhotosToGalleryInput {
+  clientMutationId: String
+
+  fromGalleryLegacyId: ID!
+  toGalleryLegacyId: ID!
+}
+
+type AddGalleryPhotosToGalleryPayload {
+  clientMutationId: String
+
+  fromGallery: Gallery
+  toGallery: Gallery
+}
+
+input RemovePhotoFromGalleryInput {
+  clientMutationId: String
+
+  galleryLegacyId: ID!
+  photoLegacyId: ID!
+}
+
+type RemovePhotoFromGalleryPayload {
+  clientMutationId: String
+
+  gallery: Gallery
+  photo: Photo
+}
+
+input BatchRemovePhotoFromGalleryInput {
+  clientMutationId: String
+
+  galleryLegacyId: ID!
+  photoLegacyIds: [ID!]!
+}
+
+type BatchRemovePhotoFromGalleryPayload {
+  clientMutationId: String
+
+  gallery: Gallery
+  photos: [Photo]
+}
+
+input CreateGalleryInput {
+  clientMutationId: String
+
+  name: String!
+  privacy: GalleryPrivacy!
+
+  publicSlug: String
+  description: String
+}
+
+type CreateGalleryPayload {
+  clientMutationId: String
+
+  """Newly created resource of Gallery / 新创建Gallery资源"""
+  gallery: Gallery
+}
+
+input UpdateGalleryInput {
+  clientMutationId: String
+
+  """the id of gallery in DB"""
+  legacyId: ID!
+
+  """the title of gallery"""
+  name: String
+  """gallery privacy"""
+  privacy: GalleryPrivacy
+  """the public path of gallery, no used yet for now"""
+  publicSlug: String
+  """the description of gallery"""
+  description: String
+  """The cover photo legacy id"""
+  coverPhotoId: String
+}
+
+type UpdateGalleryPayload {
+  clientMutationId: String
+
+  """Gallery after update / 修改后的Gallery资源"""
+  gallery: Gallery
+}
+
+input DeleteGalleryInput {
+  clientMutationId: String
+
+  legacyId: ID!
+}
+
+type DeleteGalleryPayload {
+  clientMutationId: String
+}
+
+input MarkMyGroupedNotificationsAsReadInput {
+  clientMutationId: String
+}
+
+type MarkMyGroupedNotificationsAsReadPayload {
+  clientMutationId: String
+}
+
+input SignPhotoKeywordInput {
+  clientMutationId: String
+  """交集tag的数量"""
+  intersectionQuantity: Int = 15
+  """并集tag 的数量"""
+  unionQuantity: Int = 20
+  photoLegacyIds: [ID!]!
+}
+
+type SignPhotoKeywordPayload {
+  clientMutationId: String
+  requestBody: String!
+  requestUrl: String!
+}
+
+input DeleteAvatarInput {
+  clientMutationId: String
+}
+
+type DeleteAvatarPayload {
+  clientMutationId: String
+}
+
+type RequestPayoutPayload {
+  payoutRequestResult: String
+}
+
+input EditorsChoiceInput {
+  clientMutationId: String
+
+  photoLegacyId: String!
+}
+
+type EditorsChoicePayload {
+  clientMutationId: String
+}
+
+input UneditorsChoiceInput {
+  clientMutationId: String
+
+  photoLegacyId: String!
+}
+
+type UneditorsChoicePayload {
+  clientMutationId: String
+}
+
+input UpdatePhotoNsfwInput {
+  clientMutationId: String
+
+  photoLegacyId: String!
+  nsfw: Boolean!
+}
+
+type UpdatePhotoNsfwPayload {
+  clientMutationId: String
+}
+
+input UpdatePhotoPrivacyInput{
+  clientMutationId: String
+
+  photoLegacyId: String!
+  privacy: PhotoPrivacy!
+}
+
+input UpdateLicensingPrivacyInput{
+  clientMutationId: String
+  licensingLegacyId: String!
+  privacy: PhotoPrivacy!
+}
+
+type UpdatePhotoPrivacyPayload {
+  clientMutationId: String
+}
+
+input UpdatePhotoCategorizeInput{
+  clientMutationId: String
+
+  photoLegacyId: String!
+  category: PhotoCategory!
+}
+
+type UpdatePhotoCategorizePayload {
+  clientMutationId: String
+}
+
+"""
+UserRegistryPayload / 用户注册返回信息
+"""
+type UserRegistryPayload {
+  clientMutationId: String
+  user: SimpleUser!
+}
+
+"""
+UserRegistryPayloadWithToken / 用户注册返回信息,包含token.
+"""
+type UserRegistryPayloadWithToken {
+  clientMutationId: String
+  user: SimpleUserWithToken!
+}
+
+input UserRegistryInput {
+  clientMutationId: String
+
+  """
+  required when
+  1.register with email
+  2.register on mobile side with apple and need link to a account.
+  """
+  email: String
+  """
+  required when
+  1.register with email
+  2.register on mobile side with apple and need link to a account.
+  """
+  password: String
+  analyticsCode: String
+  """google anti robot captcah response"""
+  captchaResponse: String
+  emailNotificationsEnabled: Boolean
+  """required when register from mobile apps"""
+  consumerKey: String
+  """required when register with google, facebook or apple oauth"""
+  authMode: AuthMode
+  """accessToken from google, facebook, required when register with google or facebook oauth"""
+  authToken: String
+}
+
+input GalleryRearrangeInput{
+  clientMutationId: String
+  """the id of gallery the gallery will be rearranged after to, if rearrange to the top of the list, just leave it empty"""
+  after: ID
+  """the id of gallery whilh will be rearranged"""
+  galleryId: ID!
+}
+
+type GalleryRearrangePayload {
+  clientMutationId: String
+}
+
+input GalleryPhotoRearrangeInput{
+  clientMutationId: String
+  """the id of gallery """
+  galleryLegacyId: ID!
+  """the id of photo in a gallery will be rearranged after to, if rearrange to the top of the list, just leave it empty"""
+  after: ID
+  """the id of photo in a gallery whilh will be rearranged"""
+  photoLegacyId: ID!
+}
+
+type GalleryPhotoRearrangePayload {
+  clientMutationId: String
+}
+
+enum AuthMode {
+  GOOGLE_OAUTH2
+  FACEBOOK
+  APPLE
+}
+
+enum onboardingStepEnum{
+	ABOUT
+	CHOOSE_ONE
+	COMPLETED
+}
+
+input FlagUserInput {
+  userLegacyId: String!
+  reason: Int!
+  reasonDetails: String
+}
+
+type FlagUserPayload {
+  userLegacyId: String!
+}
+
+input FlagGalleryInput {
+  galleryLegacyId: String!
+  galleryOwnerLegacyId: String!
+  reason: Int!
+  reasonDetails: String
+}
+
+type FlagGalleryPayload {
+  galleryLegacyId: String!
+}
+
+input FlagPhotoInput {
+  photoLegacyId: String!
+  photoOwnerLegacyId: String!
+  reason: Int!
+  reasonDetails: String
+}
+
+type FlagPhotoPayload {
+  photoLegacyId: String!
+}
+
+input FlagGroupPostInput {
+  groupPostLegacyId: String!
+  groupPostOwnerLegacyId: String!
+  reason: Int!
+  reasonDetails: String
+}
+
+type FlagGroupPostPayload {
+  groupPostLegacyId: String!
+}
+
+input FlagResourceInput {
+  resourceLegacyId: String!
+  resourceOwnerLegacyId: String!
+  reason: Int!
+  reasonDetails: String
+}
+
+type FlagResourcePayload {
+  resourceLegacyId: String!
+}
+
+input UpdateGalleryExternalUrlInput {
+  clientMutationId: String
+  """the legacy id of a gallery"""
+  galleryLegacyId: ID!
+  """external gallery url just for admin user"""
+  externalUrl: String
+  """gallery button name just for admin user"""
+  buttonName: String
+}
+
+type UpdateGalleryExternalUrlPayload {
+  clientMutationId: String
+}
+
+input PublishGalleryInput {
+  clientMutationId: String
+  """the legacy id of a gallery need to publish"""
+  galleryLegacyId: ID!
+}
+
+type PublishGalleryPayload {
+  clientMutationId: String
+}
+
+input RemovePhotographerInput {
+  clientMutationId: String
+
+  userLegacyId: ID!
+}
+
+input AddPhotographerInput {
+  clientMutationId: String
+  followersCount: Int!
+  lastUploadDate: String
+  photosCount: Int!
+  username: String
+  userLegacyId: ID!
+}
+
+type RemovePhotographerPayload {
+   clientMutationId: String
+   code: Int!
+   message: String
+}
+
+type AddPhotographerPayload {
+   clientMutationId: String
+   code: Int!
+   message: String
+}
+
+input FeatureGalleryInput {
+  """the legacy id of the user who owns the gallery to be featured"""
+  userLegacyId: String!
+  """the legacy id of a gallery need to publish"""
+  galleryLegacyId: String!
+}
+
+type FeatureGalleryPayload {
+  code: String
+  message: String
+}
+
+input FeatureResourceInput {
+  clientMutationId: String
+  resourceLegacyId: String!
+}
+
+type FeatureResourcePayload {
+  clientMutationId: String
+}
+
+input UnfeatureResourceInput {
+  clientMutationId: String
+  resourceLegacyId: String!
+}
+
+type UnfeatureResourcePayload {
+  clientMutationId: String
+}
+
+input PortfolioLocationInput {
+  city: String
+  country: String
+}
+
+input PortfolioSocialMediaInput {
+  twitter: String
+  instagram: String
+  facebook: String
+}
+
+input UpdatePortfolioVisibilityInput {
+  location: PortfolioVisibility
+  pxProfile: PortfolioVisibility
+  facebook: PortfolioVisibility
+  instagram: PortfolioVisibility
+  twitter: PortfolioVisibility
+}
+
+input UpdatePortfolioInput {
+  title: String
+  description: String
+  deactivatedMessage: String
+  coverPhotoId: String
+  coverUserId: String
+  coverObjectName: String
+  themeName: String
+  visibilityOptions: UpdatePortfolioVisibilityInput
+  font: ThemeFont
+  colour: ThemeColour
+  appearance: ThemeAppearance
+  termsOfUseType: PortfolioLegalType
+  termsOfUseUrl: String
+  privacyPolicyType: PortfolioLegalType
+  privacyPolicyUrl: String
+  analyticsCode: String
+  location: PortfolioLocationInput
+  socialMedia: PortfolioSocialMediaInput
+  email: String
+}
+
+input SendPortfolioContactInput {
+  portfolioOwnerId: ID!
+  subject: String!
+  senderName: String!
+  senderEmail: String!
+  domainName: String!
+  message: String!
+}
+
+type SendPortfolioContactPayload {
+  receiverId: ID!
+  subject: String!
+  senderName: String!
+  senderEmail: String!
+  domainName: String!
+  message: String!
+}
+
+input FeedbackInput {
+  clientMutationId: String
+  reason: AccountDeletionReason!
+  note: String
+}
+
+enum AccountDeletionReason {
+  MULTIPLE_ACCOUNT
+  TOO_MANY_EMAIL
+  NO_VALUE
+  PRIVACY_CONCERN
+  UNWANTED_CONTACT
+  OTHER
+}
+
+type AccountDeletionPayload {
+  clientMutationId: String
+}
+
+type AccountDeactivatePayload {
+  clientMutationId: String
+}
+
+"""email and username can not both be empty"""
+input PasswordResetRequestIput{
+  clientMutationId: String
+  email: String
+  username: String
+}
+
+type PasswordResetRequestPayload {
+  clientMutationId: String
+}
+
+type PasswordResetVerifyPayload {
+  legacyUserId: String!
+  tfaEnabled: Boolean!
+  """The valid verify code"""
+  verifyCode: String!
+  clientMutationId: String
+}
+
+type PasswordResetPayload {
+  clientMutationId: String
+}
+
+type CampaignSignupPayload {
+  userId: String
+  signupEmail: String!
+  campaignName: String!
+  subscribed: Boolean!
+  """UUID Unsubscribe token"""
+  token: String!
+}
+
+input StatsTrackingInput {
+  views: [StatsTrackingViewEventInput!]!
+}
+
+input StatsTrackingViewEventInput {
+  object_id: String!
+  object_type: StatsTrackingViewType!
+  source: String
+  metadata: StatsTrackingViewEventMetadataInput
+}
+
+input StatsTrackingViewEventMetadataInput{
+  category: PhotoCategory
+}
+
+enum StatsTrackingViewType{
+  PHOTO
+  PROFILE
+}
+
+input EventTrackingInput {
+  actions: [EventTrackingActionInput!]!
+}
+
+input EventTrackingActionInput {
+  id: String!
+  action: EventTrackingActionType!
+  createdAt: String!
+  requestPath: String!
+  membershipTier:String!
+  data: String!
+}
+
+
+enum EventTrackingActionType{
+  PAGE_VIEWED
+  BUTTON_CLICKED
+}
+
+input LikeAndUnLikeInput {
+  clientMutationId: String
+
+  resourceId: ID!
+
+  resourceType:LikedResourceType!
+}
+
+input BatchLikeAndUnLikeInput {
+  list:[LikeAndUnLikeInput!]
+}
+
+type LikeAndUnlikePayload {
+  clientMutationId: String
+
+  result: Boolean
+}
+

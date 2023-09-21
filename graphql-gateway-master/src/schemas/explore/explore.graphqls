@@ -1,0 +1,9 @@
+type ExploreConnection {
+  edges: [ExploreEdge!]!
+  pageInfo: PageInfo
+}
+
+type ExploreEdge {
+  node: Photo!
+  cursor: String!
+}

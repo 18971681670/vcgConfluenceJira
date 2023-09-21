@@ -1,0 +1,35 @@
+"""
+for_you_feed / 内容流
+"""
+union ForYouFeedItem = Photo | FeaturedGallery | FeaturedBlog | FeaturedPhotographer | FollowingProfile | Story | MoodGallery
+
+type ForYouFeed implements Node {
+    id: ID!
+    """ 创建时间"""
+    createdAt: String
+    """card Type / 卡片类型"""
+    cardType: ForYouFeedTypeEnum
+    cardNode: ForYouFeedItem
+    cursor: String
+}
+
+type ForYouFeedItemEdge {
+    node: ForYouFeed
+    cursor: String
+}
+
+type ForYouFeedItemConnection {
+    edges: [ForYouFeedItemEdge]
+    pageInfo: PageInfo
+    totalCount: Int
+}
+
+enum ForYouFeedTypeEnum {
+    PHOTO,
+    FEATURED_GALLERY,
+    FEATURED_PHOTOGRAPHER,
+    FEATURED_BLOG,
+    FOLLOWING_PROFILE,
+    STORY,
+    MOOD_GALLERY
+}

@@ -1,0 +1,52 @@
+enum YearsExperienceEnum {
+  NOT_SET
+  LESS_THAN_ONE
+  ONE
+  TWO
+  THREE
+  FOUR
+  FIVE
+  SIX
+  SEVEN
+  EIGHT
+  NINE
+  TEN_PLUS
+}
+
+enum SpecialtyTitleEnum {
+  AERIAL
+  ARCHITECTURE
+  AUTOMOTIVE
+  EVENT
+  FASHION
+  FOOD
+  INTERIOR
+  LIFESTYLE
+  MATERNITY_NEWBORN
+  NATURE_LANDSCAPE
+  PETS_ANIMALS
+  PHOTOJOURNALISM
+  PORTRAIT_HEADSHOTS
+  SPORTS
+  STILL_LIFE_PRODUCT
+  URBAN
+  WEDDING
+  PANORAMA
+  REAL_ESTATE
+}
+
+type Specialty {
+  title: SpecialtyTitleEnum!
+  description: String
+  # Extract the photos from the gallery
+  photos: [Photo]!
+}
+
+type Resume implements Node {
+  id: ID!
+  legacyId: String!
+  about: String!
+  yearsExperience: YearsExperienceEnum!
+  testimonials: String
+  specialties: [Specialty!]!
+}

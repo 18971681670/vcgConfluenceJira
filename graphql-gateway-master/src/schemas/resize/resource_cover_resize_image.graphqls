@@ -1,0 +1,13 @@
+"""
+ResourceCoverResizeImage / 切图后CDN图片资源
+"""
+type ResourceCoverResizeImage implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  """图片尺寸代号"""
+  size: Int!
+  url: String!
+}

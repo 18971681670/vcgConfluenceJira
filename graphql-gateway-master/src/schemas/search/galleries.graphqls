@@ -1,0 +1,25 @@
+enum GalleryFilterType {
+  STATUS
+  USER_STATUS
+  USER_ID
+  PRIVACY
+  NSFW
+  FEATURE_NAME
+  FEATURE_START_AT
+  FEATURE_END_AT
+  IS_EDITORS_CHOICE
+}
+
+input GallerySearchFilter {
+  key: GalleryFilterType!
+  value: String!
+}
+
+enum GallerySort {
+  """No sort"""
+  RELEVANCE
+  """sort by legacy id, desc"""
+  ID_DESC
+  """sort by time added to editors feature, and by id, desc"""
+  EDITORS_DESC
+}

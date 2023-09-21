@@ -1,0 +1,18 @@
+"""
+Base interface for all resources in Relay server spec
+"""
+interface Node {
+  id: ID!
+}
+
+"""
+Cursor-based pagination info in Relay server spec
+"""
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+  currentPageLegacy: Int
+  legacyTotalPages: Int
+}

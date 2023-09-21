@@ -1,0 +1,8 @@
+mutation SignLicensingAgreement {
+  createLicensingContributor {
+    licensingContributor {
+      signed
+      signedAt
+    }
+  }
+}

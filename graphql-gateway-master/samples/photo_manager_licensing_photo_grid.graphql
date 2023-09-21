@@ -1,0 +1,28 @@
+query LicensingPhotoManagerGrid(
+    $status: LicensingPhotoStatus!,
+    $photoGridSizes: [Int!] = [4],
+    $pageSize: Int,
+    $cursor: String) {
+
+  myLicensingPhotos(status: $status, first: $pageSize, after: $cursor) {
+    edges {
+      node {
+        ...PhotoGridItem
+      }
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}
+
+fragment PhotoGridItem on LicensingPhoto {
+  legacyId
+  width
+  height
+  images(sizes: $photoGridSizes) {
+    size
+    url
+  }
+}

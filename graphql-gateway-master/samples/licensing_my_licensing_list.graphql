@@ -1,0 +1,85 @@
+query{
+  myLicensingPhotos(status:UNDER_REVIEW){
+    edges{
+      node{
+        id
+
+        ... on LicensingPhoto{
+
+          legacyId
+
+          caption
+          description
+          keywords
+
+          width
+          height
+          exclusiveUsage
+
+          collection
+          fileName
+
+
+          latitude
+          longitude
+          location
+
+          aperture
+          shutterSpeed
+          focalLength
+          iso
+          camera
+          lens
+
+          orientation
+
+          status
+
+          takenAt
+          submittedAt
+          updatedAt
+          createdAt
+
+          gettyId
+          vcgId
+
+          images(sizes: [4]){
+            id
+            size
+            legacyId
+            url
+          }
+          modelReleases{
+            id
+            legacyId
+            filename
+
+          }
+          propertyReleases{
+            id
+            legacyId
+            filename
+          }
+          feedbacks{
+            code
+            title
+            message
+          }
+
+        }
+      }
+    }
+    pageInfo{
+      startCursor
+      endCursor
+      startCursor
+      endCursor
+    }
+    totalCount
+
+  }
+}
+
+
+# headers
+# {"x-500px-user-id": 22156121}

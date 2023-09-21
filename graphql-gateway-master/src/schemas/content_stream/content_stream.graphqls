@@ -1,0 +1,51 @@
+"""
+ContentStream Resource
+"""
+interface ContentStream {
+  enteredAt: String!
+}
+
+"""
+Popular
+"""
+type ContentStreamPopular implements ContentStream {
+  enteredAt: String!
+}
+
+"""
+Upcoming
+"""
+type ContentStreamUpcoming implements ContentStream {
+  enteredAt: String!
+}
+
+
+"""
+Fresh
+"""
+type ContentStreamFresh implements ContentStream {
+  enteredAt: String!
+}
+
+"""
+EditorsChoice
+"""
+type ContentStreamEditorsChoice implements ContentStream {
+  enteredAt: String!
+  selectedBy: User @complexity(value: 10)
+}
+
+enum PhotoDiscoverSectionType {
+  POPULAR_SECTION
+  UPCOMING_SECTION
+  FRESH_SECTION
+  EDITORS_CHOICE_SECTION
+}
+
+enum PhotoDiscoverSectionCoverType {
+  POPULAR_SECTION
+  UPCOMING_SECTION
+  FRESH_SECTION
+  EDITORS_CHOICE_SECTION
+  UNDISCOVERED
+}

@@ -1,0 +1,64 @@
+query {
+  user(id: 1) {
+    id
+    username
+    firstName
+    lastName
+    displayName
+    registeredAt
+    userType
+    googleAnalyticsCode
+    avatar {
+      version
+      images(sizes:[LARGE]) {
+        nodes {
+          url
+        }
+      }
+    }
+    userProfile {
+      about
+      state
+      city
+      country
+      cover(sizes:[NORMAL]) {
+        size
+        url
+      }
+      socialLinks {
+        __typename
+        url
+      }
+      tabs {
+        __typename
+        displayed
+      }
+    }
+    membership {
+      tier
+    }
+    followers(first:2) {
+      nodes {
+        username
+        displayName
+        followers {
+          includingMe
+        }
+      }
+      totalCount
+      includingMe
+    }
+    followees(first:2) {
+      nodes {
+        username
+        displayName
+        followers {
+          includingMe
+        }
+      }
+      totalCount
+      includingMe
+    }
+
+  }
+}

@@ -1,0 +1,65 @@
+enum CameraType {
+  DSLR
+  FILM
+  SMARTPHONE
+  MIRRORLESS
+  COMPACT
+  MEDIUM_FORMAT
+  FILM_SCANNER
+  ACTION_CAMERA
+  DRONE
+}
+
+interface CameraInfo {
+  displayName: String @deprecated(reason: "Please use `rawName`")
+  """Raw string from EXIF / EXIF中原始字符串"""
+  rawName: String
+  canonicalPath: String
+}
+
+union CameraOption = UnverifiedCamera | Camera
+
+type UnverifiedCamera implements CameraInfo {
+  displayName: String @deprecated(reason: "Please use `rawName`")
+  """Raw string from EXIF / EXIF中原始字符串"""
+  rawName: String
+  canonicalPath: String
+}
+
+"""
+Camera Resource
+"""
+type Camera implements Node & CameraInfo {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID String / 资源内部ID"""
+  legacyId: String
+  type: CameraType
+
+  """Display name with brand / 带品牌的全名"""
+  displayName: String @complexity(value: 10)
+  """Raw string from EXIF / EXIF中原始字符串"""
+  rawName: String
+  canonicalPath: String @complexity(value: 10)
+
+  brand: GearBrand @complexity(value: 10)
+
+  features: String
+  imageUrl: String
+
+  dateHistogram: [GearHistogramDataPoint]!
+  best100Photos: [Photo]!
+  topPhotographers: [TopPhotographer]!
+  topCategories: [GearTopPhotoCategory]!
+}
+
+type CameraEdge {
+  node: Camera @complexity(value: 10)
+  cursor: String
+}
+
+type CameraConnection {
+  edges: [CameraEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+}

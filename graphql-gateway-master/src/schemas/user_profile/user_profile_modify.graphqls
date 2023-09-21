@@ -1,0 +1,72 @@
+input PersonalAndProfileInput {
+  username: String
+
+  email: String
+
+  firstname: String
+
+  lastname: String
+
+  birthday: String
+
+  about: String
+
+  city: String
+
+  state: String
+
+  country: String
+
+  sex: UserSexEnum
+
+  isDirectThrows: Boolean
+}
+
+input HireLocationInput {
+  latitude: Float!
+  longitude: Float!
+  city: String
+  administrativeZone1: String
+  country: String
+  displayName: String
+}
+
+input UserEquipmentInput{
+  camera: [String]
+  lens: [String]
+  misc: [String]
+}
+
+input SocialMediaInput {
+  website: String
+  twitter: String
+  instagram: String
+  facebook: String
+}
+
+input SocialMediaItemInput {
+  name: SocialMediaEnum!
+  value: String
+  visible: Boolean!
+}
+
+input UserSettingInput {
+  locale: UserLocaleEnum
+  """show adult picture / 是否查看成人图片，default true."""
+  showNude: Boolean
+  """是否可联系."""
+  isContactable: Boolean
+  """付费用户可以使用google的跟踪码."""
+  analyticsCode: String
+  onboardingCategories: String
+  """真实姓名是否可见"""
+  firstnameVisible: Boolean
+  locationVisible: Boolean
+}
+
+input UserPhoneContactInput {
+  """已验证过的手机号码"""
+  phone: String
+  """已验证过的手机号码归属国"""
+  phoneCountry: String
+}

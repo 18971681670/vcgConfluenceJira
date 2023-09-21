@@ -1,0 +1,73 @@
+"""图片统计指标"""
+interface PhotoStats {
+  viewCount: Int
+  likeCount: Int
+  commentAndReplyCount: Int
+
+  viewCountFromHomefeed: Int
+  viewCountFromDiscover: Int
+  viewCountFromProfile: Int
+  viewCountFromSearch: Int
+}
+
+"""
+Photo Stats in a given period of time / 特定时间窗口内的图片统计
+"""
+type PhotoStatsAggregation implements Node & PhotoStats {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  """inclusively / 起时时间点（包含）"""
+  from: String
+  """exclusively / 终止时间点（不包含）"""
+  to: String
+
+  viewCount: Int @complexity(value: 10)
+  likeCount: Int @complexity(value: 10)
+  commentAndReplyCount: Int @complexity(value: 10)
+
+  viewCountFromHomefeed: Int @complexity(value: 10)
+  viewCountFromDiscover: Int @complexity(value: 10)
+  viewCountFromProfile: Int @complexity(value: 10)
+  viewCountFromSearch: Int @complexity(value: 10)
+
+  photos(
+    first: Int = 10
+    after: String
+  ) : PhotoConnectionForPhotosOnPhotoStatsAggregation @complexity(value: 10, multipliers: ["first"])
+}
+
+type PhotoEdgeForPhotosOnPhotoStatsAggregation implements PhotoStats {
+  node: Photo @complexity(value: 10)
+
+  cursor: String
+
+  viewCount: Int @complexity(value: 10)
+  likeCount: Int @complexity(value: 10)
+  commentAndReplyCount: Int @complexity(value: 10)
+
+  viewCountFromHomefeed: Int @complexity(value: 10)
+  viewCountFromDiscover: Int @complexity(value: 10)
+  viewCountFromProfile: Int @complexity(value: 10)
+  viewCountFromSearch: Int @complexity(value: 10)
+}
+
+type PhotoConnectionForPhotosOnPhotoStatsAggregation {
+  edges: [PhotoEdgeForPhotosOnPhotoStatsAggregation!]!
+  pageInfo: PageInfo
+  totalCount: Int
+}
+
+type ViewStat implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  """总浏览数"""
+  totalViewCount: Int @complexity(value: 10)
+  """去重浏览数"""
+  uniqueViewCount: Int @complexity(value: 10)
+}

@@ -1,0 +1,24 @@
+enum UserFilterType {
+  """active by default"""
+  STATUS
+  """has a resume"""
+  AVAILABLE_FOR_HIRE
+  """specialties"""
+  SPECIALTIES
+  """latitude, longitude"""
+  HIRE_LOCATIONS
+}
+
+input UserSearchFilter {
+  key: UserFilterType!
+  value: String!
+}
+
+enum UserSort {
+  """No sort"""
+  RELEVANCE
+  """Most followers"""
+  MOST_POPULAR
+  """Most recent activity?"""
+  MOST_RECENT
+}

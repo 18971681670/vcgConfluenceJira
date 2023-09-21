@@ -1,0 +1,74 @@
+# Write your query or mutation here
+
+query  {
+  nodeByLegacyId (resourceType:"LicensingPhoto" ,legacyId: 1000000377){
+    id
+
+    ... on LicensingPhoto{
+
+      legacyId
+
+      caption
+      description
+      keywords
+
+      width
+      height
+      exclusiveUsage
+
+      collection
+      fileName
+
+
+      latitude
+      longitude
+      location
+
+      aperture
+      shutterSpeed
+      focalLength
+      iso
+      camera
+      lens
+
+      orientation
+
+      status
+
+      takenAt
+      submittedAt
+      updatedAt
+      createdAt
+
+      gettyId
+      vcgId
+
+      images(sizes: [4]){
+        id
+        size
+        legacyId
+        url
+      }
+      modelReleases{
+        id
+        legacyId
+        filename
+
+      }
+      propertyReleases{
+        id
+        legacyId
+        filename
+      }
+      feedbacks{
+        code
+        title
+        message
+      }
+
+    }
+  }
+}
+
+# headers
+# {"x-500px-user-id": 22156121}

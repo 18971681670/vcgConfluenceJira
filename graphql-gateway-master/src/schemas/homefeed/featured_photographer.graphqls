@@ -1,0 +1,21 @@
+"""
+Workshop / 用户课程
+"""
+type FeaturedPhotographer implements Node {
+  """Global ID / 全局 ID"""
+  id: ID!
+  
+  photographer: User!
+}
+
+type FeaturedPhotographerEdge {
+  node: FeaturedPhotographer @complexity(value: 10)
+  cursor: String
+}
+
+type FeaturedPhotographerConnection {
+  edges: [FeaturedPhotographerEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+  enabled: Boolean
+}

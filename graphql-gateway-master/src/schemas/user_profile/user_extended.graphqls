@@ -1,0 +1,19 @@
+
+"""
+UserSetting Resource
+"""
+type UserExtended implements Node{
+  """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  """ 是否启用二元验证，默认false"""
+  tfaEnabled: Boolean!
+  """ 封面图片ID."""
+  coverPhotoId: ID
+  """封面照片上传时间."""
+  coverUploadedAt: String
+  """onboarding step that user is at / 用户所在的入职步骤"""
+  onboardingStep: String
+}

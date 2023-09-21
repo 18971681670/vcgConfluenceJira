@@ -1,0 +1,27 @@
+"""
+userprofile_feed
+"""
+type FollowingProfile implements Node {
+    """Global ID / 全局 ID"""
+    id: ID!
+
+    photographer: User!
+
+    """Editor’s Choice、Quest Submission、Created a Gallery、Licensed a Photo"""
+    pickedStreams: PickedStreams!
+    """卡片pickedStream的资源id，跟据不同的pickedStream点击跳转到不同的详情页，如果是Created a Gallery就需要gallery id"""
+    pickedStreamLegacyId: ID!
+
+    isLikedByMe: Boolean @complexity(value: 10)
+
+    isCongratulatedByMe: Boolean @complexity(value: 10)
+}
+
+
+enum PickedStreams {
+    EDITOR_CHOICE
+    QUEST_SUBMISSION
+    CREATED_GALLERY
+    LICENSED_PHOTO
+}
+

@@ -1,0 +1,32 @@
+type EnvVar {
+    key: String!
+    value: String!
+}
+
+type Config implements Node {
+    id: ID!
+    clientId:Int!
+    timestamp: String
+    lastSupportedAndroidVersion: String
+    updateBannerMinVersion: String
+    updateBannerMaxVersion: String
+    unsupportedAndroidVersionMessage: String
+    emailVerificationCutOffTimestamp: String
+    blacklist: [String]!
+    envStore: [EnvVar]!
+    versionSupport: VersionSupport
+}
+
+type VersionSupport implements Node{
+    id: ID!
+
+    minBuildNumber: String
+    minDisplayVersion: String
+    minUpgradeDescription: String
+
+    suggestedBuildNumber: String
+    suggestedDisplayVersion: String
+    suggestedUpgradeDescription: String
+
+    appStoreUrl: String
+}

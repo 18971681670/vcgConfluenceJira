@@ -1,0 +1,28 @@
+"""
+User Payout History Resource
+"""
+
+type PayoutHistory implements Node {
+   """Global ID / 全局 ID"""
+  id: ID!
+  """Resource Internal ID / 资源内部ID"""
+  legacyId: ID!
+
+  reference: String
+  amount: Float
+  payoutStatus: String
+  paidDate: String
+  payoutDate: String
+  salesCount: Int
+}
+
+type PayoutHistoryEdge {
+  node: PayoutHistory @complexity(value: 10)
+  cursor: String
+}
+
+type PayoutHistoryConnection {
+  edges: [PayoutHistoryEdge]
+  pageInfo: PageInfo
+  totalCount: Int
+}
